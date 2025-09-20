@@ -4,10 +4,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Rails 8.0 application called "VibeCoffee" that uses modern Rails patterns and architecture:
+VibeCoffee is a Rails 8.0 application for coffee enthusiasts to catalog and manage their coffee bean collection. The app allows users to create coffee bean records with image uploads, and automatically extracts detailed information from coffee packaging using AI vision analysis.
 
+### Core Features
+- **Coffee Bean Management**: Create, edit, and organize coffee bean records
+- **AI-Powered Information Extraction**: Automatically analyzes uploaded images of coffee packages to extract:
+  - Brand name
+  - Origin/region
+  - Coffee variety (e.g., Arabica, Typica)
+  - Processing method (washed, natural, honey)
+  - Producer/farm information
+  - Tasting notes and additional details
+- **Image Storage**: Uses ActiveStorage for coffee package image management
+- **Background Processing**: Uses Solid Queue for AI processing jobs
+
+### Technical Stack
 - **Framework**: Rails 8.0.2+ with Ruby
 - **Database**: SQLite3 with Solid Cache, Solid Queue, and Solid Cable
+- **AI Integration**: RubyLLM gem with OpenAI GPT-4.1 for vision analysis
 - **Frontend**: Hotwire (Turbo + Stimulus), Importmap for JavaScript, Propshaft for assets
 - **Styling**: Rubocop Rails Omakase for code style
 - **Deployment**: Kamal for containerized deployment

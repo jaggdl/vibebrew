@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  coffee_bean: one
+  name: MyString
+  description: MyText
+  inverted_method: false
+  grind_size: MyString
+  coffee_weight: 9.99
+  water_weight: 9.99
+  water_temperature: 9.99
+  steps: 
+
+two:
+  coffee_bean: two
+  name: MyString
+  description: MyText
+  inverted_method: false
+  grind_size: MyString
+  coffee_weight: 9.99
+  water_weight: 9.99
+  water_temperature: 9.99
+  steps: 

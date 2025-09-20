@@ -39,6 +39,33 @@
   </tr>
 </table>
 
+<% if @coffee_bean.aeropress_recipes.any? %>
+  <h2>AeroPress Recipes</h2>
+  <ul>
+    <% @coffee_bean.aeropress_recipes.each do |recipe| %>
+      <li>
+        <%= link_to coffee_bean_aeropress_recipe_path(@coffee_bean, recipe) do %>
+          <%= recipe.name.present? ? recipe.name : "Recipe ##{recipe.id}" %>
+          <% if recipe.name.blank? %>
+            <em>(generating...)</em>
+          <% end %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<h2>Create AeroPress Recipe</h2>
+<%= form_with model: [@coffee_bean, AeropressRecipe.new], local: true do |form| %>
+  <div>
+    <%= form.label :prompt, "Recipe Requirements:" %>
+    <%= form.text_area :prompt, placeholder: "Describe your brewing preferences or specific requirements...", rows: 4 %>
+  </div>
+  <div>
+    <%= form.submit "Generate AeroPress Recipe" %>
+  </div>
+<% end %>
+
 <p>
   <%= link_to 'Edit', edit_coffee_bean_path(@coffee_bean) %> |
   <%= link_to 'Back', coffee_beans_path %>

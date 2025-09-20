@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "coffee_beans#new"
+  root "coffee_beans#index"
 
-  resources :coffee_beans, only: [ :index, :show, :new, :create, :edit, :update ]
+  resources :coffee_beans, only: [ :index, :show, :new, :create, :edit, :update ] do
+    resources :aeropress_recipes, only: [ :create, :show ]
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_20_184222) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_20_203912) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -37,6 +37,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_20_184222) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "aeropress_recipes", force: :cascade do |t|
+    t.integer "coffee_bean_id", null: false
+    t.string "name"
+    t.text "description"
+    t.boolean "inverted_method"
+    t.string "grind_size"
+    t.decimal "coffee_weight", precision: 8, scale: 2
+    t.decimal "water_weight", precision: 8, scale: 2
+    t.decimal "water_temperature", precision: 5, scale: 2
+    t.json "steps"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "prompt"
+    t.index ["coffee_bean_id"], name: "index_aeropress_recipes_on_coffee_bean_id"
   end
 
   create_table "chats", force: :cascade do |t|
@@ -108,6 +124,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_20_184222) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "aeropress_recipes", "coffee_beans"
   add_foreign_key "chats", "models"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "models"
