@@ -1,0 +1,61 @@
+<h1>Edit Coffee Bean</h1>
+
+<%= form_with model: @coffee_bean, local: true, multipart: true do |form| %>
+  <% if @coffee_bean.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@coffee_bean.errors.count, "error") %> prohibited this coffee bean from being saved:</h2>
+      <ul>
+        <% @coffee_bean.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :brand %>
+    <%= form.text_field :brand %>
+  </div>
+
+  <div class="field">
+    <%= form.label :origin %>
+    <%= form.text_field :origin %>
+  </div>
+
+  <div class="field">
+    <%= form.label :variety %>
+    <%= form.text_field :variety %>
+  </div>
+
+  <div class="field">
+    <%= form.label :process %>
+    <%= form.text_field :process %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tasting_notes %>
+    <%= form.text_field :tasting_notes %>
+  </div>
+
+  <div class="field">
+    <%= form.label :producer %>
+    <%= form.text_field :producer %>
+  </div>
+
+  <div class="field">
+    <%= form.label :notes %>
+    <%= form.text_area :notes %>
+  </div>
+
+  <div class="field">
+    <%= form.label :images, "Add more images (optional)" %>
+    <%= form.file_field :images, multiple: true, accept: "image/*" %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Update Coffee Bean" %>
+  </div>
+<% end %>
+
+<%= link_to 'Show', @coffee_bean %> |
+<%= link_to 'Back', coffee_beans_path %>

@@ -1,0 +1,28 @@
+<h1>Coffee Beans</h1>
+
+<%= link_to 'New Coffee Bean', new_coffee_bean_path %>
+
+<% @coffee_beans.each do |coffee_bean| %>
+  <div style="border: 1px solid #ddd; margin: 10px; padding: 15px;">
+    <h3><%= coffee_bean.brand.present? ? coffee_bean.brand : "Untitled Coffee Bean" %></h3>
+
+    <% if coffee_bean.images.attached? %>
+      <% coffee_bean.images.first(3).each do |image| %>
+        <%= image_tag image, style: "width: 100px; height: 100px; object-fit: cover; margin-right: 10px;" %>
+      <% end %>
+      <% if coffee_bean.images.count > 3 %>
+        <span>+ <%= coffee_bean.images.count - 3 %> more</span>
+      <% end %>
+    <% end %>
+
+    <p>
+      <strong>Origin:</strong> <%= coffee_bean.origin %>
+      <strong>Variety:</strong> <%= coffee_bean.variety %>
+    </p>
+
+    <p>
+      <%= link_to 'Show', coffee_bean %> |
+      <%= link_to 'Edit', edit_coffee_bean_path(coffee_bean) %>
+    </p>
+  </div>
+<% end %>

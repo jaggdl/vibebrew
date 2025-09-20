@@ -1,0 +1,45 @@
+<h1><%= @coffee_bean.brand.present? ? @coffee_bean.brand : "Coffee Bean ##{@coffee_bean.id}" %></h1>
+
+<% if @coffee_bean.images.attached? %>
+  <div style="margin: 20px 0;">
+    <% @coffee_bean.images.each do |image| %>
+      <%= image_tag image, style: "width: 200px; height: 200px; object-fit: cover; margin-right: 10px; margin-bottom: 10px;" %>
+    <% end %>
+  </div>
+<% end %>
+
+<table>
+  <tr>
+    <td><strong>Brand:</strong></td>
+    <td><%= @coffee_bean.brand %></td>
+  </tr>
+  <tr>
+    <td><strong>Origin:</strong></td>
+    <td><%= @coffee_bean.origin %></td>
+  </tr>
+  <tr>
+    <td><strong>Variety:</strong></td>
+    <td><%= @coffee_bean.variety %></td>
+  </tr>
+  <tr>
+    <td><strong>Process:</strong></td>
+    <td><%= @coffee_bean.process %></td>
+  </tr>
+  <tr>
+    <td><strong>Tasting Notes:</strong></td>
+    <td><%= @coffee_bean.tasting_notes %></td>
+  </tr>
+  <tr>
+    <td><strong>Producer:</strong></td>
+    <td><%= @coffee_bean.producer %></td>
+  </tr>
+  <tr>
+    <td><strong>Notes:</strong></td>
+    <td><%= simple_format(@coffee_bean.notes) %></td>
+  </tr>
+</table>
+
+<p>
+  <%= link_to 'Edit', edit_coffee_bean_path(@coffee_bean) %> |
+  <%= link_to 'Back', coffee_beans_path %>
+</p>

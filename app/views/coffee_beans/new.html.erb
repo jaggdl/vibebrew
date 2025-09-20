@@ -1,0 +1,26 @@
+<h1>New Coffee Bean</h1>
+
+<%= form_with model: @coffee_bean, local: true, multipart: true do |form| %>
+  <% if @coffee_bean.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@coffee_bean.errors.count, "error") %> prohibited this coffee bean from being saved:</h2>
+      <ul>
+        <% @coffee_bean.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :images, "Upload Coffee Bean Images" %>
+    <%= form.file_field :images, multiple: true, accept: "image/*", required: true %>
+    <small>Select one or more images of your coffee beans</small>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Create Coffee Bean" %>
+  </div>
+<% end %>
+
+<%= link_to 'Back', coffee_beans_path %>
