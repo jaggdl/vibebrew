@@ -65,3 +65,7 @@ end
 gem "ruby_llm", "~> 1.8"
 
 gem "ruby_llm-schema", "~> 0.2.1"
+
+gem "tailwindcss-ruby", "~> 4.1"
+
+gem "tailwindcss-rails", "~> 4.3"

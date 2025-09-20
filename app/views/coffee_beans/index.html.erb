@@ -1,28 +1,25 @@
-<h1>Coffee Beans</h1>
+<h1 class="text-2xl font-bold">🤙 Vibe Coffee ☕️</h1>
 
-<%= link_to 'New Coffee Bean', new_coffee_bean_path %>
+<div class="w-full flex justify-center">
+  <%= link_to '+ Add Coffee Bean', new_coffee_bean_path, class: "button" %>
+</div>
 
-<% @coffee_beans.each do |coffee_bean| %>
-  <div style="border: 1px solid #ddd; margin: 10px; padding: 15px;">
-    <h3><%= coffee_bean.brand.present? ? coffee_bean.brand : "Untitled Coffee Bean" %></h3>
+<div class="grid">
+  <% @coffee_beans.each do |coffee_bean| %>
+    <%= link_to coffee_bean do %>
+      <div class="card flex gap-2">
+        <%= image_tag coffee_bean.images.first, class: "h-24 w-24 object-cover" %>
 
-    <% if coffee_bean.images.attached? %>
-      <% coffee_bean.images.first(3).each do |image| %>
-        <%= image_tag image, style: "width: 100px; height: 100px; object-fit: cover; margin-right: 10px;" %>
-      <% end %>
-      <% if coffee_bean.images.count > 3 %>
-        <span>+ <%= coffee_bean.images.count - 3 %> more</span>
-      <% end %>
+        <div>
+          <h3 class="font-bold text-xl">
+            <%= coffee_bean.brand.present? ? coffee_bean.brand : "Untitled Coffee Bean" %>
+          </h3>
+          <span>
+            <%= coffee_bean.origin %>
+          </span>
+        </div>
+      </div>
     <% end %>
+  <% end %>
+</div>
 
-    <p>
-      <strong>Origin:</strong> <%= coffee_bean.origin %>
-      <strong>Variety:</strong> <%= coffee_bean.variety %>
-    </p>
-
-    <p>
-      <%= link_to 'Show', coffee_bean %> |
-      <%= link_to 'Edit', edit_coffee_bean_path(coffee_bean) %>
-    </p>
-  </div>
-<% end %>
