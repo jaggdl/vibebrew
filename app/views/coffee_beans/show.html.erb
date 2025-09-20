@@ -1,9 +1,9 @@
-<h1><%= @coffee_bean.brand.present? ? @coffee_bean.brand : "Coffee Bean ##{@coffee_bean.id}" %></h1>
+<h1 class="title"><%= @coffee_bean.brand.present? ? @coffee_bean.brand : "Coffee Bean ##{@coffee_bean.id}" %></h1>
 
 <% if @coffee_bean.images.attached? %>
-  <div style="margin: 20px 0;">
+  <div class="flex gap-2">
     <% @coffee_bean.images.each do |image| %>
-      <%= image_tag image, style: "width: 200px; height: 200px; object-fit: cover; margin-right: 10px; margin-bottom: 10px;" %>
+      <%= image_tag image, class: "h-48 w-48 object-cover rounded" %>
     <% end %>
   </div>
 <% end %>
