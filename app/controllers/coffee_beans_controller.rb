@@ -15,7 +15,8 @@ class CoffeeBeansController < ApplicationController
     @coffee_bean = CoffeeBean.new(coffee_bean_params)
 
     if @coffee_bean.save
-      redirect_to @coffee_bean, notice: 'Coffee bean was successfully created.'
+      ExtractCoffeeBeanInfoJob.perform_later(@coffee_bean.id)
+      redirect_to @coffee_bean, notice: "Coffee bean was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -29,7 +30,7 @@ class CoffeeBeansController < ApplicationController
     @coffee_bean = CoffeeBean.find(params[:id])
 
     if @coffee_bean.update(coffee_bean_update_params)
-      redirect_to @coffee_bean, notice: 'Coffee bean was successfully updated.'
+      redirect_to @coffee_bean, notice: "Coffee bean was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end

@@ -5,5 +5,5 @@ class CoffeeBeansSchema < RubyLLM::Schema
   string :process, description: "The method used to process the beans"
   string :tasting_notes, description: "Flavor profiles or characteristics of the coffee"
   string :producer, description: "The name of the producer"
-  string :notes, description: "Additional observations or preferences", required: false
+  string :notes, description: "Additional observations or preferences"
 end
