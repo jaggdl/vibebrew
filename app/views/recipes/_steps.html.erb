@@ -1,0 +1,13 @@
+<% if recipe.steps.present? %>
+  <h3>Brewing Steps</h3>
+  <ol>
+    <% recipe.steps.each do |step| %>
+      <li>
+        <%= step['description'] %>
+        <% if step['time'].present? && step['time'] > 0 %>
+          <em>(<%= step['time'] %> seconds)</em>
+        <% end %>
+      </li>
+    <% end %>
+  </ol>
+<% end %>

@@ -5,7 +5,7 @@ class AeropressRecipesController < ApplicationController
     @aeropress_recipe = @coffee_bean.aeropress_recipes.build(aeropress_recipe_params)
 
     if @aeropress_recipe.save
-      GenerateAeropressRecipeJob.perform_later(@aeropress_recipe.id)
+      GenerateRecipeJob.perform_later(@aeropress_recipe.class.name, @aeropress_recipe.id)
       redirect_to coffee_bean_aeropress_recipe_path(@coffee_bean, @aeropress_recipe)
     else
       redirect_to @coffee_bean, alert: 'Failed to create recipe'

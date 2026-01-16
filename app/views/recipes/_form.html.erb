@@ -1,0 +1,9 @@
+<%= form_with model: [coffee_bean, recipe], local: true do |form| %>
+  <div class="flex flex-col mb-4 gap-2">
+    <%= form.label :prompt, "Recipe Requirements", class: "input-label" %>
+    <%= form.text_area :prompt, placeholder: "Describe your brewing preferences or specific requirements...", rows: 4, class: "text-input" %>
+  </div>
+  <div>
+    <%= form.submit "Generate #{brew_method} Recipe", class: "button" %>
+  </div>
+<% end %>

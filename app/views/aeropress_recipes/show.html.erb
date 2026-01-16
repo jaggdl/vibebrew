@@ -1,72 +1,13 @@
-<h1><%= @aeropress_recipe.name.present? ? @aeropress_recipe.name : "AeroPress Recipe ##{@aeropress_recipe.id}" %></h1>
+<h1><%= @aeropress_recipe.generated? ? @aeropress_recipe.name : "AeroPress Recipe ##{@aeropress_recipe.id}" %></h1>
 
 <h2>Coffee Bean</h2>
 <p><%= link_to (@coffee_bean.brand.present? ? @coffee_bean.brand : "Coffee Bean ##{@coffee_bean.id}"), @coffee_bean %></p>
 
-<% if @aeropress_recipe.name.present? %>
-  <table>
-    <tr>
-      <td><strong>Recipe Name:</strong></td>
-      <td><%= @aeropress_recipe.name %></td>
-    </tr>
-    <tr>
-      <td><strong>Description:</strong></td>
-      <td><%= simple_format(@aeropress_recipe.description) %></td>
-    </tr>
-    <% if @aeropress_recipe.inverted_method.present? %>
-      <tr>
-        <td><strong>Inverted Method:</strong></td>
-        <td><%= @aeropress_recipe.inverted_method ? "Yes" : "No" %></td>
-      </tr>
-    <% end %>
-    <% if @aeropress_recipe.grind_size.present? %>
-      <tr>
-        <td><strong>Grind Size:</strong></td>
-        <td><%= @aeropress_recipe.grind_size.titleize %></td>
-      </tr>
-    <% end %>
-    <% if @aeropress_recipe.coffee_weight.present? %>
-      <tr>
-        <td><strong>Coffee Weight:</strong></td>
-        <td><%= @aeropress_recipe.coffee_weight %>g</td>
-      </tr>
-    <% end %>
-    <% if @aeropress_recipe.water_weight.present? %>
-      <tr>
-        <td><strong>Water Weight:</strong></td>
-        <td><%= @aeropress_recipe.water_weight %>g</td>
-      </tr>
-    <% end %>
-    <% if @aeropress_recipe.water_temperature.present? %>
-      <tr>
-        <td><strong>Water Temperature:</strong></td>
-        <td><%= @aeropress_recipe.water_temperature %>°C</td>
-      </tr>
-    <% end %>
-  </table>
-
-  <% if @aeropress_recipe.steps.present? %>
-    <h3>Brewing Steps</h3>
-    <ol>
-      <% @aeropress_recipe.steps.each do |step| %>
-        <li>
-          <%= step['description'] %>
-          <% if step['time'].present? && step['time'] > 0 %>
-            <em>(<%= step['time'] %> seconds)</em>
-          <% end %>
-        </li>
-      <% end %>
-    </ol>
-  <% end %>
+<% if @aeropress_recipe.generated? %>
+  <%= render "recipes/details", recipe: @aeropress_recipe, show_inverted_method: true %>
+  <%= render "recipes/steps", recipe: @aeropress_recipe %>
 <% else %>
-  <p><em>Recipe is being generated... Please refresh the page in a few moments.</em></p>
-
-  <table>
-    <tr>
-      <td><strong>Your Request:</strong></td>
-      <td><%= simple_format(@aeropress_recipe.prompt) %></td>
-    </tr>
-  </table>
+  <%= render "recipes/pending", recipe: @aeropress_recipe %>
 <% end %>
 
 <p>

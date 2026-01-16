@@ -141,14 +141,30 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_16_224549) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  create_table "v60_recipes", force: :cascade do |t|
+    t.integer "coffee_bean_id", null: false
+    t.string "name"
+    t.text "description"
+    t.string "grind_size"
+    t.decimal "coffee_weight", precision: 8, scale: 2
+    t.decimal "water_weight", precision: 8, scale: 2
+    t.decimal "water_temperature", precision: 5, scale: 2
+    t.json "steps"
+    t.text "prompt"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["coffee_bean_id"], name: "index_v60_recipes_on_coffee_bean_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "aeropress_recipes", "coffee_beans"
-  add_foreign_key "coffee_beans", "users"
   add_foreign_key "chats", "models"
+  add_foreign_key "coffee_beans", "users"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "models"
   add_foreign_key "messages", "tool_calls"
   add_foreign_key "sessions", "users"
   add_foreign_key "tool_calls", "messages"
+  add_foreign_key "v60_recipes", "coffee_beans"
 end

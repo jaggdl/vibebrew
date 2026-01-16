@@ -1,0 +1,17 @@
+<% if recipes.any? %>
+  <div>
+    <h2 class="font-bold text-xl"><%= title %></h2>
+    <ul class="gap-2 flex flex-col">
+      <% recipes.each do |recipe| %>
+        <li>
+          <%= link_to url_for([coffee_bean, recipe]), class: "card font-semibold text-lg px-4 py-2" do %>
+            <%= recipe.display_name %>
+            <% unless recipe.generated? %>
+              <em>(generating...)</em>
+            <% end %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

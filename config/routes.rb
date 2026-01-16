@@ -17,5 +17,6 @@ Rails.application.routes.draw do
 
   resources :coffee_beans, only: [ :index, :show, :new, :create, :edit, :update ] do
     resources :aeropress_recipes, only: [ :create, :show ]
+    resources :v60_recipes, only: [ :create, :show ]
   end
 end

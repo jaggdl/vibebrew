@@ -1,0 +1,40 @@
+<table>
+  <tr>
+    <td><strong>Recipe Name:</strong></td>
+    <td><%= recipe.name %></td>
+  </tr>
+  <tr>
+    <td><strong>Description:</strong></td>
+    <td><%= simple_format(recipe.description) %></td>
+  </tr>
+  <% if local_assigns[:show_inverted_method] && recipe.respond_to?(:inverted_method) && recipe.inverted_method.present? %>
+    <tr>
+      <td><strong>Inverted Method:</strong></td>
+      <td><%= recipe.inverted_method ? "Yes" : "No" %></td>
+    </tr>
+  <% end %>
+  <% if recipe.grind_size.present? %>
+    <tr>
+      <td><strong>Grind Size:</strong></td>
+      <td><%= recipe.grind_size.titleize %></td>
+    </tr>
+  <% end %>
+  <% if recipe.coffee_weight.present? %>
+    <tr>
+      <td><strong>Coffee Weight:</strong></td>
+      <td><%= recipe.coffee_weight %>g</td>
+    </tr>
+  <% end %>
+  <% if recipe.water_weight.present? %>
+    <tr>
+      <td><strong>Water Weight:</strong></td>
+      <td><%= recipe.water_weight %>g</td>
+    </tr>
+  <% end %>
+  <% if recipe.water_temperature.present? %>
+    <tr>
+      <td><strong>Water Temperature:</strong></td>
+      <td><%= recipe.water_temperature %>&deg;C</td>
+    </tr>
+  <% end %>
+</table>

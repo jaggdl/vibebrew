@@ -39,34 +39,17 @@
   </tr>
 </table>
 
-<% if @coffee_bean.aeropress_recipes.any? %>
-  <div>
-    <h2 class="font-bold text-xl">AeroPress Recipes</h2>
-    <ul class="gap-2 flex flex-col">
-      <% @coffee_bean.aeropress_recipes.each do |recipe| %>
-        <li>
-          <%= link_to coffee_bean_aeropress_recipe_path(@coffee_bean, recipe), class: "card font-semibold text-lg px-4 py-2" do %>
-            <%= recipe.name.present? ? recipe.name : "Recipe ##{recipe.id}" %>
-            <% if recipe.name.blank? %>
-              <em>(generating...)</em>
-            <% end %>
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
-  </div>
-<% end %>
+<%= render "recipes/list", recipes: @coffee_bean.aeropress_recipes, coffee_bean: @coffee_bean, title: "AeroPress Recipes" %>
 
 <div>
   <h2 class="font-bold text-xl">Create AeroPress Recipe</h2>
-  <%= form_with model: [@coffee_bean, AeropressRecipe.new], local: true do |form| %>
-    <div class="flex flex-col mb-4 gap-2">
-      <%= form.label :prompt, "Recipe Requirements", class: "input-label" %>
-      <%= form.text_area :prompt, placeholder: "Describe your brewing preferences or specific requirements...", rows: 4, class: "text-input" %>
-    </div>
-    <div>
-      <%= form.submit "Generate AeroPress Recipe", class: "button" %>
-    </div>
-  <% end %>
+  <%= render "recipes/form", coffee_bean: @coffee_bean, recipe: AeropressRecipe.new, brew_method: "AeroPress" %>
+</div>
+
+<%= render "recipes/list", recipes: @coffee_bean.v60_recipes, coffee_bean: @coffee_bean, title: "V60 Recipes" %>
+
+<div>
+  <h2 class="font-bold text-xl">Create V60 Recipe</h2>
+  <%= render "recipes/form", coffee_bean: @coffee_bean, recipe: V60Recipe.new, brew_method: "V60" %>
 </div>
 
