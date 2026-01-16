@@ -39,17 +39,11 @@
   </tr>
 </table>
 
-<%= render "recipes/list", recipes: @coffee_bean.aeropress_recipes, coffee_bean: @coffee_bean, title: "AeroPress Recipes" %>
+<% all_recipes = (@coffee_bean.aeropress_recipes + @coffee_bean.v60_recipes).sort_by(&:created_at).reverse %>
+<%= render "recipes/list", recipes: all_recipes, coffee_bean: @coffee_bean, title: "Recipes" %>
 
 <div>
-  <h2 class="font-bold text-xl">Create AeroPress Recipe</h2>
-  <%= render "recipes/form", coffee_bean: @coffee_bean, recipe: AeropressRecipe.new, brew_method: "AeroPress" %>
-</div>
-
-<%= render "recipes/list", recipes: @coffee_bean.v60_recipes, coffee_bean: @coffee_bean, title: "V60 Recipes" %>
-
-<div>
-  <h2 class="font-bold text-xl">Create V60 Recipe</h2>
-  <%= render "recipes/form", coffee_bean: @coffee_bean, recipe: V60Recipe.new, brew_method: "V60" %>
+  <h2 class="font-bold text-xl">Generate Recipe</h2>
+  <%= render "recipes/form", coffee_bean: @coffee_bean %>
 </div>
 

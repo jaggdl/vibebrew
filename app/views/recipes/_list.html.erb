@@ -4,11 +4,16 @@
     <ul class="gap-2 flex flex-col">
       <% recipes.each do |recipe| %>
         <li>
-          <%= link_to url_for([coffee_bean, recipe]), class: "card font-semibold text-lg px-4 py-2" do %>
-            <%= recipe.display_name %>
-            <% unless recipe.generated? %>
-              <em>(generating...)</em>
-            <% end %>
+          <% recipe_url = recipe.is_a?(AeropressRecipe) ? recipes_aeropress_path(recipe) : recipes_v60_path(recipe) %>
+          <% brew_method = recipe.is_a?(AeropressRecipe) ? "AeroPress" : "V60" %>
+          <%= link_to recipe_url, class: "card font-semibold text-lg px-4 py-2 flex justify-between items-center" do %>
+            <span>
+              <%= recipe.display_name %>
+              <% unless recipe.generated? %>
+                <em>(generating...)</em>
+              <% end %>
+            </span>
+            <span class="text-sm font-normal text-gray-500"><%= brew_method %></span>
           <% end %>
         </li>
       <% end %>
