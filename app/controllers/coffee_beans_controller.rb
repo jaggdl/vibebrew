@@ -1,18 +1,18 @@
 class CoffeeBeansController < ApplicationController
   def index
-    @coffee_beans = CoffeeBean.all
+    @coffee_beans = Current.user.coffee_beans
   end
 
   def show
-    @coffee_bean = CoffeeBean.find(params[:id])
+    @coffee_bean = Current.user.coffee_beans.find(params[:id])
   end
 
   def new
-    @coffee_bean = CoffeeBean.new
+    @coffee_bean = Current.user.coffee_beans.new
   end
 
   def create
-    @coffee_bean = CoffeeBean.new(coffee_bean_params)
+    @coffee_bean = Current.user.coffee_beans.new(coffee_bean_params)
 
     if @coffee_bean.save
       ExtractCoffeeBeanInfoJob.perform_later(@coffee_bean.id)
@@ -23,11 +23,11 @@ class CoffeeBeansController < ApplicationController
   end
 
   def edit
-    @coffee_bean = CoffeeBean.find(params[:id])
+    @coffee_bean = Current.user.coffee_beans.find(params[:id])
   end
 
   def update
-    @coffee_bean = CoffeeBean.find(params[:id])
+    @coffee_bean = Current.user.coffee_beans.find(params[:id])
 
     if @coffee_bean.update(coffee_bean_update_params)
       redirect_to @coffee_bean, notice: "Coffee bean was successfully updated."

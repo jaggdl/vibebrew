@@ -6,7 +6,7 @@ class GenerateAeropressRecipeJob < ApplicationJob
     coffee_bean = aeropress_recipe.coffee_bean
 
     # Create a chat record for processing
-    chat_record = Chat.create!(model: "gpt-4.1")
+    chat_record = Chat.create!(model: "gpt-4.1-mini")
 
     # Build prompt for recipe generation
     prompt = build_recipe_prompt(coffee_bean, aeropress_recipe)

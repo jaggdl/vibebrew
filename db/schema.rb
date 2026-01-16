@@ -63,6 +63,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_16_224549) do
   end
 
   create_table "coffee_beans", force: :cascade do |t|
+    t.integer "user_id", null: false
     t.string "brand"
     t.string "origin"
     t.string "variety"
@@ -72,6 +73,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_16_224549) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_coffee_beans_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -142,6 +144,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_16_224549) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "aeropress_recipes", "coffee_beans"
+  add_foreign_key "coffee_beans", "users"
   add_foreign_key "chats", "models"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "models"
