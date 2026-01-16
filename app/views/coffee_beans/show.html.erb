@@ -40,33 +40,33 @@
 </table>
 
 <% if @coffee_bean.aeropress_recipes.any? %>
-  <h2>AeroPress Recipes</h2>
-  <ul>
-    <% @coffee_bean.aeropress_recipes.each do |recipe| %>
-      <li>
-        <%= link_to coffee_bean_aeropress_recipe_path(@coffee_bean, recipe) do %>
-          <%= recipe.name.present? ? recipe.name : "Recipe ##{recipe.id}" %>
-          <% if recipe.name.blank? %>
-            <em>(generating...)</em>
+  <div>
+    <h2 class="font-bold text-xl">AeroPress Recipes</h2>
+    <ul class="gap-2 flex flex-col">
+      <% @coffee_bean.aeropress_recipes.each do |recipe| %>
+        <li>
+          <%= link_to coffee_bean_aeropress_recipe_path(@coffee_bean, recipe), class: "card font-semibold text-lg px-4 py-2" do %>
+            <%= recipe.name.present? ? recipe.name : "Recipe ##{recipe.id}" %>
+            <% if recipe.name.blank? %>
+              <em>(generating...)</em>
+            <% end %>
           <% end %>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
-<% end %>
-
-<h2>Create AeroPress Recipe</h2>
-<%= form_with model: [@coffee_bean, AeropressRecipe.new], local: true do |form| %>
-  <div>
-    <%= form.label :prompt, "Recipe Requirements:" %>
-    <%= form.text_area :prompt, placeholder: "Describe your brewing preferences or specific requirements...", rows: 4 %>
-  </div>
-  <div>
-    <%= form.submit "Generate AeroPress Recipe" %>
+        </li>
+      <% end %>
+    </ul>
   </div>
 <% end %>
 
-<p>
-  <%= link_to 'Edit', edit_coffee_bean_path(@coffee_bean) %> |
-  <%= link_to 'Back', coffee_beans_path %>
-</p>
+<div>
+  <h2 class="font-bold text-xl">Create AeroPress Recipe</h2>
+  <%= form_with model: [@coffee_bean, AeropressRecipe.new], local: true do |form| %>
+    <div class="flex flex-col mb-4 gap-2">
+      <%= form.label :prompt, "Recipe Requirements", class: "input-label" %>
+      <%= form.text_area :prompt, placeholder: "Describe your brewing preferences or specific requirements...", rows: 4, class: "text-input" %>
+    </div>
+    <div>
+      <%= form.submit "Generate AeroPress Recipe", class: "button" %>
+    </div>
+  <% end %>
+</div>
+

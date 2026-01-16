@@ -16,9 +16,17 @@
 
 .badge {
   @apply text-sm text-gray-800 rounded-full border border-gray-200;
-  @apply bg-gray-100 py-0.5 px-1.5
+  @apply bg-gray-100 py-0.5 px-1.5;
 }
 
 .title {
-  @apply text-2xl font-bold
+  @apply text-2xl font-bold;
+}
+
+.text-input {
+  @apply border border-gray-200 rounded p-2;
+}
+
+.input-label {
+  @apply text-gray-600;
 }
