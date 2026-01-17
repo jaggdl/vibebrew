@@ -4,29 +4,6 @@
 </div>
 
 <div class="grid">
-  <% @coffee_beans.each do |coffee_bean| %>
-    <%= link_to coffee_bean do %>
-      <div class="card flex gap-2 overflow-hidden">
-        <%= image_tag coffee_bean.images.first, class: "h-24 w-24 object-cover" %>
-
-        <div class="p-2 flex flex-col">
-          <div class="flex items-center gap-2">
-            <h3 class="font-semibold text-xl">
-              <%= coffee_bean.brand.present? ? coffee_bean.brand : "Untitled Coffee Bean" %>
-            </h3>
-            <span class="badge">
-              <%= coffee_bean.process %>
-            </span>
-          </div>
-          <span class="text-gray-800">
-            <%= coffee_bean.variety %>
-          </span>
-          <span class="text-gray-800">
-            <%= coffee_bean.origin %>
-          </span>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
+  <%= render @coffee_beans %>
 </div>
 

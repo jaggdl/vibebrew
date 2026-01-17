@@ -1,15 +1,7 @@
-<h1><%= @aeropress_recipe.generated? ? @aeropress_recipe.name : "AeroPress Recipe ##{@aeropress_recipe.id}" %></h1>
-
-<h2>Coffee Bean</h2>
-<p><%= link_to (@coffee_bean.brand.present? ? @coffee_bean.brand : "Coffee Bean ##{@coffee_bean.id}"), @coffee_bean %></p>
-
 <% if @aeropress_recipe.generated? %>
+  <%= render "coffee_beans/coffee_bean", coffee_bean: @coffee_bean %>
   <%= render "recipes/details", recipe: @aeropress_recipe, show_inverted_method: true %>
   <%= render "recipes/steps", recipe: @aeropress_recipe %>
 <% else %>
   <%= render "recipes/pending", recipe: @aeropress_recipe %>
 <% end %>
-
-<p>
-  <%= link_to 'Back to Coffee Bean', @coffee_bean %>
-</p>

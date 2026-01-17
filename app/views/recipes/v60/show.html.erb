@@ -1,15 +1,7 @@
-<h1><%= @v60_recipe.generated? ? @v60_recipe.name : "V60 Recipe ##{@v60_recipe.id}" %></h1>
-
-<h2>Coffee Bean</h2>
-<p><%= link_to (@coffee_bean.brand.present? ? @coffee_bean.brand : "Coffee Bean ##{@coffee_bean.id}"), @coffee_bean %></p>
-
 <% if @v60_recipe.generated? %>
+  <%= render "coffee_beans/coffee_bean", coffee_bean: @coffee_bean %>
   <%= render "recipes/details", recipe: @v60_recipe, show_inverted_method: false %>
   <%= render "recipes/steps", recipe: @v60_recipe %>
 <% else %>
   <%= render "recipes/pending", recipe: @v60_recipe %>
 <% end %>
-
-<p>
-  <%= link_to 'Back to Coffee Bean', @coffee_bean %>
-</p>

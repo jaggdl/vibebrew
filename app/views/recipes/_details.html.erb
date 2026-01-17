@@ -1,40 +1,53 @@
-<table>
-  <tr>
-    <td><strong>Recipe Name:</strong></td>
-    <td><%= recipe.name %></td>
-  </tr>
-  <tr>
-    <td><strong>Description:</strong></td>
-    <td><%= simple_format(recipe.description) %></td>
-  </tr>
+<h2 class="text-2xl font-bold text-gray-900"><%= recipe.name %></h2>
+<% if recipe.description.present? %>
+  <div class="mt-2 text-gray-600"><%= simple_format(recipe.description, class: "m-0") %></div>
+<% end %>
+
+<div class="mt-6 divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
   <% if local_assigns[:show_inverted_method] && recipe.respond_to?(:inverted_method) && recipe.inverted_method.present? %>
-    <tr>
-      <td><strong>Inverted Method:</strong></td>
-      <td><%= recipe.inverted_method ? "Yes" : "No" %></td>
-    </tr>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Inverted Method</div>
+      <div class="flex-1 text-gray-700">
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium <%= recipe.inverted_method ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' %>">
+          <%= recipe.inverted_method ? "Yes" : "No" %>
+        </span>
+      </div>
+    </div>
   <% end %>
   <% if recipe.grind_size.present? %>
-    <tr>
-      <td><strong>Grind Size:</strong></td>
-      <td><%= recipe.grind_size.titleize %></td>
-    </tr>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Grind Size</div>
+      <div class="flex-1 text-gray-700"><%= recipe.grind_size.titleize %></div>
+    </div>
   <% end %>
-  <% if recipe.coffee_weight.present? %>
-    <tr>
-      <td><strong>Coffee Weight:</strong></td>
-      <td><%= recipe.coffee_weight %>g</td>
-    </tr>
-  <% end %>
-  <% if recipe.water_weight.present? %>
-    <tr>
-      <td><strong>Water Weight:</strong></td>
-      <td><%= recipe.water_weight %>g</td>
-    </tr>
+  <% if recipe.coffee_weight.present? || recipe.water_weight.present? %>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Ratio</div>
+      <div class="flex-1 text-gray-700 flex gap-4">
+        <% if recipe.coffee_weight.present? %>
+          <span class="inline-flex items-center gap-1">
+            <span class="font-mono bg-gray-100 px-2 py-0.5 rounded text-sm"><%= recipe.coffee_weight %>g</span>
+            <span class="text-gray-500 text-sm">coffee</span>
+          </span>
+        <% end %>
+        <% if recipe.coffee_weight.present? && recipe.water_weight.present? %>
+          <span class="text-gray-400">:</span>
+        <% end %>
+        <% if recipe.water_weight.present? %>
+          <span class="inline-flex items-center gap-1">
+            <span class="font-mono bg-gray-100 px-2 py-0.5 rounded text-sm"><%= recipe.water_weight %>g</span>
+            <span class="text-gray-500 text-sm">water</span>
+          </span>
+        <% end %>
+      </div>
+    </div>
   <% end %>
   <% if recipe.water_temperature.present? %>
-    <tr>
-      <td><strong>Water Temperature:</strong></td>
-      <td><%= recipe.water_temperature %>&deg;C</td>
-    </tr>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Water Temperature</div>
+      <div class="flex-1 text-gray-700">
+        <span class="font-mono bg-gray-100 px-2 py-0.5 rounded text-sm"><%= recipe.water_temperature %>&deg;C</span>
+      </div>
+    </div>
   <% end %>
-</table>
+</div>

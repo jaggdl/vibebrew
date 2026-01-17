@@ -1,13 +1,22 @@
 <% if recipe.steps.present? %>
-  <h3>Brewing Steps</h3>
-  <ol>
-    <% recipe.steps.each do |step| %>
-      <li>
-        <%= step['description'] %>
-        <% if step['time'].present? && step['time'] > 0 %>
-          <em>(<%= step['time'] %> seconds)</em>
-        <% end %>
-      </li>
-    <% end %>
-  </ol>
+  <div class="mt-6">
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">Brewing Steps</h3>
+    <div class="divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
+      <% recipe.steps.each.with_index(1) do |step, index| %>
+        <div class="flex items-center gap-4 px-4 py-3 bg-white hover:bg-gray-50">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center text-sm font-medium">
+            <%= index %>
+          </div>
+          <div class="flex-1 text-gray-700">
+            <%= step['description'] %>
+          </div>
+          <% if step['time'].present? && step['time'] > 0 %>
+            <div class="flex-shrink-0 text-sm text-gray-500 font-mono bg-gray-100 px-2 py-1 rounded">
+              <%= step['time'] %>s
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 <% end %>

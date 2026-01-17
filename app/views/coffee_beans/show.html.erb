@@ -8,36 +8,50 @@
   </div>
 <% end %>
 
-<table>
-  <tr>
-    <td><strong>Brand:</strong></td>
-    <td><%= @coffee_bean.brand %></td>
-  </tr>
-  <tr>
-    <td><strong>Origin:</strong></td>
-    <td><%= @coffee_bean.origin %></td>
-  </tr>
-  <tr>
-    <td><strong>Variety:</strong></td>
-    <td><%= @coffee_bean.variety %></td>
-  </tr>
-  <tr>
-    <td><strong>Process:</strong></td>
-    <td><%= @coffee_bean.process %></td>
-  </tr>
-  <tr>
-    <td><strong>Tasting Notes:</strong></td>
-    <td><%= @coffee_bean.tasting_notes %></td>
-  </tr>
-  <tr>
-    <td><strong>Producer:</strong></td>
-    <td><%= @coffee_bean.producer %></td>
-  </tr>
-  <tr>
-    <td><strong>Notes:</strong></td>
-    <td><%= simple_format(@coffee_bean.notes) %></td>
-  </tr>
-</table>
+<div class="mt-6 divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
+  <% if @coffee_bean.brand.present? %>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Brand</div>
+      <div class="flex-1 text-gray-700"><%= @coffee_bean.brand %></div>
+    </div>
+  <% end %>
+  <% if @coffee_bean.origin.present? %>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Origin</div>
+      <div class="flex-1 text-gray-700"><%= @coffee_bean.origin %></div>
+    </div>
+  <% end %>
+  <% if @coffee_bean.variety.present? %>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Variety</div>
+      <div class="flex-1 text-gray-700"><%= @coffee_bean.variety %></div>
+    </div>
+  <% end %>
+  <% if @coffee_bean.process.present? %>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Process</div>
+      <div class="flex-1 text-gray-700"><%= @coffee_bean.process %></div>
+    </div>
+  <% end %>
+  <% if @coffee_bean.tasting_notes.present? %>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Tasting Notes</div>
+      <div class="flex-1 text-gray-700"><%= @coffee_bean.tasting_notes %></div>
+    </div>
+  <% end %>
+  <% if @coffee_bean.producer.present? %>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Producer</div>
+      <div class="flex-1 text-gray-700"><%= @coffee_bean.producer %></div>
+    </div>
+  <% end %>
+  <% if @coffee_bean.notes.present? %>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Notes</div>
+      <div class="flex-1 text-gray-700"><%= simple_format(@coffee_bean.notes, class: "m-0") %></div>
+    </div>
+  <% end %>
+</div>
 
 <% all_recipes = (@coffee_bean.aeropress_recipes + @coffee_bean.v60_recipes).sort_by(&:created_at).reverse %>
 <%= render "recipes/list", recipes: all_recipes, coffee_bean: @coffee_bean, title: "Recipes" %>
