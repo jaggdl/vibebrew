@@ -22,7 +22,7 @@ class GenerateRecipeJob < ApplicationJob
     coffee_bean = recipe.coffee_bean
     prompt = send(config[:prompt_builder], coffee_bean, recipe)
 
-    chat_record = Chat.create!(model: "gpt-4.1-mini")
+    chat_record = Chat.create!(model: "gpt-5-mini")
     image_blobs = coffee_bean.images.attached? ? coffee_bean.images.map(&:blob) : []
     response = chat_record.with_schema(config[:schema]).ask(prompt, with: image_blobs)
 

@@ -5,7 +5,7 @@
   @apply hover:bg-gray-200;
 }
 
-.grid {
+.grid-custom {
   @apply flex flex-col gap-3;
 }
 

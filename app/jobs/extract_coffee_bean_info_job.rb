@@ -6,7 +6,7 @@ class ExtractCoffeeBeanInfoJob < ApplicationJob
     return unless coffee_bean.images.attached?
 
     # Create a chat record for processing
-    chat_record = Chat.create!(model: "gpt-4.1-mini")
+    chat_record = Chat.create!(model: "gpt-5-mini")
 
     # Build prompt with image information
     prompt = build_extraction_prompt(coffee_bean)

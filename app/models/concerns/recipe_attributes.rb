@@ -17,4 +17,11 @@ module RecipeAttributes
   def display_name
     name.present? ? name : "Recipe ##{id}"
   end
+
+  def formatted_temperature
+    return nil if water_temperature.blank?
+
+    fahrenheit = (water_temperature * 9.0 / 5.0 + 32).round
+    "#{water_temperature}ºC or #{fahrenheit}ºF"
+  end
 end

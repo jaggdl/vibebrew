@@ -1,10 +1,15 @@
-<h1>New Coffee Bean</h1>
+<div class="flex items-center justify-between">
+  <h1 class="title">New Coffee Bean</h1>
+  <%= link_to '← Back', coffee_beans_path, class: "text-gray-500 hover:text-gray-700" %>
+</div>
 
-<%= form_with model: @coffee_bean, local: true, multipart: true do |form| %>
+<%= form_with model: @coffee_bean, local: true, multipart: true, class: "flex flex-col gap-6" do |form| %>
   <% if @coffee_bean.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@coffee_bean.errors.count, "error") %> prohibited this coffee bean from being saved:</h2>
-      <ul>
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+      <h2 class="text-red-800 font-semibold mb-2">
+        <%= pluralize(@coffee_bean.errors.count, "error") %> prohibited this coffee bean from being saved:
+      </h2>
+      <ul class="list-disc list-inside text-red-700 text-sm">
         <% @coffee_bean.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
@@ -12,15 +17,17 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :images, "Upload Coffee Bean Images" %>
-    <%= form.file_field :images, multiple: true, accept: "image/*", required: true %>
-    <small>Select one or more images of your coffee beans</small>
+  <div class="flex flex-col gap-2" data-controller="image-preview">
+    <%= form.label :images, "Upload Coffee Bean Images", class: "input-label font-medium" %>
+    <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-gray-400 transition-colors">
+      <%= form.file_field :images, multiple: true, accept: "image/*", class: "w-full cursor-pointer",
+          data: { image_preview_target: "input", action: "change->image-preview#select" } %>
+      <p class="text-gray-500 text-sm mt-2">Select one or more images of your coffee beans</p>
+    </div>
+    <div data-image-preview-target="preview" class="grid grid-cols-4 gap-3 mt-2"></div>
   </div>
 
-  <div class="actions">
-    <%= form.submit "Create Coffee Bean" %>
+  <div class="flex gap-3">
+    <%= form.submit "Create Coffee Bean", class: "button" %>
   </div>
 <% end %>
-
-<%= link_to 'Back', coffee_beans_path %>

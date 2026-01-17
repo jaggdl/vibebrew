@@ -1,6 +1,6 @@
 <%= link_to coffee_bean do %>
   <div class="card flex gap-2 overflow-hidden">
-    <%= image_tag coffee_bean.images.first, class: "h-24 w-24 object-cover" %>
+    <%= image_tag coffee_bean.images.first.variant(resize_to_fill: [192, 192]), class: "h-24 w-24 object-cover" %>
 
     <div class="p-2 flex flex-col">
       <div class="flex items-center gap-2">
