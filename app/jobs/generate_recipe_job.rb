@@ -36,13 +36,32 @@ class GenerateRecipeJob < ApplicationJob
   private
 
   def build_aeropress_prompt(coffee_bean, recipe)
-    <<~PROMPT
+    base_prompt = <<~PROMPT
       I need you to create a detailed AeroPress brewing recipe for the following coffee:
 
       #{build_coffee_info_section(coffee_bean)}
+    PROMPT
 
-      User's brewing preferences/requirements:
-      #{recipe.prompt}
+    if recipe.source_recipe.present?
+      base_prompt += <<~ITERATION
+
+        This is an ITERATION of an existing recipe. Here is the original recipe to improve upon:
+        #{build_source_recipe_section(recipe.source_recipe)}
+
+        User's feedback and iteration requirements:
+        #{recipe.prompt}
+
+        Please create an improved version of this recipe based on the user's feedback while maintaining the same general approach unless the feedback suggests otherwise.
+      ITERATION
+    else
+      base_prompt += <<~NEW_RECIPE
+
+        User's brewing preferences/requirements:
+        #{recipe.prompt}
+      NEW_RECIPE
+    end
+
+    base_prompt += <<~INSTRUCTIONS
 
       Please create a comprehensive AeroPress recipe that includes:
       - A descriptive name for the recipe
@@ -57,17 +76,38 @@ class GenerateRecipeJob < ApplicationJob
       Consider the coffee's characteristics (origin, process, tasting notes) and the user's preferences to optimize the recipe.
       Make the recipe practical and achievable for home brewing.
       Each step should include a clear description and time duration where applicable (in seconds). If the step doesn't need to count the time (e.g. setting up the coffee beans), don't add it
-    PROMPT
+    INSTRUCTIONS
+
+    base_prompt
   end
 
   def build_v60_prompt(coffee_bean, recipe)
-    <<~PROMPT
+    base_prompt = <<~PROMPT
       I need you to create a detailed Hario V60 pour-over brewing recipe for the following coffee:
 
       #{build_coffee_info_section(coffee_bean)}
+    PROMPT
 
-      User's brewing preferences/requirements:
-      #{recipe.prompt}
+    if recipe.source_recipe.present?
+      base_prompt += <<~ITERATION
+
+        This is an ITERATION of an existing recipe. Here is the original recipe to improve upon:
+        #{build_source_recipe_section(recipe.source_recipe)}
+
+        User's feedback and iteration requirements:
+        #{recipe.prompt}
+
+        Please create an improved version of this recipe based on the user's feedback while maintaining the same general approach unless the feedback suggests otherwise.
+      ITERATION
+    else
+      base_prompt += <<~NEW_RECIPE
+
+        User's brewing preferences/requirements:
+        #{recipe.prompt}
+      NEW_RECIPE
+    end
+
+    base_prompt += <<~INSTRUCTIONS
 
       Please create a comprehensive V60 recipe that includes:
       - A descriptive name for the recipe
@@ -87,7 +127,9 @@ class GenerateRecipeJob < ApplicationJob
       Consider the coffee's characteristics (origin, process, tasting notes) and the user's preferences to optimize the recipe.
       Make the recipe practical and achievable for home brewing.
       Each step should include a clear description and time duration where applicable (in seconds). If the step doesn't need to count the time (e.g. setting up the coffee beans), don't add it.
-    PROMPT
+    INSTRUCTIONS
+
+    base_prompt
   end
 
   def build_coffee_info_section(coffee_bean)
@@ -106,5 +148,34 @@ class GenerateRecipeJob < ApplicationJob
     else
       info_parts.join("\n")
     end
+  end
+
+  def build_source_recipe_section(source_recipe)
+    parts = []
+
+    parts << "Recipe Name: #{source_recipe.name}" if source_recipe.name.present?
+    parts << "Description: #{source_recipe.description}" if source_recipe.description.present?
+    parts << "Grind Size: #{source_recipe.grind_size}" if source_recipe.grind_size.present?
+    parts << "Coffee Weight: #{source_recipe.coffee_weight}g" if source_recipe.coffee_weight.present?
+    parts << "Water Weight: #{source_recipe.water_weight}g" if source_recipe.water_weight.present?
+    parts << "Water Temperature: #{source_recipe.water_temperature}°C" if source_recipe.water_temperature.present?
+    parts << "Inverted Method: #{source_recipe.inverted_method}" if source_recipe.inverted_method.present?
+
+    if source_recipe.steps.present?
+      steps_text = source_recipe.steps.map.with_index(1) do |step, i|
+        time_info = step["time"].present? ? " (#{step['time']}s)" : ""
+        "  #{i}. #{step['description']}#{time_info}"
+      end.join("\n")
+      parts << "Steps:\n#{steps_text}"
+    end
+
+    if source_recipe.comments.any?
+      comments_text = source_recipe.comments.order(created_at: :asc).map do |comment|
+        "  - #{comment.body}"
+      end.join("\n")
+      parts << "User Comments/Feedback:\n#{comments_text}"
+    end
+
+    parts.join("\n")
   end
 end

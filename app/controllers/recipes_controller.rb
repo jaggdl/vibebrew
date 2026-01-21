@@ -19,6 +19,6 @@ class RecipesController < ApplicationController
   private
 
   def recipe_params
-    params.require(:recipe).permit(:prompt, :recipe_type)
+    params.require(:recipe).permit(:prompt, :recipe_type, :source_recipe_id)
   end
 end

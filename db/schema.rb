@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_21_161220) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_21_164745) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -120,8 +120,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_21_161220) do
     t.text "prompt"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "source_recipe_id"
     t.index ["coffee_bean_id"], name: "index_recipes_on_coffee_bean_id"
     t.index ["recipe_type"], name: "index_recipes_on_recipe_type"
+    t.index ["source_recipe_id"], name: "index_recipes_on_source_recipe_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -163,6 +165,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_21_161220) do
   add_foreign_key "recipe_comments", "recipes"
   add_foreign_key "recipe_comments", "users"
   add_foreign_key "recipes", "coffee_beans"
+  add_foreign_key "recipes", "recipes", column: "source_recipe_id"
   add_foreign_key "sessions", "users"
   add_foreign_key "tool_calls", "messages"
 end

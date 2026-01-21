@@ -3,6 +3,8 @@ class Recipe < ApplicationRecord
 
   TYPES = %w[v60 aeropress].freeze
 
+  belongs_to :source_recipe, class_name: "Recipe", optional: true
+  has_many :iterations, class_name: "Recipe", foreign_key: :source_recipe_id, dependent: :nullify
   has_many :comments, class_name: "RecipeComment", dependent: :destroy
 
   validates :recipe_type, presence: true, inclusion: { in: TYPES }

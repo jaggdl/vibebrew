@@ -4,6 +4,8 @@
   <%= render "recipes/details", recipe: @recipe %>
   <%= render "recipes/steps", recipe: @recipe %>
   <%= render "recipes/comments", recipe: @recipe %>
+  <%= render "recipes/iterations", recipe: @recipe %>
+  <%= render "recipes/iterate_form", recipe: @recipe %>
 <% else %>
   <%= render "recipes/pending", recipe: @recipe %>
 <% end %>

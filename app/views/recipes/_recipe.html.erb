@@ -1,0 +1,11 @@
+<li>
+  <%= link_to recipe_path(recipe), class: "card font-semibold text-lg px-4 py-2 flex justify-between items-center" do %>
+    <span>
+      <%= recipe.display_name %>
+      <% unless recipe.generated? %>
+        <em class="font-normal text-gray-500">(generating...)</em>
+      <% end %>
+    </span>
+    <span class="text-sm font-normal text-gray-500"><%= recipe.brew_method_name %></span>
+  <% end %>
+</li>

@@ -1,0 +1,21 @@
+<div class="mt-8 border-t border-gray-200 pt-8">
+  <h3 class="text-lg font-semibold text-gray-900 mb-4">Iterate on this Recipe</h3>
+  <p class="text-sm text-gray-600 mb-4">Create an improved version of this recipe based on your feedback and comments above.</p>
+
+  <%= form_with url: recipes_path, method: :post, local: true do |form| %>
+    <%= hidden_field_tag :coffee_bean_id, recipe.coffee_bean_id %>
+    <%= hidden_field_tag "recipe[source_recipe_id]", recipe.id %>
+    <%= hidden_field_tag "recipe[recipe_type]", recipe.recipe_type %>
+
+    <div class="flex flex-col mb-4 gap-2">
+      <%= label_tag :prompt, "What would you like to change?", class: "input-label" %>
+      <%= text_area_tag "recipe[prompt]", nil,
+            placeholder: "Describe what you'd like to improve or change about this recipe...",
+            rows: 4,
+            class: "text-input" %>
+    </div>
+    <div>
+      <%= form.submit "Generate Improved Recipe", class: "button" %>
+    </div>
+  <% end %>
+</div>

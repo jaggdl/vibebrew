@@ -1,0 +1,8 @@
+<% if recipe.iterations.any? %>
+  <div class="mt-8">
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">Iterations</h3>
+    <ul class="gap-2 flex flex-col">
+      <%= render recipe.iterations.order(created_at: :desc) %>
+    </ul>
+  </div>
+<% end %>
