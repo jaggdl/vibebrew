@@ -2,35 +2,34 @@ class GenerateRecipeJob < ApplicationJob
   queue_as :default
 
   RECIPE_CONFIGS = {
-    "AeropressRecipe" => {
+    "aeropress" => {
       schema: AeropressRecipeSchema,
       prompt_builder: :build_aeropress_prompt
     },
-    "V60Recipe" => {
+    "v60" => {
       schema: V60RecipeSchema,
       prompt_builder: :build_v60_prompt
     }
   }.freeze
 
-  def perform(recipe_class_name, recipe_id)
-    recipe_class = recipe_class_name.constantize
-    recipe = recipe_class.find(recipe_id)
-    config = RECIPE_CONFIGS[recipe_class_name]
+  def perform(recipe_id)
+    recipe = Recipe.find(recipe_id)
+    config = RECIPE_CONFIGS[recipe.recipe_type]
 
-    raise ArgumentError, "Unknown recipe type: #{recipe_class_name}" unless config
+    raise ArgumentError, "Unknown recipe type: #{recipe.recipe_type}" unless config
 
     coffee_bean = recipe.coffee_bean
     prompt = send(config[:prompt_builder], coffee_bean, recipe)
 
-    chat_record = Chat.create!(model: "gpt-5-mini")
+    chat_record = Chat.create!(model: "gpt-5")
     image_blobs = coffee_bean.images.attached? ? coffee_bean.images.map(&:blob) : []
     response = chat_record.with_schema(config[:schema]).ask(prompt, with: image_blobs)
 
     recipe.update!(response.content)
   rescue ActiveRecord::RecordNotFound
-    Rails.logger.warn "#{recipe_class_name} with id #{recipe_id} not found"
+    Rails.logger.warn "Recipe with id #{recipe_id} not found"
   rescue StandardError => e
-    Rails.logger.error "Failed to generate #{recipe_class_name} for #{recipe_id}: #{e.message}"
+    Rails.logger.error "Failed to generate recipe #{recipe_id}: #{e.message}"
     raise
   end
 
@@ -96,9 +95,9 @@ class GenerateRecipeJob < ApplicationJob
 
     info_parts << "Brand: #{coffee_bean.brand}" if coffee_bean.brand.present?
     info_parts << "Origin: #{coffee_bean.origin}" if coffee_bean.origin.present?
-    info_parts << "Variety: #{coffee_bean.variety}" if coffee_bean.variety.present?
-    info_parts << "Process: #{coffee_bean.process}" if coffee_bean.process.present?
-    info_parts << "Tasting Notes: #{coffee_bean.tasting_notes}" if coffee_bean.tasting_notes.present?
+    info_parts << "Variety: #{coffee_bean.variety.join(', ')}" if coffee_bean.variety.present?
+    info_parts << "Process: #{coffee_bean.process.join(', ')}" if coffee_bean.process.present?
+    info_parts << "Tasting Notes: #{coffee_bean.tasting_notes.join(', ')}" if coffee_bean.tasting_notes.present?
     info_parts << "Producer: #{coffee_bean.producer}" if coffee_bean.producer.present?
     info_parts << "Additional Notes: #{coffee_bean.notes}" if coffee_bean.notes.present?
 

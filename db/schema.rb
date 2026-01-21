@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_16_224549) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_21_161220) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,22 +39,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_16_224549) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "aeropress_recipes", force: :cascade do |t|
-    t.integer "coffee_bean_id", null: false
-    t.string "name"
-    t.text "description"
-    t.boolean "inverted_method"
-    t.string "grind_size"
-    t.decimal "coffee_weight", precision: 8, scale: 2
-    t.decimal "water_weight", precision: 8, scale: 2
-    t.decimal "water_temperature", precision: 5, scale: 2
-    t.json "steps"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.text "prompt"
-    t.index ["coffee_bean_id"], name: "index_aeropress_recipes_on_coffee_bean_id"
-  end
-
   create_table "chats", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -66,9 +50,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_16_224549) do
     t.integer "user_id", null: false
     t.string "brand"
     t.string "origin"
-    t.string "variety"
-    t.string "process"
-    t.string "tasting_notes"
+    t.json "variety", default: []
+    t.json "process", default: []
+    t.json "tasting_notes", default: []
     t.string "producer"
     t.text "notes"
     t.datetime "created_at", null: false
@@ -112,6 +96,34 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_16_224549) do
     t.index ["provider"], name: "index_models_on_provider"
   end
 
+  create_table "recipe_comments", force: :cascade do |t|
+    t.integer "recipe_id", null: false
+    t.integer "user_id", null: false
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipe_id"], name: "index_recipe_comments_on_recipe_id"
+    t.index ["user_id"], name: "index_recipe_comments_on_user_id"
+  end
+
+  create_table "recipes", force: :cascade do |t|
+    t.integer "coffee_bean_id", null: false
+    t.string "recipe_type", null: false
+    t.string "name"
+    t.text "description"
+    t.string "grind_size"
+    t.decimal "coffee_weight", precision: 8, scale: 2
+    t.decimal "water_weight", precision: 8, scale: 2
+    t.decimal "water_temperature", precision: 5, scale: 2
+    t.boolean "inverted_method"
+    t.json "steps"
+    t.text "prompt"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["coffee_bean_id"], name: "index_recipes_on_coffee_bean_id"
+    t.index ["recipe_type"], name: "index_recipes_on_recipe_type"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "ip_address"
@@ -141,30 +153,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_16_224549) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
-  create_table "v60_recipes", force: :cascade do |t|
-    t.integer "coffee_bean_id", null: false
-    t.string "name"
-    t.text "description"
-    t.string "grind_size"
-    t.decimal "coffee_weight", precision: 8, scale: 2
-    t.decimal "water_weight", precision: 8, scale: 2
-    t.decimal "water_temperature", precision: 5, scale: 2
-    t.json "steps"
-    t.text "prompt"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["coffee_bean_id"], name: "index_v60_recipes_on_coffee_bean_id"
-  end
-
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "aeropress_recipes", "coffee_beans"
   add_foreign_key "chats", "models"
   add_foreign_key "coffee_beans", "users"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "models"
   add_foreign_key "messages", "tool_calls"
+  add_foreign_key "recipe_comments", "recipes"
+  add_foreign_key "recipe_comments", "users"
+  add_foreign_key "recipes", "coffee_beans"
   add_foreign_key "sessions", "users"
   add_foreign_key "tool_calls", "messages"
-  add_foreign_key "v60_recipes", "coffee_beans"
 end

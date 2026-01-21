@@ -1,25 +1,19 @@
-<div data-controller="recipe-form"
-     data-recipe-form-aeropress-url-value="<%= recipes_aeropress_index_path %>"
-     data-recipe-form-v60-url-value="<%= recipes_v60_index_path %>">
-  <%= form_with url: recipes_aeropress_index_path, method: :post, local: true, data: { recipe_form_target: "form" } do |form| %>
-    <%= hidden_field_tag :coffee_bean_id, coffee_bean.id %>
-    <div class="flex flex-col mb-4 gap-2">
-      <%= label_tag :brew_method, "Brew Method", class: "input-label" %>
-      <%= select_tag :brew_method,
-            options_for_select([["AeroPress", "aeropress"], ["V60", "v60"]]),
-            class: "text-input",
-            data: { action: "change->recipe-form#updateAction" } %>
-    </div>
-    <div class="flex flex-col mb-4 gap-2">
-      <%= label_tag :prompt, "Recipe Requirements", class: "input-label" %>
-      <%= text_area_tag "aeropress_recipe[prompt]", nil,
-            placeholder: "Describe your brewing preferences or specific requirements...",
-            rows: 4,
-            class: "text-input",
-            data: { recipe_form_target: "prompt" } %>
-    </div>
-    <div>
-      <%= form.submit "Generate Recipe", class: "button" %>
-    </div>
-  <% end %>
-</div>
+<%= form_with url: recipes_path, method: :post, local: true do |form| %>
+  <%= hidden_field_tag :coffee_bean_id, coffee_bean.id %>
+  <div class="flex flex-col mb-4 gap-2">
+    <%= label_tag :recipe_type, "Brew Method", class: "input-label" %>
+    <%= select_tag "recipe[recipe_type]",
+          options_for_select([["AeroPress", "aeropress"], ["V60", "v60"]]),
+          class: "text-input" %>
+  </div>
+  <div class="flex flex-col mb-4 gap-2">
+    <%= label_tag :prompt, "Recipe Requirements", class: "input-label" %>
+    <%= text_area_tag "recipe[prompt]", nil,
+          placeholder: "Describe your brewing preferences or specific requirements...",
+          rows: 4,
+          class: "text-input" %>
+  </div>
+  <div>
+    <%= form.submit "Generate Recipe", class: "button" %>
+  </div>
+<% end %>

@@ -1,0 +1,2 @@
+<%= turbo_stream.prepend "recipe_comments", @comment %>
+<%= turbo_stream.replace "new_recipe_comment_form", partial: "recipe_comments/form", locals: { recipe: @recipe } %>

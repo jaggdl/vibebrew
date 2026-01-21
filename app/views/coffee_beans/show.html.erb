@@ -24,19 +24,31 @@
   <% if @coffee_bean.variety.present? %>
     <div class="flex px-4 py-3 bg-white">
       <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Variety</div>
-      <div class="flex-1 text-gray-700"><%= @coffee_bean.variety %></div>
+      <div class="flex-1 text-gray-700 flex flex-wrap gap-1">
+        <% @coffee_bean.variety.each do |v| %>
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800"><%= v %></span>
+        <% end %>
+      </div>
     </div>
   <% end %>
   <% if @coffee_bean.process.present? %>
     <div class="flex px-4 py-3 bg-white">
       <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Process</div>
-      <div class="flex-1 text-gray-700"><%= @coffee_bean.process %></div>
+      <div class="flex-1 text-gray-700 flex flex-wrap gap-1">
+        <% @coffee_bean.process.each do |p| %>
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800"><%= p %></span>
+        <% end %>
+      </div>
     </div>
   <% end %>
   <% if @coffee_bean.tasting_notes.present? %>
     <div class="flex px-4 py-3 bg-white">
       <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Tasting Notes</div>
-      <div class="flex-1 text-gray-700"><%= @coffee_bean.tasting_notes %></div>
+      <div class="flex-1 text-gray-700 flex flex-wrap gap-1">
+        <% @coffee_bean.tasting_notes.each do |note| %>
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"><%= note %></span>
+        <% end %>
+      </div>
     </div>
   <% end %>
   <% if @coffee_bean.producer.present? %>
@@ -59,5 +71,9 @@
 <div>
   <h2 class="font-bold text-xl">Generate Recipe</h2>
   <%= render "recipes/form", coffee_bean: @coffee_bean %>
+</div>
+
+<div class="mt-8">
+  <%= button_to "Delete Coffee Bean", @coffee_bean, method: :delete, data: { turbo_confirm: "Are you sure you want to delete this coffee bean?" }, class: "px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700" %>
 </div>
 

@@ -1,0 +1,7 @@
+<div id="<%= dom_id(recipe_comment) %>" class="bg-white border border-gray-200 rounded-lg p-4">
+  <div class="flex items-center justify-between mb-2">
+    <span class="font-medium text-gray-900"><%= recipe_comment.user.email_address %></span>
+    <span class="text-sm text-gray-500"><%= time_ago_in_words(recipe_comment.created_at) %> ago</span>
+  </div>
+  <p class="text-gray-700"><%= recipe_comment.body %></p>
+</div>

@@ -1,0 +1,9 @@
+<div class="mt-8">
+  <h3 class="text-lg font-semibold text-gray-900 mb-4">Comments</h3>
+
+  <div id="recipe_comments" class="space-y-4 mb-6">
+    <%= render recipe.comments.order(created_at: :desc) %>
+  </div>
+
+  <%= render "recipe_comments/form", recipe: recipe %>
+</div>

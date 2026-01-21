@@ -7,12 +7,12 @@
         <h3 class="font-semibold text-xl">
           <%= coffee_bean.brand.present? ? coffee_bean.brand : "Untitled Coffee Bean" %>
         </h3>
-        <span class="badge">
-          <%= coffee_bean.process %>
-        </span>
+        <% coffee_bean.process.each do |p| %>
+          <span class="badge"><%= p %></span>
+        <% end %>
       </div>
       <span class="text-gray-800">
-        <%= coffee_bean.variety %>
+        <%= coffee_bean.variety.join(", ") %>
       </span>
       <span class="text-gray-800">
         <%= coffee_bean.origin %>

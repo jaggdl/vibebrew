@@ -1,0 +1,9 @@
+<% if @recipe.generated? %>
+  <%= render "recipes/header", recipe: @recipe %>
+  <%= render "coffee_beans/coffee_bean", coffee_bean: @coffee_bean %>
+  <%= render "recipes/details", recipe: @recipe %>
+  <%= render "recipes/steps", recipe: @recipe %>
+  <%= render "recipes/comments", recipe: @recipe %>
+<% else %>
+  <%= render "recipes/pending", recipe: @recipe %>
+<% end %>

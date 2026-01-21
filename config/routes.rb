@@ -15,10 +15,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "coffee_beans#index"
 
-  resources :coffee_beans, only: [ :index, :show, :new, :create, :edit, :update ]
-
-  namespace :recipes do
-    resources :aeropress, only: [ :create, :show ], controller: "aeropress"
-    resources :v60, only: [ :create, :show ], controller: "v60"
+  resources :coffee_beans, only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
+  resources :recipes, only: [ :create, :show ] do
+    resources :recipe_comments, only: [ :create ]
   end
 end

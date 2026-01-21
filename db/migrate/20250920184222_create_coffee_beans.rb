@@ -4,9 +4,9 @@ class CreateCoffeeBeans < ActiveRecord::Migration[8.0]
       t.references :user, null: false, foreign_key: true
       t.string :brand
       t.string :origin
-      t.string :variety
-      t.string :process
-      t.string :tasting_notes
+      t.json :variety, default: []
+      t.json :process, default: []
+      t.json :tasting_notes, default: []
       t.string :producer
       t.text :notes
 

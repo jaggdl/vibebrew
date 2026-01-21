@@ -36,6 +36,12 @@ class CoffeeBeansController < ApplicationController
     end
   end
 
+  def destroy
+    @coffee_bean = Current.user.coffee_beans.find(params[:id])
+    @coffee_bean.destroy
+    redirect_to coffee_beans_path, notice: "Coffee bean was successfully deleted."
+  end
+
   private
 
   def coffee_bean_params
