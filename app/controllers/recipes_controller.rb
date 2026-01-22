@@ -16,6 +16,13 @@ class RecipesController < ApplicationController
     @coffee_bean = @recipe.coffee_bean
   end
 
+  def destroy
+    @recipe = Recipe.find(params[:id])
+    @coffee_bean = @recipe.coffee_bean
+    @recipe.destroy
+    redirect_to @coffee_bean, notice: "Recipe deleted"
+  end
+
   private
 
   def recipe_params
