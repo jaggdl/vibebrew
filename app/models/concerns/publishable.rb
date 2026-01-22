@@ -2,7 +2,7 @@ module Publishable
   extend ActiveSupport::Concern
 
   included do
-    scope :published, -> { where(published: true) }
+    scope :published, -> { where(published: true).select(&:generated?) }
     scope :unpublished, -> { where(published: false) }
   end
 

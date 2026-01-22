@@ -1,61 +1,9 @@
-<h2 class="text-2xl font-bold text-gray-900"><%= @recipe.name %></h2>
 
-<div class="mt-2 text-gray-600"><%= simple_format(@recipe.description, class: "m-0") %></div>
-
-<div class="mt-6">
-  <%= link_to bean_path(@recipe.coffee_bean.slug), class: "block card p-4 hover:bg-gray-50" do %>
-    <div class="flex items-center gap-4">
-      <% if @recipe.coffee_bean.images.attached? %>
-        <%= image_tag @recipe.coffee_bean.images.first.variant(resize_to_fill: [96, 96]), class: "h-12 w-12 object-cover rounded" %>
-      <% end %>
-      <div>
-        <h3 class="font-semibold"><%= @recipe.coffee_bean.brand %></h3>
-        <span class="text-sm text-gray-600"><%= @recipe.coffee_bean.origin %></span>
-      </div>
-    </div>
-  <% end %>
+<div class="flex items-center gap-2">
+  <span class="italic text-sm">Vibed by </span>
+  <b><%= render @recipe.user %></b>
 </div>
-
-<div class="mt-6 divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
-  <div class="flex px-4 py-3 bg-white">
-    <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Brew Method</div>
-    <div class="flex-1 text-gray-700"><%= @recipe.brew_method_name %></div>
-  </div>
-  <div class="flex px-4 py-3 bg-white">
-    <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Coffee</div>
-    <div class="flex-1 text-gray-700">
-      <span class="font-mono bg-gray-100 px-2 py-0.5 rounded text-sm"><%= @recipe.coffee_weight %>g</span>
-      <span><%= @recipe.grind_size %> grind</span>
-    </div>
-  </div>
-  <div class="flex px-4 py-3 bg-white">
-    <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Water</div>
-    <div class="flex-1 text-gray-700">
-      <span class="font-mono bg-gray-100 px-2 py-0.5 rounded text-sm"><%= @recipe.water_weight %>g</span>
-      <span class=""><%= @recipe.formatted_temperature %></span>
-    </div>
-  </div>
-</div>
-
-<% if @recipe.steps.present? %>
-  <div class="mt-6">
-    <h3 class="text-lg font-semibold text-gray-900 mb-4">Brewing Steps</h3>
-    <div class="divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
-      <% @recipe.steps.each.with_index(1) do |step, index| %>
-        <div class="flex items-center gap-4 px-4 py-3 bg-white hover:bg-gray-50">
-          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center text-sm font-medium">
-            <%= index %>
-          </div>
-          <div class="flex-1 text-gray-700">
-            <%= step['description'] %>
-          </div>
-          <% if step['time'].present? && step['time'] > 0 %>
-            <div class="flex-shrink-0 text-sm text-gray-500 font-mono bg-gray-100 px-2 py-1 rounded">
-              <%= step['time'] %>s
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  </div>
-<% end %>
+<%= render "recipes/header", recipe: @recipe %>
+<%= render "coffee_beans/coffee_bean", coffee_bean: @recipe.coffee_bean %>
+<%= render "recipes/details", recipe: @recipe %>
+<%= render "recipes/steps", recipe: @recipe %>

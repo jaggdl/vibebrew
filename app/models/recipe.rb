@@ -15,6 +15,8 @@ class Recipe < ApplicationRecord
   validates :water_weight, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
   validates :water_temperature, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
 
+  delegate :user, to: :coffee_bean
+
   scope :v60, -> { where(recipe_type: "v60") }
   scope :aeropress, -> { where(recipe_type: "aeropress") }
 

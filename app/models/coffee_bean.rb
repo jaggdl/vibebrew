@@ -20,6 +20,10 @@ class CoffeeBean < ApplicationRecord
     recipes.aeropress
   end
 
+  def published_recipes
+    recipes.published
+  end
+
   private
 
   def has_at_least_one_image
