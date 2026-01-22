@@ -1,0 +1,11 @@
+<%= turbo_frame_tag dom_id(coffee_bean, :loading) do %>
+  <% if coffee_bean.brand.blank? %>
+    <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+      <div class="flex gap-1">
+        <span class="w-2 h-2 bg-white rounded-full animate-bounce" style="animation-delay: 0ms;"></span>
+        <span class="w-2 h-2 bg-white rounded-full animate-bounce" style="animation-delay: 150ms;"></span>
+        <span class="w-2 h-2 bg-white rounded-full animate-bounce" style="animation-delay: 300ms;"></span>
+      </div>
+    </div>
+  <% end %>
+<% end %>
