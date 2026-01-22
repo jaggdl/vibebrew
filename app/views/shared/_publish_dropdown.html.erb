@@ -6,5 +6,9 @@
         {},
         class: "text-sm border border-gray-300 rounded px-2 py-1",
         data: { action: "change->auto-submit#submit" } %>
+    <% if record.published? %>
+      <% public_path = record.is_a?(CoffeeBean) ? bean_path(record.slug) : brew_path(record.slug) %>
+      <%= link_to "View public page", public_path, target: "_blank", class: "text-sm text-blue-600 hover:underline" %>
+    <% end %>
   </div>
 <% end %>

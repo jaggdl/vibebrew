@@ -20,4 +20,9 @@ Rails.application.routes.draw do
   resources :recipes, only: [ :create, :show, :update, :destroy ] do
     resources :recipe_comments, only: [ :create ]
   end
+
+  scope module: :public do
+    resources :beans, only: [ :index, :show ], param: :slug
+    resources :brews, only: [ :show ], param: :slug
+  end
 end

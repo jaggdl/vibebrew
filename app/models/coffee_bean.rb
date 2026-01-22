@@ -1,5 +1,6 @@
 class CoffeeBean < ApplicationRecord
   include Publishable
+  include Sluggable
 
   belongs_to :user
   has_many_attached :images
@@ -23,5 +24,14 @@ class CoffeeBean < ApplicationRecord
 
   def has_at_least_one_image
     errors.add(:images, "must have at least one image attached") unless images.attached?
+  end
+
+  def slug_source
+    parts = [ brand, variety&.first, origin || producer ].compact
+    parts.join(" ") if parts.any?
+  end
+
+  def default_slug_base
+    "coffee-bean"
   end
 end

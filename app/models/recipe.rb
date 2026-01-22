@@ -1,5 +1,6 @@
 class Recipe < ApplicationRecord
   include Publishable
+  include Sluggable
 
   TYPES = %w[v60 aeropress].freeze
 
@@ -46,5 +47,15 @@ class Recipe < ApplicationRecord
 
     fahrenheit = (water_temperature * 9.0 / 5.0 + 32).round
     "#{water_temperature}ºC or #{fahrenheit}ºF"
+  end
+
+  private
+
+  def slug_source
+    name
+  end
+
+  def default_slug_base
+    "#{recipe_type}-recipe"
   end
 end

@@ -1,0 +1,88 @@
+<div class="mb-4">
+  <h1 class="title"><%= @coffee_bean.brand.present? ? @coffee_bean.brand : "Coffee Bean" %></h1>
+</div>
+
+<% if @coffee_bean.images.attached? %>
+  <div class="flex gap-2">
+    <% @coffee_bean.images.each do |image| %>
+      <%= image_tag image.variant(resize_to_fill: [384, 384]), class: "h-48 w-48 object-cover rounded" %>
+    <% end %>
+  </div>
+<% end %>
+
+<div class="mt-6 divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
+  <% if @coffee_bean.brand.present? %>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Brand</div>
+      <div class="flex-1 text-gray-700"><%= @coffee_bean.brand %></div>
+    </div>
+  <% end %>
+  <% if @coffee_bean.origin.present? %>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Origin</div>
+      <div class="flex-1 text-gray-700"><%= @coffee_bean.origin %></div>
+    </div>
+  <% end %>
+  <% if @coffee_bean.variety.present? %>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Variety</div>
+      <div class="flex-1 text-gray-700 flex flex-wrap gap-1">
+        <% @coffee_bean.variety.each do |v| %>
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800"><%= v %></span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <% if @coffee_bean.process.present? %>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Process</div>
+      <div class="flex-1 text-gray-700 flex flex-wrap gap-1">
+        <% @coffee_bean.process.each do |p| %>
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800"><%= p %></span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <% if @coffee_bean.tasting_notes.present? %>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Tasting Notes</div>
+      <div class="flex-1 text-gray-700 flex flex-wrap gap-1">
+        <% @coffee_bean.tasting_notes.each do |note| %>
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"><%= note %></span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <% if @coffee_bean.producer.present? %>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Producer</div>
+      <div class="flex-1 text-gray-700"><%= @coffee_bean.producer %></div>
+    </div>
+  <% end %>
+  <% if @coffee_bean.notes.present? %>
+    <div class="flex px-4 py-3 bg-white">
+      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Notes</div>
+      <div class="flex-1 text-gray-700"><%= simple_format(@coffee_bean.notes, class: "m-0") %></div>
+    </div>
+  <% end %>
+</div>
+
+<% published_recipes = @coffee_bean.recipes.published.select(&:generated?) %>
+<% if published_recipes.any? %>
+  <div class="mt-8">
+    <h2 class="font-bold text-xl mb-4">Recipes</h2>
+    <div class="space-y-2">
+      <% published_recipes.each do |recipe| %>
+        <%= link_to brew_path(recipe.slug), class: "block card p-4 hover:bg-gray-50" do %>
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-semibold"><%= recipe.name %></h3>
+              <span class="text-sm text-gray-600"><%= recipe.brew_method_name %></span>
+            </div>
+            <span class="text-gray-400">&rarr;</span>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

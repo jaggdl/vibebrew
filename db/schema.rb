@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_22_191028) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_22_202126) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -58,6 +58,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_22_191028) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "published", default: false, null: false
+    t.string "slug"
+    t.index ["slug"], name: "index_coffee_beans_on_slug", unique: true
     t.index ["user_id"], name: "index_coffee_beans_on_user_id"
   end
 
@@ -123,8 +125,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_22_191028) do
     t.datetime "updated_at", null: false
     t.integer "source_recipe_id"
     t.boolean "published", default: false, null: false
+    t.string "slug"
     t.index ["coffee_bean_id"], name: "index_recipes_on_coffee_bean_id"
     t.index ["recipe_type"], name: "index_recipes_on_recipe_type"
+    t.index ["slug"], name: "index_recipes_on_slug", unique: true
     t.index ["source_recipe_id"], name: "index_recipes_on_source_recipe_id"
   end
 
