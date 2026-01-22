@@ -1,4 +1,6 @@
 class CoffeeBean < ApplicationRecord
+  include Publishable
+
   belongs_to :user
   has_many_attached :images
   has_many :recipes, dependent: :destroy

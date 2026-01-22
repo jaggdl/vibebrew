@@ -1,4 +1,6 @@
 class Recipe < ApplicationRecord
+  include Publishable
+
   TYPES = %w[v60 aeropress].freeze
 
   belongs_to :coffee_bean

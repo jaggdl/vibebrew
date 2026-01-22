@@ -1,0 +1,10 @@
+<%= form_with model: record, data: { controller: "auto-submit" } do |f| %>
+  <div class="flex items-center gap-2">
+    <label class="text-sm text-gray-600">Status:</label>
+    <%= f.select :published,
+        [["Private", false], ["Published", true]],
+        {},
+        class: "text-sm border border-gray-300 rounded px-2 py-1",
+        data: { action: "change->auto-submit#submit" } %>
+  </div>
+<% end %>

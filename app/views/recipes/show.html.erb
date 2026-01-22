@@ -1,5 +1,9 @@
 <%= turbo_stream_from @recipe %>
 
+<div class="mb-4">
+  <%= render "shared/publish_dropdown", record: @recipe %>
+</div>
+
 <div id="<%= dom_id(@recipe, :content) %>">
   <%= render "recipes/show_content", recipe: @recipe %>
 </div>

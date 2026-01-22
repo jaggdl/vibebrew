@@ -16,6 +16,16 @@ class RecipesController < ApplicationController
     @coffee_bean = @recipe.coffee_bean
   end
 
+  def update
+    @recipe = Recipe.find(params[:id])
+
+    if @recipe.update(recipe_update_params)
+      redirect_to @recipe, notice: "Recipe updated"
+    else
+      redirect_to @recipe, alert: "Failed to update recipe"
+    end
+  end
+
   def destroy
     @recipe = Recipe.find(params[:id])
     @coffee_bean = @recipe.coffee_bean
@@ -27,5 +37,9 @@ class RecipesController < ApplicationController
 
   def recipe_params
     params.require(:recipe).permit(:prompt, :recipe_type, :source_recipe_id)
+  end
+
+  def recipe_update_params
+    params.require(:recipe).permit(:published)
   end
 end

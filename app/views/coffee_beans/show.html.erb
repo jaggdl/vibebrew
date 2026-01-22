@@ -1,6 +1,9 @@
 <%= turbo_stream_from @coffee_bean %>
 
-<h1 class="title"><%= @coffee_bean.brand.present? ? @coffee_bean.brand : "Coffee Bean ##{@coffee_bean.id}" %></h1>
+<div class="flex items-center justify-between mb-4">
+  <h1 class="title"><%= @coffee_bean.brand.present? ? @coffee_bean.brand : "Coffee Bean ##{@coffee_bean.id}" %></h1>
+  <%= render "shared/publish_dropdown", record: @coffee_bean %>
+</div>
 
 <% if @coffee_bean.images.attached? %>
   <div class="flex gap-2">

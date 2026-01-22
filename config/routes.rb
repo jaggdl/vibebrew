@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   root "coffee_beans#index"
 
   resources :coffee_beans, only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
-  resources :recipes, only: [ :create, :show, :destroy ] do
+  resources :recipes, only: [ :create, :show, :update, :destroy ] do
     resources :recipe_comments, only: [ :create ]
   end
 end
