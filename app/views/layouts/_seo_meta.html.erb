@@ -1,0 +1,5 @@
+<% content_for :title, seo_metadata.title %>
+<% content_for :meta_description, seo_metadata.description %>
+<% content_for :og_title, seo_metadata.og_title %>
+<% content_for :og_type, seo_metadata.og_type %>
+<% content_for :og_image, url_for(seo_metadata.og_image) if seo_metadata.og_image %>

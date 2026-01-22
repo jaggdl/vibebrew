@@ -24,6 +24,10 @@ class CoffeeBean < ApplicationRecord
     recipes.published
   end
 
+  def seo_metadata
+    SeoMetadata::CoffeeBean.new(self)
+  end
+
   private
 
   def has_at_least_one_image

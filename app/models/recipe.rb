@@ -51,6 +51,10 @@ class Recipe < ApplicationRecord
     "#{water_temperature}ºC or #{fahrenheit}ºF"
   end
 
+  def seo_metadata
+    SeoMetadata::Recipe.new(self)
+  end
+
   private
 
   def slug_source
