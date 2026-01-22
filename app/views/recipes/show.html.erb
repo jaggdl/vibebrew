@@ -1,11 +1,5 @@
-<% if @recipe.generated? %>
-  <%= render "recipes/header", recipe: @recipe %>
-  <%= render "coffee_beans/coffee_bean", coffee_bean: @coffee_bean %>
-  <%= render "recipes/details", recipe: @recipe %>
-  <%= render "recipes/steps", recipe: @recipe %>
-  <%= render "recipes/comments", recipe: @recipe %>
-  <%= render "recipes/iterations", recipe: @recipe %>
-  <%= render "recipes/iterate_form", recipe: @recipe %>
-<% else %>
-  <%= render "recipes/pending", recipe: @recipe %>
-<% end %>
+<%= turbo_stream_from @recipe %>
+
+<div id="<%= dom_id(@recipe, :content) %>">
+  <%= render "recipes/show_content", recipe: @recipe %>
+</div>

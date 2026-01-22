@@ -26,6 +26,8 @@ class GenerateRecipeJob < ApplicationJob
     response = chat_record.with_schema(config[:schema]).ask(prompt, with: image_blobs)
 
     recipe.update!(response.content)
+
+    broadcast_updates(recipe)
   rescue ActiveRecord::RecordNotFound
     Rails.logger.warn "Recipe with id #{recipe_id} not found"
   rescue StandardError => e
@@ -34,6 +36,25 @@ class GenerateRecipeJob < ApplicationJob
   end
 
   private
+
+  def broadcast_updates(recipe)
+    # Broadcast to the show page (subscribed to the specific recipe)
+    Turbo::StreamsChannel.broadcast_replace_to(
+      recipe,
+      target: ActionView::RecordIdentifier.dom_id(recipe, :content),
+      partial: "recipes/show_content",
+      locals: { recipe: recipe }
+    )
+
+    # Broadcast to the coffee bean show page (subscribed to the coffee_bean)
+    # This updates the recipe item in the list to remove "(generating...)"
+    Turbo::StreamsChannel.broadcast_replace_to(
+      recipe.coffee_bean,
+      target: ActionView::RecordIdentifier.dom_id(recipe),
+      partial: "recipes/recipe",
+      locals: { recipe: recipe }
+    )
+  end
 
   def build_aeropress_prompt(coffee_bean, recipe)
     base_prompt = <<~PROMPT

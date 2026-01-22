@@ -1,4 +1,4 @@
-<li>
+<li id="<%= dom_id(recipe) %>">
   <%= link_to recipe_path(recipe), class: "card font-semibold text-lg px-4 py-2 flex justify-between items-center" do %>
     <span>
       <%= recipe.display_name %>
