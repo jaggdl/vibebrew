@@ -1,9 +1,24 @@
+<% content_for :title, "#{@recipe.display_name} | #{@recipe.brew_method_name} Recipe | Vibe Coffee" %>
+
+<% meta_parts = [] %>
+<% meta_parts << "A #{@recipe.brew_method_name} recipe for #{@recipe.coffee_bean.display_name}" %>
+<% meta_parts << "#{@recipe.coffee_weight}g coffee" if @recipe.coffee_weight.present? %>
+<% meta_parts << "#{@recipe.water_weight}g water" if @recipe.water_weight.present? %>
+<% meta_parts << "#{@recipe.grind_size} grind" if @recipe.grind_size.present? %>
+<% meta_parts << @recipe.description.truncate(80) if @recipe.description.present? %>
+<% content_for :meta_description, meta_parts.join(". ").truncate(160) %>
+
+<% content_for :og_title, "#{@recipe.display_name} - #{@recipe.brew_method_name}" %>
+<% content_for :og_type, "article" %>
+<% if @recipe.coffee_bean.images.attached? %>
+  <% content_for :og_image, url_for(@recipe.coffee_bean.images.first) %>
+<% end %>
 
 <div class="flex items-center gap-2">
   <span class="italic text-sm">Vibed by </span>
   <b><%= render @recipe.user %></b>
 </div>
 <%= render "recipes/header", recipe: @recipe %>
-<%= render "coffee_beans/coffee_bean", coffee_bean: @recipe.coffee_bean %>
+<%= render @recipe.coffee_bean %>
 <%= render "recipes/details", recipe: @recipe %>
 <%= render "recipes/steps", recipe: @recipe %>

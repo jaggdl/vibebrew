@@ -1,5 +1,6 @@
 module Public
   class BaseController < ApplicationController
+    layout "public"
     allow_unauthenticated_access
 
     private

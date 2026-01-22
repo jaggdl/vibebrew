@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for(:title) || "Vibe Coffee" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <% if content_for?(:meta_description) %>
+      <meta name="description" content="<%= content_for(:meta_description) %>">
+    <% end %>
+
+    <link rel="canonical" href="<%= content_for?(:canonical_url) ? content_for(:canonical_url) : request.original_url %>">
+
+    <%# Open Graph tags %>
+    <meta property="og:site_name" content="Vibe Coffee">
+    <meta property="og:title" content="<%= content_for?(:og_title) ? content_for(:og_title) : (content_for?(:title) ? content_for(:title) : 'Vibe Coffee') %>">
+    <% if content_for?(:meta_description) %>
+      <meta property="og:description" content="<%= content_for(:meta_description) %>">
+    <% end %>
+    <meta property="og:type" content="<%= content_for?(:og_type) ? content_for(:og_type) : 'website' %>">
+    <meta property="og:url" content="<%= content_for?(:canonical_url) ? content_for(:canonical_url) : request.original_url %>">
+    <% if content_for?(:og_image) %>
+      <meta property="og:image" content="<%= content_for(:og_image) %>">
+    <% end %>
+
+    <%# Twitter Card tags %>
+    <meta name="twitter:card" content="<%= content_for?(:og_image) ? 'summary_large_image' : 'summary' %>">
+    <meta name="twitter:title" content="<%= content_for?(:og_title) ? content_for(:og_title) : (content_for?(:title) ? content_for(:title) : 'Vibe Coffee') %>">
+    <% if content_for?(:meta_description) %>
+      <meta name="twitter:description" content="<%= content_for(:meta_description) %>">
+    <% end %>
+    <% if content_for?(:og_image) %>
+      <meta name="twitter:image" content="<%= content_for(:og_image) %>">
+    <% end %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <main class="container mx-auto mt-4 pb-4 px-5 flex flex-col gap-4">
+      <div class="flex items-center justify-between">
+        <%= link_to root_path do %>
+          <h1 class="text-2xl font-bold hover:underline">Vibe Coffee</h1>
+        <% end %>
+      </div>
+      <%= render "layouts/flash" %>
+      <div class="max-w-2xl container mx-auto flex flex-col gap-4">
+        <%= yield %>
+      </div>
+    </main>
+  </body>
+</html>

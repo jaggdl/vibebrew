@@ -1,3 +1,19 @@
+<% content_for :title, "#{@coffee_bean.display_name} | Vibe Coffee" %>
+
+<% meta_parts = [] %>
+<% meta_parts << "from #{@coffee_bean.origin}" if @coffee_bean.origin.present? %>
+<% meta_parts << "by #{@coffee_bean.producer}" if @coffee_bean.producer.present? %>
+<% meta_parts << @coffee_bean.variety.to_sentence if @coffee_bean.variety.present? && @coffee_bean.variety.any? %>
+<% meta_parts << @coffee_bean.process.to_sentence + " process" if @coffee_bean.process.present? && @coffee_bean.process.any? %>
+<% meta_parts << "Tasting notes: #{@coffee_bean.tasting_notes.to_sentence}" if @coffee_bean.tasting_notes.present? && @coffee_bean.tasting_notes.any? %>
+<% content_for :meta_description, "#{@coffee_bean.display_name}#{meta_parts.any? ? ' - ' + meta_parts.join('. ') : ''}".truncate(160) %>
+
+<% content_for :og_title, @coffee_bean.display_name %>
+<% content_for :og_type, "product" %>
+<% if @coffee_bean.images.attached? %>
+  <% content_for :og_image, url_for(@coffee_bean.images.first) %>
+<% end %>
+
 <div class="mb-4">
   <h1 class="title"><%= @coffee_bean.display_name %></h1>
 </div>
