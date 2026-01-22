@@ -1,6 +1,15 @@
 <div id="<%= dom_id(recipe_comment) %>" class="bg-white border border-gray-200 rounded-lg p-4">
   <div class="flex items-center justify-between mb-2">
-    <span class="font-medium text-gray-900"><%= recipe_comment.user.email_address %></span>
+    <div class="flex items-center gap-3">
+      <% if recipe_comment.user.avatar.attached? %>
+        <%= image_tag recipe_comment.user.avatar.variant(resize_to_fill: [64, 64]), class: "w-8 h-8 rounded-full object-cover" %>
+      <% else %>
+        <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm font-medium">
+          <%= recipe_comment.user.name.first.upcase %>
+        </div>
+      <% end %>
+      <span class="font-medium text-gray-900"><%= recipe_comment.user.name %></span>
+    </div>
     <span class="text-sm text-gray-500"><%= time_ago_in_words(recipe_comment.created_at) %> ago</span>
   </div>
   <p class="text-gray-700"><%= recipe_comment.body %></p>
