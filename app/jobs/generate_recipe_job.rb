@@ -66,7 +66,6 @@ class GenerateRecipeJob < ApplicationJob
       Please create a comprehensive AeroPress recipe that includes:
       - A descriptive name for the recipe
       - Detailed description explaining the approach and expected flavor profile
-      - Whether to use inverted method (true/false)
       - Appropriate grind size (extra fine, fine, medium, coarse, extra coarse)
       - Coffee weight in grams
       - Water weight in grams
@@ -159,7 +158,6 @@ class GenerateRecipeJob < ApplicationJob
     parts << "Coffee Weight: #{source_recipe.coffee_weight}g" if source_recipe.coffee_weight.present?
     parts << "Water Weight: #{source_recipe.water_weight}g" if source_recipe.water_weight.present?
     parts << "Water Temperature: #{source_recipe.water_temperature}°C" if source_recipe.water_temperature.present?
-    parts << "Inverted Method: #{source_recipe.inverted_method}" if source_recipe.inverted_method.present?
 
     if source_recipe.steps.present?
       steps_text = source_recipe.steps.map.with_index(1) do |step, i|

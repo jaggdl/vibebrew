@@ -115,7 +115,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_21_164745) do
     t.decimal "coffee_weight", precision: 8, scale: 2
     t.decimal "water_weight", precision: 8, scale: 2
     t.decimal "water_temperature", precision: 5, scale: 2
-    t.boolean "inverted_method"
     t.json "steps"
     t.text "prompt"
     t.datetime "created_at", null: false

@@ -9,7 +9,6 @@ class CreateRecipes < ActiveRecord::Migration[8.0]
       t.decimal :coffee_weight, precision: 8, scale: 2
       t.decimal :water_weight, precision: 8, scale: 2
       t.decimal :water_temperature, precision: 5, scale: 2
-      t.boolean :inverted_method
       t.json :steps
       t.text :prompt
 

@@ -1,14 +1,4 @@
 <div class="divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
-  <% if recipe.respond_to?(:inverted_method) && recipe.inverted_method.present? %>
-    <div class="flex px-4 py-3 bg-white">
-      <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Inverted Method</div>
-      <div class="flex-1 text-gray-700">
-        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium <%= recipe.inverted_method ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' %>">
-          <%= recipe.inverted_method ? "Yes" : "No" %>
-        </span>
-      </div>
-    </div>
-  <% end %>
   <div class="flex px-4 py-3 bg-white">
     <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Coffee</div>
     <div class="flex-1 text-gray-700">
