@@ -1,6 +1,6 @@
 <%= link_to coffee_bean do %>
   <div class="card flex gap-2 overflow-hidden">
-    <div class="relative h-24 w-24">
+    <div class="relative h-24 w-24 shrink-0">
       <%= render "shared/skeleton_image",
                  image: coffee_bean.images.first,
                  variant_options: { resize_to_fill: [192, 192] } %>
