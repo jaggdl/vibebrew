@@ -14,7 +14,7 @@ class SeoMetadata
   end
 
   def og_title
-    title.sub(/ \| Vibe Coffee$/, "")
+    title.sub(/ \| VibeBrew$/, "")
   end
 
   def og_type

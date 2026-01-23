@@ -1,6 +1,6 @@
 class SeoMetadata::Recipe < SeoMetadata
   def title
-    "#{record.display_name} | #{record.brew_method_name} Recipe | Vibe Coffee"
+    "#{record.display_name} | #{record.brew_method_name} Recipe | VibeBrew"
   end
 
   def description

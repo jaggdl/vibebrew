@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Vibe Coffee" %></title>
+    <title><%= content_for(:title) || "VibeBrew" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -26,7 +26,7 @@
     <main class="container mx-auto mt-4 pb-4 px-5 flex flex-col gap-4">
       <div class="flex items-center justify-between">
         <%= link_to root_path do %>
-          <h1 class="text-2xl font-bold hover:underline">🤙 Vibe Coffee ☕️</h1>
+          <h1 class="text-2xl font-bold hover:underline">VibeBrew</h1>
         <% end %>
         <% if authenticated? %>
           <%= link_to edit_profile_path do %>

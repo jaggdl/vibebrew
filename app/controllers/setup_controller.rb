@@ -12,7 +12,7 @@ class SetupController < ApplicationController
 
     if @user.save
       start_new_session_for @user
-      redirect_to root_path, notice: "Account created successfully. Welcome to VibeCoffee!"
+      redirect_to root_path, notice: "Account created successfully. Welcome to VibeBrew!"
     else
       render :new, status: :unprocessable_entity
     end
