@@ -1,9 +1,9 @@
 <%= link_to bean_path(coffee_bean.slug) do %>
   <div class="card flex gap-2 overflow-hidden">
-    <div class="relative">
-      <%= image_tag coffee_bean.images.first.variant(resize_to_fill: [192, 192]),
-          class: "h-24 w-24 object-cover" %>
-    </div>
+    <%= render "shared/image_with_skeleton",
+               image: coffee_bean.images.first,
+               variant_options: { resize_to_fill: [192, 192] },
+               container_class: "h-24 w-24" %>
 
     <%= render "coffee_beans/coffee_bean_info", coffee_bean: coffee_bean %>
   </div>

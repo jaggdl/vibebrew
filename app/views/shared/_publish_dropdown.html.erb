@@ -2,7 +2,7 @@
   <div class="flex items-center justify-between gap-2">
     <div class="flex items-center gap-2">
       <label class="text-sm text-gray-600 hidden">Status:</label>
-      <%= lucide_icon(record.published? ? 'eye' : 'eye-off') %>
+      <%= lucide_icon(record.published? ? 'eye' : 'lock') %>
       <%= f.select :published,
           [["Private", false], ["Published", true]],
           {},

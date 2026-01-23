@@ -1,0 +1,4 @@
+<% image_options = local_assigns[:image_options] || {} %>
+<div class="absolute inset-0 bg-gray-200 animate-pulse rounded"></div>
+<%= image_tag image.variant(variant_options),
+              **{ class: "relative w-full h-full object-cover #{local_assigns[:image_class]}" }.merge(image_options) %>

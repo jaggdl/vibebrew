@@ -1,0 +1,8 @@
+<% container_class ||= "" %>
+<div class="relative <%= container_class %>">
+  <%= render "shared/skeleton_image",
+             image: image,
+             variant_options: variant_options,
+             image_class: local_assigns[:image_class],
+             image_options: local_assigns[:image_options] %>
+</div>
