@@ -9,7 +9,14 @@ class CoffeeBean < ApplicationRecord
   validate :has_at_least_one_image, on: :create
 
   def display_name
-    brand.present? ? brand : "Coffee Bean ##{id}"
+    parts = []
+
+    parts << "#{brand}:" if brand.present?
+    parts << display_variety if variety.any?
+    parts << "(#{display_process})" if process.any?
+    parts << "- #{origin || producer}" if origin.present? || producer.present?
+
+    parts.any? ? parts.join(" ") : "Coffee Bean ##{id}"
   end
 
   def generated?
@@ -32,6 +39,14 @@ class CoffeeBean < ApplicationRecord
     SeoMetadata::CoffeeBean.new(self)
   end
 
+  def display_variety
+    oxford_comma(variety || [])
+  end
+
+  def display_process
+    oxford_comma(process || [])
+  end
+
   private
 
   def has_at_least_one_image
@@ -39,11 +54,21 @@ class CoffeeBean < ApplicationRecord
   end
 
   def slug_source
-    parts = [ brand, variety&.first, origin || producer ].compact
-    parts.join(" ") if parts.any?
+    display_name
   end
 
   def default_slug_base
     "coffee-bean"
+  end
+
+  def oxford_comma(list)
+    return "" if list.blank?
+
+    case list.size
+    when 1 then list.first
+    when 2 then "#{list.first} and #{list.second}"
+    else
+      "#{list[0..-2].join(', ')} and #{list.last}"
+    end
   end
 end
