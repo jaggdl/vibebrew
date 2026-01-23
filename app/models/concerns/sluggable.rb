@@ -6,6 +6,13 @@ module Sluggable
     validates :slug, presence: true, uniqueness: true
   end
 
+  def regenerate_slug!
+    return unless slug_source.present?
+
+    new_slug = "#{parameterize(slug_source)}-#{SecureRandom.hex(2)}"
+    update!(slug: new_slug)
+  end
+
   private
 
   def generate_slug

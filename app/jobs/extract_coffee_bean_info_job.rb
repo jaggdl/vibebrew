@@ -14,6 +14,7 @@ class ExtractCoffeeBeanInfoJob < ApplicationJob
     response = chat_record.with_schema(CoffeeBeansSchema).ask(prompt, with: image_blobs)
 
     coffee_bean.update!(response.content)
+    coffee_bean.regenerate_slug!
 
     broadcast_updates(coffee_bean)
   rescue ActiveRecord::RecordNotFound
@@ -26,29 +27,8 @@ class ExtractCoffeeBeanInfoJob < ApplicationJob
   private
 
   def broadcast_updates(coffee_bean)
-    # Broadcast to the show page (subscribed to the specific coffee_bean)
-    Turbo::StreamsChannel.broadcast_replace_to(
-      coffee_bean,
-      target: ActionView::RecordIdentifier.dom_id(coffee_bean, :details),
-      partial: "coffee_beans/details",
-      locals: { coffee_bean: coffee_bean }
-    )
-
-    # Broadcast to the index page (subscribed to "coffee_beans")
-    Turbo::StreamsChannel.broadcast_replace_to(
-      "coffee_beans",
-      target: ActionView::RecordIdentifier.dom_id(coffee_bean, :info),
-      partial: "coffee_beans/coffee_bean_info",
-      locals: { coffee_bean: coffee_bean }
-    )
-
-    # Remove the loading overlay on the index page
-    Turbo::StreamsChannel.broadcast_replace_to(
-      "coffee_beans",
-      target: ActionView::RecordIdentifier.dom_id(coffee_bean, :loading),
-      partial: "coffee_beans/coffee_bean_loading",
-      locals: { coffee_bean: coffee_bean }
-    )
+    Turbo::StreamsChannel.broadcast_refresh_to(coffee_bean)
+    Turbo::StreamsChannel.broadcast_refresh_to("coffee_beans")
   end
 
   def build_extraction_prompt(coffee_bean)

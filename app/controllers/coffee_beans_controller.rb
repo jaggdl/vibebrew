@@ -16,7 +16,7 @@ class CoffeeBeansController < ApplicationController
 
     if @coffee_bean.save
       ExtractCoffeeBeanInfoJob.perform_later(@coffee_bean.id)
-      redirect_to @coffee_bean, notice: "Coffee bean was successfully created."
+      redirect_to coffee_beans_path, notice: "Coffee bean was successfully created."
     else
       render :new, status: :unprocessable_entity
     end

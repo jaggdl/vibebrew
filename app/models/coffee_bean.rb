@@ -12,6 +12,10 @@ class CoffeeBean < ApplicationRecord
     brand.present? ? brand : "Coffee Bean ##{id}"
   end
 
+  def generated?
+    brand.present?
+  end
+
   def v60_recipes
     recipes.v60
   end

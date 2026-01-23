@@ -5,7 +5,7 @@ class RecipesController < ApplicationController
 
     if @recipe.save
       GenerateRecipeJob.perform_later(@recipe.id)
-      redirect_to recipe_path(@recipe)
+      redirect_to @coffee_bean, notice: "Creating recipe..."
     else
       redirect_to @coffee_bean, alert: "Failed to create recipe"
     end
