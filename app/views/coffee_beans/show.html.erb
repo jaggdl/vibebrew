@@ -1,10 +1,11 @@
 <%= turbo_stream_from @coffee_bean %>
 
+<% if @coffee_bean.generated? %>
+  <%= render "shared/publish_dropdown", record: @coffee_bean %>
+<% end %>
+
 <div class="flex items-center justify-between mb-4">
   <h1 class="title"><%= @coffee_bean.display_name %></h1>
-  <% if @coffee_bean.generated? %>
-    <%= render "shared/publish_dropdown", record: @coffee_bean %>
-  <% end %>
 </div>
 
 <% if @coffee_bean.images.attached? %>

@@ -1,6 +1,7 @@
 <%= form_with model: record, data: { controller: "auto-submit" } do |f| %>
   <div class="flex items-center gap-2">
-    <label class="text-sm text-gray-600">Status:</label>
+    <label class="text-sm text-gray-600 hidden">Status:</label>
+    <%= lucide_icon(record.published? ? 'eye' : 'eye-off') %>
     <%= f.select :published,
         [["Private", false], ["Published", true]],
         {},
@@ -8,7 +9,10 @@
         data: { action: "change->auto-submit#submit" } %>
     <% if record.published? %>
       <% public_path = record.is_a?(CoffeeBean) ? bean_path(record.slug) : brew_path(record.slug) %>
-      <%= link_to "View public page", public_path, target: "_blank", class: "text-sm text-blue-600 hover:underline" %>
+      <%= link_to public_path, target: "_blank", class: "text-sm text-blue-600 hover:underline flex gap-1" do %>
+        <span>Public page </span>
+        <%= lucide_icon('square-arrow-out-up-right', class: 'h-4, w-4') %>
+      <% end %>
     <% end %>
   </div>
 <% end %>

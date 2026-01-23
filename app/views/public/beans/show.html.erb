@@ -1,8 +1,11 @@
 <%= render "layouts/seo_meta", seo_metadata: @coffee_bean.seo_metadata %>
 
-<div class="flex items-center gap-2">
-  <span class="italic text-sm">Brewed by </span>
-  <b><%= render @coffee_bean.user %></b>
+<div class="flex items-center justify-between">
+  <div class="flex items-center gap-2">
+    <span class="italic text-sm">Brewed by </span>
+    <b><%= render @coffee_bean.user %></b>
+  </div>
+  <%= render "shared/share_button" %>
 </div>
 
 <div class="mb-4">

@@ -1,0 +1,9 @@
+<div data-controller="share" data-share-url-value="<%= request.original_url %>" class="cursor-pointer">
+  <button type="button"
+          data-action="share#share"
+          data-share-target="button"
+          class="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 transition-colors">
+    <span data-share-target="icon"><%= lucide_icon('share-2', class: 'h-4 w-4') %></span>
+    <span data-share-target="text">Share</span>
+  </button>
+</div>

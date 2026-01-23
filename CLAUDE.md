@@ -78,10 +78,13 @@ VibeBrew is a Rails 8.0 application for coffee enthusiasts to catalog and manage
 - PWA support available (manifest and service worker views)
 - Uses modern Rails conventions throughout
 
+### Views
+- Use Lucide icons like this: `<%= lucide_icon('square-arrow-out-up-right', class: 'h-4, w-4') %>`
+
 ## Development Workflow
 
 When making changes:
-1. Run tests with `bin/rails test`
+1. NEVER run tests with `bin/rails test`
 2. Check code style with `bundle exec rubocop`
 3. Run security scan with `bundle exec brakeman`
 4. Test in browser if UI changes
