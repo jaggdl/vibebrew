@@ -3,7 +3,7 @@
     <% images.each do |image| %>
       <%= link_to rails_blob_path(image, disposition: "inline"),
                   data: { pswp_width: image.metadata[:width] || 1200, pswp_height: image.metadata[:height] || 1200 } do %>
-        <%= image_tag image.variant(resize_to_fill: [384, 384]), class: "h-48 w-48 object-cover rounded cursor-zoom-in" %>
+        <%= image_tag image.variant(resize_to_fill: [384, 384]), class: "h-48 w-48 object-cover rounded cursor-zoom-in", fetchpriority: "high" %>
       <% end %>
     <% end %>
   </div>
