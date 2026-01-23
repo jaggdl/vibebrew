@@ -22,6 +22,12 @@ class SeoMetadata::Recipe < SeoMetadata
   end
 
   def og_image
-    record.coffee_bean.images.first if record.coffee_bean.images.attached?
+    return nil unless record.coffee_bean.images.attached?
+
+    variant = record.coffee_bean.images.first.variant(resize_to_fill: [ 1200, 630 ])
+    Rails.application.routes.url_helpers.rails_representation_url(
+      variant,
+      host: ENV.fetch("BASE_URL", "http://localhost:3000")
+    )
   end
 end
