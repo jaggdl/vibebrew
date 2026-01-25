@@ -1,7 +1,17 @@
 <div id="<%= dom_id(recipe_comment) %>" class="bg-white border border-gray-200 rounded-lg p-4">
   <div class="flex items-center justify-between mb-2">
     <%= render recipe_comment.user %>
-    <span class="text-sm text-gray-500"><%= time_ago_in_words(recipe_comment.created_at) %> ago</span>
+    <div class="flex items-center gap-2">
+      <% if Current.user.present? %>
+        <%= button_to toggle_publish_recipe_comment_path(recipe_comment),
+              method: :patch,
+              class: "p-1 rounded hover:bg-gray-100 #{recipe_comment.published? ? 'text-green-600' : 'text-gray-400'}",
+              title: recipe_comment.published? ? "Unpublish" : "Publish" do %>
+          <%= lucide_icon(recipe_comment.published? ? 'eye' : 'eye-off', class: 'h-4 w-4') %>
+        <% end %>
+      <% end %>
+      <span class="text-sm text-gray-500"><%= time_ago_in_words(recipe_comment.created_at) %> ago</span>
+    </div>
   </div>
   <p class="text-gray-700"><%= recipe_comment.body %></p>
 </div>

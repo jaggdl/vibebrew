@@ -1,9 +1,16 @@
 <div class="mt-8">
   <h3 class="text-lg font-semibold text-gray-900 mb-4">Comments</h3>
 
+  <% comments = local_assigns.fetch(:comments) { recipe.comments.order(created_at: :desc) } %>
   <div id="recipe_comments" class="space-y-4 mb-6">
-    <%= render recipe.comments.order(created_at: :desc) %>
+    <% if comments.any? %>
+      <%= render partial: "recipe_comments/recipe_comment", collection: comments %>
+    <% else %>
+      <p class="text-gray-500 text-sm">No comments yet.</p>
+    <% end %>
   </div>
 
-  <%= render "recipe_comments/form", recipe: recipe %>
+  <% if local_assigns.fetch(:show_form, true) %>
+    <%= render "recipe_comments/form", recipe: recipe %>
+  <% end %>
 </div>

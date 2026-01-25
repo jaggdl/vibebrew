@@ -11,3 +11,4 @@
 <%= render @recipe.coffee_bean %>
 <%= render "recipes/details", recipe: @recipe %>
 <%= render "recipes/steps", recipe: @recipe %>
+<%= render "recipes/comments", recipe: @recipe, comments: @recipe.comments.published.sort_by(&:created_at).reverse, show_form: false %>

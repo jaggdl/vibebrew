@@ -14,6 +14,17 @@ class RecipeCommentsController < ApplicationController
     end
   end
 
+  def toggle_publish
+    @comment = RecipeComment.find(params[:id])
+
+    @comment.toggle_publish
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace(@comment) }
+      format.html { redirect_back fallback_location: recipe_path(@comment.recipe) }
+    end
+  end
+
   private
 
   def comment_params

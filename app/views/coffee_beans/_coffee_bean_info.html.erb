@@ -1,11 +1,13 @@
-<%= turbo_frame_tag dom_id(coffee_bean, :info), class: "min-w-0 overflow-hidden" do %>
-  <div class="p-2 flex flex-col">
+<%= turbo_frame_tag dom_id(coffee_bean, :info), class: "min-w-0 overflow-hidden w-full" do %>
+  <div class="p-2 flex flex-col w-full">
     <% if coffee_bean.brand.present? %>
-      <div class="flex items-center gap-2 min-w-0">
+      <div class="flex items-center justify-between min-w-0 w-full">
         <h3 class="font-semibold text-xl truncate"><%= coffee_bean.brand %></h3>
-        <% coffee_bean.process.each do |p| %>
-          <span class="badge shrink-0"><%= p %></span>
-        <% end %>
+        <div class="flex items-center gap-2 shrink-0">
+          <% coffee_bean.process.each do |p| %>
+            <span class="badge"><%= p %></span>
+          <% end %>
+        </div>
       </div>
       <span class="text-gray-800 truncate"><%= coffee_bean.variety.join(", ") %></span>
       <span class="text-gray-800 truncate"><%= coffee_bean.origin %></span>

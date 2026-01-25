@@ -1,10 +1,20 @@
-<% flash.each do |type, message| %>
-  <% css_class = case type.to_sym
-    when :notice, :success then "bg-green-100 border-green-400 text-green-700"
-    when :alert, :error then "bg-red-100 border-red-400 text-red-700"
-    else "bg-blue-100 border-blue-400 text-blue-700"
-  end %>
-  <div class="border px-4 py-3 rounded <%= css_class %>" role="alert">
-    <span><%= message %></span>
+<% if flash.any? %>
+  <div class="fixed bottom-4 md:bottom-auto md:top-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-md space-y-2">
+    <% flash.each do |type, message| %>
+      <% css_class, progress_class = case type.to_sym
+        when :notice, :success then ["bg-green-100 border-green-400 text-green-700", "bg-green-400"]
+        when :alert, :error then ["bg-red-100 border-red-400 text-red-700", "bg-red-400"]
+        else ["bg-blue-100 border-blue-400 text-blue-700", "bg-blue-400"]
+      end %>
+      <div class="border rounded shadow-lg overflow-hidden <%= css_class %>" role="alert" data-controller="flash" data-flash-auto-close-value="5000">
+        <div class="flex items-center justify-between gap-2 px-4 py-3">
+          <span><%= message %></span>
+          <button type="button" data-action="flash#close" class="shrink-0 opacity-70 hover:opacity-100">
+            <%= lucide_icon("x", class: "h-4 w-4") %>
+          </button>
+        </div>
+        <div class="h-0.5 w-full <%= progress_class %>" data-flash-target="progress"></div>
+      </div>
+    <% end %>
   </div>
 <% end %>
