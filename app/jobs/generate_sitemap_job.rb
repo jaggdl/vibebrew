@@ -10,7 +10,7 @@ class GenerateSitemapJob < ApplicationJob
   private
 
   def generate_sitemap_xml
-    host = Rails.application.routes.default_url_options[:host] || "https://vibebrew.coffee"
+    host = ENV.fetch("BASE_URL")
 
     xml = Builder::XmlMarkup.new(indent: 2)
     xml.instruct! :xml, version: "1.0", encoding: "UTF-8"
