@@ -2,7 +2,7 @@ class GenerateSitemapJob < ApplicationJob
   queue_as :default
 
   def perform
-    sitemap_path = Rails.root.join("public", "sitemap.xml")
+    sitemap_path = Rails.root.join("storage", "sitemap.xml")
     File.write(sitemap_path, generate_sitemap_xml)
     Rails.logger.info "Sitemap generated at #{sitemap_path}"
   end
