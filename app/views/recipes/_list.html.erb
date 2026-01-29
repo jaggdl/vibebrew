@@ -1,7 +1,9 @@
 <% if recipes.any? %>
   <div>
-    <h2 class="font-bold text-xl"><%= title %></h2>
-    <ul class="gap-2 flex flex-col">
+    <% if title.present? %>
+      <h2 class="font-bold text-xl"><%= title %></h2>
+    <% end %>
+    <ul class="flex flex-col">
       <%= render recipes %>
     </ul>
   </div>
