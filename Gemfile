@@ -71,3 +71,5 @@ gem "ruby_llm", "~> 1.8"
 gem "ruby_llm-schema", "~> 0.2.1"
 
 gem "lucide-rails", "~> 0.7.3"
+
+gem "builder"

@@ -410,6 +410,7 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap
   brakeman
+  builder
   capybara
   debug
   image_processing (~> 1.2)
