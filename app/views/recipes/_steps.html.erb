@@ -1,9 +1,16 @@
 <% if recipe.steps.present? %>
-  <div class="mt-6">
+  <% steps_json = recipe.steps.map { |s| { description: s['description'], time: s['time'].to_i } }.to_json %>
+  <% first_timed_step = recipe.steps.find { |s| s['time'].to_i > 0 } %>
+
+  <div class="mt-6" data-controller="step-timer" data-step-timer-steps-value="<%= steps_json %>">
     <h3 class="text-lg font-semibold text-gray-900 mb-4">Brewing Steps</h3>
     <div class="divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
       <% recipe.steps.each.with_index(1) do |step, index| %>
-        <div class="flex items-center gap-4 px-4 py-3 bg-white hover:bg-gray-50">
+        <% has_time = step['time'].to_i > 0 %>
+        <div class="flex items-center gap-4 px-4 py-3 bg-white transition-all duration-200 data-[active]:bg-amber-50 data-[active]:ring-2 data-[active]:ring-amber-500 data-[active]:ring-inset <%= 'hover:bg-gray-50 cursor-pointer' if has_time %>"
+             data-step-timer-target="stepRow"
+             <%= "data-action=click->step-timer#goToStep" if has_time %>
+             data-step-index="<%= index - 1 %>">
           <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center text-sm font-medium">
             <%= index %>
           </div>
@@ -18,5 +25,68 @@
         </div>
       <% end %>
     </div>
+
+    <!-- Fixed Timer Widget -->
+    <% if first_timed_step %>
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
+      <!-- Progress Bar -->
+      <div class="h-1 bg-gray-200">
+        <div class="h-full bg-amber-500 transition-all duration-300 ease-linear"
+             data-step-timer-target="progressBar"
+             style="width: 0%"></div>
+      </div>
+
+      <div class="max-w-4xl mx-auto px-4 py-3">
+        <div class="flex items-center gap-4">
+          <!-- Previous Button -->
+          <button type="button"
+                  class="p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
+                  data-action="click->step-timer#previousStep"
+                  aria-label="Previous step">
+            <%= lucide_icon('skip-back', class: 'w-5 h-5') %>
+          </button>
+
+          <!-- Play/Pause Button -->
+          <button type="button"
+                  class="p-3 rounded-full bg-amber-500 hover:bg-amber-600 text-white transition-colors"
+                  data-action="click->step-timer#toggle"
+                  aria-label="Play or pause timer">
+            <span data-step-timer-target="playIcon">
+              <%= lucide_icon('play', class: 'w-6 h-6') %>
+            </span>
+            <span data-step-timer-target="pauseIcon" class="hidden">
+              <%= lucide_icon('pause', class: 'w-6 h-6') %>
+            </span>
+          </button>
+
+          <!-- Next Button -->
+          <button type="button"
+                  class="p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
+                  data-action="click->step-timer#nextStep"
+                  aria-label="Next step">
+            <%= lucide_icon('skip-forward', class: 'w-5 h-5') %>
+          </button>
+
+          <!-- Current Step Info -->
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-gray-900 truncate" data-step-timer-target="currentStep">
+              <% if first_timed_step %>
+                Step <%= recipe.steps.index(first_timed_step) + 1 %>: <%= first_timed_step['description'] %>
+              <% end %>
+            </p>
+          </div>
+
+          <!-- Timer Display -->
+          <div class="flex-shrink-0 text-lg font-mono font-semibold text-gray-700 bg-gray-100 px-3 py-1 rounded"
+               data-step-timer-target="currentTime">
+            <%= first_timed_step ? "#{first_timed_step['time'].to_i}s" : "" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spacer to prevent content from being hidden behind fixed widget -->
+    <div class="h-20"></div>
+    <% end %>
   </div>
 <% end %>
