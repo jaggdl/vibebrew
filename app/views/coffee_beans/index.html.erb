@@ -12,7 +12,14 @@
       In Rotation
     </h2>
     <div class="grid-custom">
-      <%= render @rotations %>
+      <% @rotations.each do |coffee_bean| %>
+        <div>
+          <%= render coffee_bean %>
+          <div class="border rounded-lg border-gray-200 -mt-4 pt-4 border-t-0">
+            <%= render "recipes/list", recipes: coffee_bean.favorite_recipes, title: nil %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </section>
 <% end %>

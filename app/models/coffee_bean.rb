@@ -46,6 +46,10 @@ class CoffeeBean < ApplicationRecord
     recipes.sort_by { |r| [ favorite_ids.include?(r.id) ? 0 : 1, -r.created_at.to_i ] }
   end
 
+  def favorite_recipes
+    recipes.favorited
+  end
+
   def seo_metadata
     SeoMetadata::CoffeeBean.new(self)
   end

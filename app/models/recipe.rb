@@ -22,6 +22,7 @@ class Recipe < ApplicationRecord
 
   scope :v60, -> { where(recipe_type: "v60") }
   scope :aeropress, -> { where(recipe_type: "aeropress") }
+  scope :favorited, -> { joins(:favorite_recipes).distinct }
 
   def v60?
     recipe_type == "v60"

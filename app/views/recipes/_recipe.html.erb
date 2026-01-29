@@ -1,5 +1,5 @@
-<li id="<%= dom_id(recipe) %>">
-  <%= link_to recipe_path(recipe), class: "text-lg px-4 py-2 flex justify-between items-center" do %>
+<li id="<%= dom_id(recipe) %>" class="border-b-1 last:border-b-0 border-gray-200 hover:bg-gray-100">
+  <%= link_to recipe_path(recipe), class: "text-lg flex justify-between items-center p-2" do %>
     <span class="flex items-center gap-2 min-w-0">
       <% if Current.user&.favorite_recipes_list&.include?(recipe) %>
         <%= lucide_icon('heart', class: 'h-4 w-4 text-red-500 shrink-0') %>

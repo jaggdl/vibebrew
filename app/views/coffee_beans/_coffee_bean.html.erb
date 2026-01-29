@@ -8,6 +8,5 @@
       </div>
       <%= render "coffee_beans/coffee_bean_info", coffee_bean: coffee_bean %>
     <% end %>
-  <%= render "recipes/list", recipes: coffee_bean.all_recipes_for(Current.user).first(3), title: nil %>
 </div>
 
