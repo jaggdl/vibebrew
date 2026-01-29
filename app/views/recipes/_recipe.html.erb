@@ -1,14 +1,14 @@
 <li id="<%= dom_id(recipe) %>">
   <%= link_to recipe_path(recipe), class: "text-lg px-4 py-2 flex justify-between items-center" do %>
-    <span class="flex items-center gap-2">
+    <span class="flex items-center gap-2 min-w-0">
       <% if Current.user&.favorite_recipes_list&.include?(recipe) %>
-        <%= lucide_icon('heart', class: 'h-4 w-4 text-red-500') %>
+        <%= lucide_icon('heart', class: 'h-4 w-4 text-red-500 shrink-0') %>
       <% end %>
-      <%= recipe.display_name %>
+      <span class="truncate"><%= recipe.display_name %></span>
       <% unless recipe.generated? %>
-        <em class="font-normal text-gray-500">(generating...)</em>
+        <em class="font-normal text-gray-500 shrink-0">(generating...)</em>
       <% end %>
     </span>
-    <span class="text-sm font-normal text-gray-500"><%= recipe.brew_method_name %></span>
+    <span class="text-sm font-normal text-gray-500 shrink-0"><%= recipe.brew_method_name %></span>
   <% end %>
 </li>
