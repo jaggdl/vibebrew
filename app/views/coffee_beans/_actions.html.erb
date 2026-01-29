@@ -1,0 +1,15 @@
+<div id="coffee_bean_actions" class="flex items-center gap-2">
+  <%= button_to toggle_favorite_coffee_bean_path(coffee_bean),
+        method: :patch,
+        class: "p-2 rounded hover:bg-gray-100 #{Current.user.favorites.include?(coffee_bean) ? 'text-red-500' : 'text-gray-400'}",
+        title: Current.user.favorites.include?(coffee_bean) ? "Remove from favorites" : "Add to favorites" do %>
+    <%= lucide_icon('heart', class: 'h-5 w-5') %>
+  <% end %>
+
+  <%= button_to toggle_rotation_coffee_bean_path(coffee_bean),
+        method: :patch,
+        class: "p-2 rounded hover:bg-gray-100 #{Current.user.rotations.include?(coffee_bean) ? 'text-green-600' : 'text-gray-400'}",
+        title: Current.user.rotations.include?(coffee_bean) ? "Remove from rotation" : "Add to rotation" do %>
+    <%= lucide_icon('coffee', class: 'h-5 w-5') %>
+  <% end %>
+</div>

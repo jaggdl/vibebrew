@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_25_213141) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_29_194333) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -46,6 +46,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_25_213141) do
     t.index ["model_id"], name: "index_chats_on_model_id"
   end
 
+  create_table "coffee_bean_rotations", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "coffee_bean_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["coffee_bean_id"], name: "index_coffee_bean_rotations_on_coffee_bean_id"
+    t.index ["user_id", "coffee_bean_id"], name: "index_coffee_bean_rotations_on_user_id_and_coffee_bean_id", unique: true
+    t.index ["user_id"], name: "index_coffee_bean_rotations_on_user_id"
+  end
+
   create_table "coffee_beans", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "brand"
@@ -61,6 +71,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_25_213141) do
     t.string "slug"
     t.index ["slug"], name: "index_coffee_beans_on_slug", unique: true
     t.index ["user_id"], name: "index_coffee_beans_on_user_id"
+  end
+
+  create_table "favorite_coffee_beans", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "coffee_bean_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["coffee_bean_id"], name: "index_favorite_coffee_beans_on_coffee_bean_id"
+    t.index ["user_id", "coffee_bean_id"], name: "index_favorite_coffee_beans_on_user_id_and_coffee_bean_id", unique: true
+    t.index ["user_id"], name: "index_favorite_coffee_beans_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -166,7 +186,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_25_213141) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "chats", "models"
+  add_foreign_key "coffee_bean_rotations", "coffee_beans"
+  add_foreign_key "coffee_bean_rotations", "users"
   add_foreign_key "coffee_beans", "users"
+  add_foreign_key "favorite_coffee_beans", "coffee_beans"
+  add_foreign_key "favorite_coffee_beans", "users"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "models"
   add_foreign_key "messages", "tool_calls"

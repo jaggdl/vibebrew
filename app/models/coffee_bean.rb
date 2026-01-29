@@ -6,6 +6,12 @@ class CoffeeBean < ApplicationRecord
   has_many_attached :images
   has_many :recipes, dependent: :destroy
 
+  has_many :favorite_coffee_beans, dependent: :destroy
+  has_many :favorited_by_users, through: :favorite_coffee_beans, source: :user
+
+  has_many :coffee_bean_rotations, dependent: :destroy
+  has_many :in_rotation_for_users, through: :coffee_bean_rotations, source: :user
+
   validate :has_at_least_one_image, on: :create
 
   def display_name

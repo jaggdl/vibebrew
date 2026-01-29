@@ -5,7 +5,38 @@
   <%= link_to '+ Add Coffee Bean', new_coffee_bean_path, class: "button" %>
 </div>
 
-<div class="grid-custom">
-  <%= render @coffee_beans %>
-</div>
+<% if @rotations.any? %>
+  <section class="mt-6">
+    <h2 class="text-lg font-semibold text-gray-700 mb-3 flex items-center gap-2">
+      <%= lucide_icon('coffee', class: 'h-5 w-5 text-green-600') %>
+      In Rotation
+    </h2>
+    <div class="grid-custom">
+      <%= render @rotations %>
+    </div>
+  </section>
+<% end %>
+
+<% if @favorites.any? %>
+  <section class="mt-6">
+    <h2 class="text-lg font-semibold text-gray-700 mb-3 flex items-center gap-2">
+      <%= lucide_icon('heart', class: 'h-5 w-5 text-red-500') %>
+      Favorites
+    </h2>
+    <div class="grid-custom">
+      <%= render @favorites %>
+    </div>
+  </section>
+<% end %>
+
+<% if @others.any? %>
+  <section class="mt-6">
+    <% if @rotations.any? || @favorites.any? %>
+      <h2 class="text-lg font-semibold text-gray-700 mb-3">All Beans</h2>
+    <% end %>
+    <div class="grid-custom">
+      <%= render @others %>
+    </div>
+  </section>
+<% end %>
 

@@ -16,7 +16,12 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "coffee_beans#index"
 
-  resources :coffee_beans, only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
+  resources :coffee_beans, only: [ :index, :show, :new, :create, :edit, :update, :destroy ] do
+    member do
+      patch :toggle_favorite
+      patch :toggle_rotation
+    end
+  end
   resources :recipes, only: [ :create, :show, :update, :destroy ] do
     resources :recipe_comments, only: [ :create ]
   end
