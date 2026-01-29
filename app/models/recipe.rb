@@ -9,6 +9,9 @@ class Recipe < ApplicationRecord
   has_many :iterations, class_name: "Recipe", foreign_key: :source_recipe_id, dependent: :nullify
   has_many :comments, class_name: "RecipeComment", dependent: :destroy
 
+  has_many :favorite_recipes, dependent: :destroy
+  has_many :favorited_by_users, through: :favorite_recipes, source: :user
+
   validates :recipe_type, presence: true, inclusion: { in: TYPES }
   validates :grind_size, inclusion: { in: [ "extra fine", "fine", "medium", "coarse", "extra coarse" ] }, allow_blank: true
   validates :coffee_weight, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true

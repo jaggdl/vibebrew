@@ -33,6 +33,21 @@ class RecipesController < ApplicationController
     redirect_to @coffee_bean, notice: "Recipe deleted"
   end
 
+  def toggle_favorite
+    @recipe = Recipe.find(params[:id])
+
+    if Current.user.favorite_recipes_list.include?(@recipe)
+      Current.user.favorite_recipes_list.delete(@recipe)
+    else
+      Current.user.favorite_recipes_list << @recipe
+    end
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace("recipe_actions", partial: "recipes/actions", locals: { recipe: @recipe }) }
+      format.html { redirect_back fallback_location: @recipe }
+    end
+  end
+
   private
 
   def recipe_params

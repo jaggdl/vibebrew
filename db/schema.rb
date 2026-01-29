@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_29_194333) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_29_195438) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -81,6 +81,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_29_194333) do
     t.index ["coffee_bean_id"], name: "index_favorite_coffee_beans_on_coffee_bean_id"
     t.index ["user_id", "coffee_bean_id"], name: "index_favorite_coffee_beans_on_user_id_and_coffee_bean_id", unique: true
     t.index ["user_id"], name: "index_favorite_coffee_beans_on_user_id"
+  end
+
+  create_table "favorite_recipes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "recipe_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipe_id"], name: "index_favorite_recipes_on_recipe_id"
+    t.index ["user_id", "recipe_id"], name: "index_favorite_recipes_on_user_id_and_recipe_id", unique: true
+    t.index ["user_id"], name: "index_favorite_recipes_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -191,6 +201,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_29_194333) do
   add_foreign_key "coffee_beans", "users"
   add_foreign_key "favorite_coffee_beans", "coffee_beans"
   add_foreign_key "favorite_coffee_beans", "users"
+  add_foreign_key "favorite_recipes", "recipes"
+  add_foreign_key "favorite_recipes", "users"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "models"
   add_foreign_key "messages", "tool_calls"

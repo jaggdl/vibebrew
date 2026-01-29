@@ -24,6 +24,9 @@ Rails.application.routes.draw do
   end
   resources :recipes, only: [ :create, :show, :update, :destroy ] do
     resources :recipe_comments, only: [ :create ]
+    member do
+      patch :toggle_favorite
+    end
   end
   resources :recipe_comments, only: [] do
     member do

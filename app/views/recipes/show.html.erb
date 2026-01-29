@@ -1,7 +1,8 @@
 <%= turbo_stream_from @recipe %>
 
 <% if @recipe.generated? %>
-  <div class="mb-4">
+  <div class="mb-4 flex items-center gap-2">
+    <%= render "actions", recipe: @recipe %>
     <%= render "shared/publish_dropdown", record: @recipe %>
   </div>
   <%= render "recipes/header", recipe: @recipe %>

@@ -10,6 +10,9 @@ class User < ApplicationRecord
   has_many :coffee_bean_rotations, dependent: :destroy
   has_many :rotations, through: :coffee_bean_rotations, source: :coffee_bean
 
+  has_many :favorite_recipes, dependent: :destroy
+  has_many :favorite_recipes_list, through: :favorite_recipes, source: :recipe
+
   has_one_attached :avatar
 
   validates :name, presence: true
