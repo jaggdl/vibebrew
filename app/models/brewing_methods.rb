@@ -3,7 +3,8 @@ module BrewingMethods
     "aeropress" => BrewingMethods::Aeropress,
     "v60" => BrewingMethods::V60,
     "french_press" => BrewingMethods::FrenchPress,
-    "moka" => BrewingMethods::Moka
+    "moka" => BrewingMethods::Moka,
+    "espresso" => BrewingMethods::Espresso
   }.freeze
 
   def self.all
