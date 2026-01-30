@@ -16,7 +16,7 @@ class Recipe < ApplicationRecord
   validates :water_weight, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
   validates :water_temperature, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
 
-  delegate :user, to: :coffee_bean
+  delegate :user, :belongs_to_current_user?, to: :coffee_bean
   delegate :label, :icon, to: :brewing_method, prefix: :brew_method
 
   scope :favorited, -> { joins(:favorite_recipes).distinct }
