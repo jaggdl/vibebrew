@@ -23,6 +23,6 @@ module BrewingMethods
   end
 
   def self.options_for_select
-    REGISTRY.map { |type, klass| [klass.label, type] }
+    REGISTRY.map { |type, klass| [ klass.label, type ] }
   end
 end
