@@ -4,7 +4,8 @@ module BrewingMethods
     "v60" => BrewingMethods::V60,
     "french_press" => BrewingMethods::FrenchPress,
     "moka" => BrewingMethods::Moka,
-    "espresso" => BrewingMethods::Espresso
+    "espresso" => BrewingMethods::Espresso,
+    "chemex" => BrewingMethods::Chemex
   }.freeze
 
   class << self
