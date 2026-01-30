@@ -81,6 +81,47 @@ VibeBrew is a Rails 8.0 application for coffee enthusiasts to catalog and manage
 ### Views
 - Use Lucide icons like this: `<%= lucide_icon('square-arrow-out-up-right', class: 'h-4, w-4') %>`
 
+## Adding New Brewing Methods
+
+To add a new brewing method (e.g., Chemex):
+
+1. Create the brewing method class at `app/models/brewing_methods/chemex.rb`:
+```ruby
+module BrewingMethods
+  class Chemex < BrewingMethod
+    def self.label
+      "Chemex"
+    end
+
+    def self.icon
+      "flask-conical"  # Lucide icon name
+    end
+
+    private
+
+    # Optional: Add method-specific instructions for the LLM
+    def method_specific_instructions
+      <<~INSTRUCTIONS
+        Chemex-specific considerations:
+        - Use Chemex-specific filters
+        - Typical ratio is 1:15 coffee to water
+      INSTRUCTIONS
+    end
+  end
+end
+```
+
+2. Register it in `app/models/brewing_methods.rb`:
+```ruby
+REGISTRY = {
+  "aeropress" => BrewingMethods::Aeropress,
+  "v60" => BrewingMethods::V60,
+  "chemex" => BrewingMethods::Chemex  # Add this line
+}.freeze
+```
+
+Everything else (Recipe model scopes, predicates, form selects, labels) is automatically generated from the registry.
+
 ## Development Workflow
 
 When making changes:

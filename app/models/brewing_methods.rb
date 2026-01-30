@@ -1,7 +1,9 @@
 module BrewingMethods
   REGISTRY = {
     "aeropress" => BrewingMethods::Aeropress,
-    "v60" => BrewingMethods::V60
+    "v60" => BrewingMethods::V60,
+    "french_press" => BrewingMethods::FrenchPress,
+    "moka" => BrewingMethods::Moka
   }.freeze
 
   def self.all
