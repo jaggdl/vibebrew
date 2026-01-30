@@ -8,13 +8,16 @@
       •
     </span>
     <span class="flex items-center gap-2 min-w-0">
+      <% if recipe.favorited_by_current_user %>
+        <%= lucide_icon('heart', class: 'h-4 w-4 text-red-500 shrink-0') %>
+      <% end %>
+      <% if recipe.published? %>
+        <%= lucide_icon('eye', class: 'h-4 w-4 shrink-0') %>
+      <% end %>
       <span class="truncate"><%= recipe.display_name %></span>
       <% unless recipe.generated? %>
         <em class="font-normal text-gray-500 shrink-0">(generating...)</em>
       <% end %>
     </span>
-      <% if recipe.favorited_by_current_user %>
-        <%= lucide_icon('heart', class: 'h-4 w-4 text-red-500 shrink-0') %>
-      <% end %>
   <% end %>
 </li>
