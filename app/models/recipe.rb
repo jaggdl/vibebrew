@@ -52,6 +52,10 @@ class Recipe < ApplicationRecord
     SeoMetadata::Recipe.new(self)
   end
 
+  def favorited_by_current_user
+    Current.user&.favorite_recipes_list&.include?(self)
+  end
+
   private
 
   def slug_source
