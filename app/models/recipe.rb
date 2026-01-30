@@ -2,8 +2,6 @@ class Recipe < ApplicationRecord
   include Publishable
   include Sluggable
 
-  TYPES = %w[v60 aeropress].freeze
-
   belongs_to :coffee_bean
   belongs_to :source_recipe, class_name: "Recipe", optional: true
   has_many :iterations, class_name: "Recipe", foreign_key: :source_recipe_id, dependent: :nullify
@@ -12,7 +10,7 @@ class Recipe < ApplicationRecord
   has_many :favorite_recipes, dependent: :destroy
   has_many :favorited_by_users, through: :favorite_recipes, source: :user
 
-  validates :recipe_type, presence: true, inclusion: { in: TYPES }
+  validates :recipe_type, presence: true, inclusion: { in: BrewingMethods.all }
   validates :grind_size, inclusion: { in: [ "extra fine", "fine", "medium", "coarse", "extra coarse" ] }, allow_blank: true
   validates :coffee_weight, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
   validates :water_weight, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
@@ -20,24 +18,18 @@ class Recipe < ApplicationRecord
 
   delegate :user, to: :coffee_bean
 
-  scope :v60, -> { where(recipe_type: "v60") }
-  scope :aeropress, -> { where(recipe_type: "aeropress") }
   scope :favorited, -> { joins(:favorite_recipes).distinct }
 
-  def v60?
-    recipe_type == "v60"
-  end
+  BrewingMethods.all.each do |method_type|
+    scope method_type, -> { where(recipe_type: method_type) }
 
-  def aeropress?
-    recipe_type == "aeropress"
+    define_method("#{method_type}?") do
+      recipe_type == method_type
+    end
   end
 
   def brew_method_name
-    case recipe_type
-    when "v60" then "V60"
-    when "aeropress" then "AeroPress"
-    else recipe_type.titleize
-    end
+    BrewingMethods.label(recipe_type)
   end
 
   def generated?

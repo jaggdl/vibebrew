@@ -3,7 +3,7 @@
   <div class="flex flex-col mb-4 gap-2">
     <%= label_tag :recipe_type, "Brew Method", class: "input-label" %>
     <%= select_tag "recipe[recipe_type]",
-          options_for_select([["AeroPress", "aeropress"], ["V60", "v60"]]),
+          options_for_select(BrewingMethods.options_for_select),
           class: "text-input" %>
   </div>
   <div class="flex flex-col mb-4 gap-2">
