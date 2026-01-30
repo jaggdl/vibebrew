@@ -62,6 +62,10 @@ class CoffeeBean < ApplicationRecord
     oxford_comma(process || [])
   end
 
+  def belongs_to_current_user?
+    Current.user&.id == user.id
+  end
+
   private
 
   def has_at_least_one_image
