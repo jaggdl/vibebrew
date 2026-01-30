@@ -1,11 +1,11 @@
 class SeoMetadata::Recipe < SeoMetadata
   def title
-    "#{record.display_name} | #{record.brew_method_name} Recipe | VibeBrew"
+    "#{record.display_name} | #{record.brew_method_label} Recipe | VibeBrew"
   end
 
   def description
     parts = []
-    parts << "A #{record.brew_method_name} recipe for #{record.coffee_bean.display_name}"
+    parts << "A #{record.brew_method_label} recipe for #{record.coffee_bean.display_name}"
     parts << "#{record.coffee_weight}g coffee" if record.coffee_weight.present?
     parts << "#{record.water_weight}g water" if record.water_weight.present?
     parts << "#{record.grind_size} grind" if record.grind_size.present?
@@ -14,7 +14,7 @@ class SeoMetadata::Recipe < SeoMetadata
   end
 
   def og_title
-    "#{record.display_name} - #{record.brew_method_name}"
+    "#{record.display_name} - #{record.brew_method_label}"
   end
 
   def og_type

@@ -17,6 +17,7 @@ class Recipe < ApplicationRecord
   validates :water_temperature, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
 
   delegate :user, to: :coffee_bean
+  delegate :label, :icon, to: :brewing_method, prefix: :brew_method
 
   scope :favorited, -> { joins(:favorite_recipes).distinct }
 
@@ -28,8 +29,8 @@ class Recipe < ApplicationRecord
     end
   end
 
-  def brew_method_name
-    BrewingMethods.label(recipe_type)
+  def brewing_method
+    BrewingMethods.for(recipe_type)
   end
 
   def generated?
