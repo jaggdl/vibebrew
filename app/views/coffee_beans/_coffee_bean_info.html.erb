@@ -2,7 +2,12 @@
   <div class="p-2 flex flex-col w-full">
     <% if coffee_bean.brand.present? %>
       <div class="flex items-center justify-between min-w-0 w-full">
-        <h3 class="font-semibold text-xl truncate"><%= coffee_bean.brand %></h3>
+        <h3 class="font-semibold text-xl truncate flex gap-2 items-center">
+          <% if coffee_bean.published? %>
+            <%= lucide_icon('eye', class: 'h-5 w-5') %>
+          <% end %>
+          <%= coffee_bean.brand %>
+        </h3>
         <div class="flex items-center gap-2 shrink-0">
           <% coffee_bean.process.each do |p| %>
             <span class="badge"><%= p %></span>
