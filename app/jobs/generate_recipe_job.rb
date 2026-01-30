@@ -3,11 +3,9 @@ class GenerateRecipeJob < ApplicationJob
 
   RECIPE_CONFIGS = {
     "aeropress" => {
-      schema: AeropressRecipeSchema,
       prompt_builder: :build_aeropress_prompt
     },
     "v60" => {
-      schema: V60RecipeSchema,
       prompt_builder: :build_v60_prompt
     }
   }.freeze
@@ -22,8 +20,7 @@ class GenerateRecipeJob < ApplicationJob
     prompt = send(config[:prompt_builder], coffee_bean, recipe)
 
     chat_record = Chat.create!(model: "gpt-5")
-    image_blobs = coffee_bean.images.attached? ? coffee_bean.images.map(&:blob) : []
-    response = chat_record.with_schema(config[:schema]).ask(prompt, with: image_blobs)
+    response = chat_record.with_schema(RecipeSchema).ask(prompt)
 
     recipe.update!(response.content)
     recipe.regenerate_slug!
