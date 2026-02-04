@@ -3,7 +3,7 @@ module SetsCurrentTeam
 
   included do
     before_action :set_current_team
-    helper_method :current_team, :current_membership, :user_teams
+    before_action :require_team
   end
 
   private
@@ -25,19 +25,6 @@ module SetsCurrentTeam
     if Current.team
       Current.membership = Membership.find_by(user: Current.user, team: Current.team)
     end
-  end
-
-  def current_team
-    Current.team
-  end
-
-  def current_membership
-    Current.membership
-  end
-
-  def user_teams
-    return [] unless Current.user
-    Current.user.teams
   end
 
   def require_team

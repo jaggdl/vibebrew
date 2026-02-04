@@ -2,6 +2,7 @@ class RecipesController < ApplicationController
   def create
     @coffee_bean = CoffeeBean.find(params[:coffee_bean_id])
     @recipe = @coffee_bean.recipes.build(recipe_params)
+    @recipe.team = @coffee_bean.team
 
     if @recipe.save
       GenerateRecipeJob.perform_later(@recipe.id)
