@@ -1,32 +1,12 @@
 class TeamsController < ApplicationController
-  before_action :set_team, only: [ :show, :edit, :update, :destroy ]
-
-  def require_team
-    return if [ "index", "new", "create" ].include?(action_name)
-    super
-  end
+  before_action :set_team, only: [ :show, :edit, :update, :regenerate_invite ]
 
   def index
-    @teams = Current.user.teams
+    @team = Current.team
   end
 
   def show
     @memberships = @team.memberships.includes(:user)
-  end
-
-  def new
-    @team = Team.new
-  end
-
-  def create
-    @team = Team.new(team_params)
-
-    if @team.save
-      @team.add_member(Current.user, role: :owner)
-      redirect_to team_path(@team), notice: "Team created successfully"
-    else
-      render :new, status: :unprocessable_entity
-    end
   end
 
   def edit
@@ -40,15 +20,15 @@ class TeamsController < ApplicationController
     end
   end
 
-  def destroy
-    @team.destroy
-    redirect_to teams_path, notice: "Team deleted"
-  end
-
   def switch
     team = Current.user.teams.find(params[:id])
     session[:current_team_id] = team.id
     redirect_to root_path, notice: "Switched to #{team.name}"
+  end
+
+  def regenerate_invite
+    @team.regenerate_invite_code!
+    redirect_to team_path(@team), notice: "Invite link regenerated"
   end
 
   private

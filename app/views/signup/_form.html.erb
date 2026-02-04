@@ -1,0 +1,38 @@
+<%= form_with model: user, url: url, class: "contents" do |form| %>
+  <% if user.errors.any? %>
+    <div class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mb-5">
+      <% user.errors.full_messages.each do |message| %>
+        <p><%= message %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :name, class: "block text-gray-700 font-medium" %>
+    <%= form.text_field :name, required: true, autofocus: true, autocomplete: "name", placeholder: "Enter your name", class: "block shadow-sm rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :avatar, "Profile picture", class: "block text-gray-700 font-medium" %>
+    <%= form.file_field :avatar, accept: "image/*", class: "block mt-2 w-full text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 file:cursor-pointer" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :email_address, class: "block text-gray-700 font-medium" %>
+    <%= form.email_field :email_address, required: true, autocomplete: "username", placeholder: "Enter your email address", class: "block shadow-sm rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :password, class: "block text-gray-700 font-medium" %>
+    <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter your password", maxlength: 72, class: "block shadow-sm rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :password_confirmation, class: "block text-gray-700 font-medium" %>
+    <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Confirm your password", maxlength: 72, class: "block shadow-sm rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit submit_text, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

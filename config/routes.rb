@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resource :signup, only: [ :new, :create ], controller: "signup"
   resource :session
   resource :profile, only: [ :edit, :update ], controller: "profiles"
+  resources :team
   resources :passwords, param: :token
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -39,9 +40,13 @@ Rails.application.routes.draw do
   resources :teams do
     member do
       post :switch
+      patch :regenerate_invite
     end
     resources :memberships, only: [ :create, :update, :destroy ]
   end
+
+  get "join/:slug/:invite_code", to: "team_invites#show", as: :join_team
+  post "join/:slug/:invite_code", to: "team_invites#create"
 
   scope module: :public do
     resources :beans, only: [ :index, :show ], param: :slug

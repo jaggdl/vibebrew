@@ -1,5 +1,6 @@
 class Team < ApplicationRecord
   include MultiTenantable
+  include Sluggable
 
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
@@ -7,9 +8,8 @@ class Team < ApplicationRecord
   has_many :recipes, dependent: :nullify
 
   validates :name, presence: true
-  validates :slug, presence: true, uniqueness: true
 
-  before_validation :generate_slug, on: :create
+  before_create :generate_invite_code
 
   def owner
     memberships.find_by(role: :owner)&.user
@@ -31,18 +31,25 @@ class Team < ApplicationRecord
     memberships.find_by(user: user)&.role
   end
 
+  def regenerate_invite_code!
+    update!(invite_code: SecureRandom.hex(16))
+  end
+
+  def invite_url
+    Rails.application.routes.url_helpers.join_team_url(slug: slug, invite_code: invite_code, host: ENV["BASE_URL"])
+  end
+
   private
 
-  def generate_slug
-    return if slug.present?
+  def slug_source
+    name
+  end
 
-    base_slug = name.to_s.parameterize
-    self.slug = base_slug
+  def default_slug_base
+    "team"
+  end
 
-    counter = 1
-    while self.class.exists?(slug: slug)
-      self.slug = "#{base_slug}-#{counter}"
-      counter += 1
-    end
+  def generate_invite_code
+    self.invite_code ||= SecureRandom.hex(16)
   end
 end
