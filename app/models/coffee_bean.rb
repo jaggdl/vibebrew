@@ -3,6 +3,7 @@ class CoffeeBean < ApplicationRecord
   include Sluggable
 
   belongs_to :user
+  belongs_to :team, optional: true
   has_many_attached :images
   has_many :recipes, dependent: :destroy
 

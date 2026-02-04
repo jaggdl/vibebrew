@@ -1,0 +1,16 @@
+<%= turbo_frame_tag dom_id(membership, :role) do %>
+  <div class="flex items-center gap-2">
+    <%= lucide_icon(membership.role_icon, class: "h-4 w-4 text-gray-600") %>
+    <% if membership.editable? %>
+      <%= form_with model: [membership.team, membership], data: { controller: "auto-submit" } do |f| %>
+        <%= f.select :role,
+            Membership.roles_for_select,
+            {},
+            class: "text-sm border border-gray-300 rounded px-2 py-1",
+            data: { action: "change->auto-submit#submit" } %>
+      <% end %>
+    <% else %>
+      <span class="text-sm text-gray-600"><%= membership.role_display_name %></span>
+    <% end %>
+  </div>
+<% end %>

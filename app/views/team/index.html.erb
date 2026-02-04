@@ -1,0 +1,37 @@
+<h1><%= @team.name %></h1>
+
+<% if Current.can_manage_users? %>
+  <div>
+    <h2>Invite members</h2>
+  
+    <p class="text-gray-600 mb-4">Share this link to invite people to your team:</p>
+  
+    <div class="flex items-center gap-2 mb-4">
+      <input type="text" value="<%= @team.invite_url %>" readonly class="flex-1 shadow-sm rounded-md border border-gray-400 px-3 py-2 bg-gray-50" id="invite-url" />
+      <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('invite-url').value)" class="rounded-md px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 font-medium">
+        Copy
+      </button>
+    </div>
+  
+    <%= button_to "Regenerate link", regenerate_invite_team_path(@team), method: :patch, class: "text-sm text-gray-600 hover:text-gray-800 underline", data: { turbo_confirm: "Are you sure? The old invite link will no longer work." } %>
+  </div>
+<% end %>
+
+<div>
+  <h2>Current team members</h2>
+  
+  <ul class="gap-2 flex flex-col">
+    <% @team.users.each do |user| %>
+      <li class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <%= render user %> 
+          <span>
+            (<%= user.email_address %>)
+          </span>
+        </div>
+
+        <%= render "memberships/role_dropdown", membership: user.membership_in(@team) %>
+      </li>
+    <% end %>
+  </ul>
+</div>

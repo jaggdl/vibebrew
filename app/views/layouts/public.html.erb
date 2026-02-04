@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title><%= content_for(:title) || "VibeBrew" %></title>
+    <title><%= content_for(:title) || "Vibebrew" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -15,8 +15,8 @@
     <link rel="canonical" href="<%= content_for?(:canonical_url) ? content_for(:canonical_url) : request.original_url %>">
 
     <%# Open Graph tags %>
-    <meta property="og:site_name" content="VibeBrew">
-    <meta property="og:title" content="<%= content_for?(:og_title) ? content_for(:og_title) : (content_for?(:title) ? content_for(:title) : 'VibeBrew') %>">
+    <meta property="og:site_name" content="Vibebrew">
+    <meta property="og:title" content="<%= content_for?(:og_title) ? content_for(:og_title) : (content_for?(:title) ? content_for(:title) : 'Vibebrew') %>">
     <% if content_for?(:meta_description) %>
       <meta property="og:description" content="<%= content_for(:meta_description) %>">
     <% end %>
@@ -28,7 +28,7 @@
 
     <%# Twitter Card tags %>
     <meta name="twitter:card" content="<%= content_for?(:og_image) ? 'summary_large_image' : 'summary' %>">
-    <meta name="twitter:title" content="<%= content_for?(:og_title) ? content_for(:og_title) : (content_for?(:title) ? content_for(:title) : 'VibeBrew') %>">
+    <meta name="twitter:title" content="<%= content_for?(:og_title) ? content_for(:og_title) : (content_for?(:title) ? content_for(:title) : 'Vibebrew') %>">
     <% if content_for?(:meta_description) %>
       <meta name="twitter:description" content="<%= content_for(:meta_description) %>">
     <% end %>
@@ -50,7 +50,7 @@
     <main class="container mx-auto mt-4 pb-[calc(6rem+env(safe-area-inset-bottom))] px-5 flex flex-col gap-4">
       <div class="flex items-center justify-between">
         <%= link_to root_path do %>
-          <h1 class="text-2xl font-bold hover:underline">VibeBrew</h1>
+          <h1 class="text-2xl font-bold hover:underline">Vibebrew</h1>
         <% end %>
       </div>
       <%= render "layouts/flash" %>

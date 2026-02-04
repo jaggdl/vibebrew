@@ -13,6 +13,17 @@ class User < ApplicationRecord
   has_many :favorite_recipes, dependent: :destroy
   has_many :favorite_recipes_list, through: :favorite_recipes, source: :recipe
 
+  has_many :memberships, dependent: :destroy
+  has_many :teams, through: :memberships
+
+  def membership_in(team)
+    memberships.find_by(team: team)
+  end
+
+  def admin_of?(team)
+    membership_in(team)&.admin?
+  end
+
   has_one_attached :avatar
 
   validates :name, presence: true

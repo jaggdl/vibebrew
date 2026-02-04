@@ -2,7 +2,7 @@
   <div class="flex items-center justify-between mb-2">
     <%= render recipe_comment.user %>
     <div class="flex items-center gap-2">
-      <% if Current.user.present? %>
+      <% if authenticated? %>
         <%= button_to toggle_publish_recipe_comment_path(recipe_comment),
               method: :patch,
               class: "p-1 rounded hover:bg-gray-100 #{recipe_comment.published? ? 'text-green-600' : 'text-gray-400'}",

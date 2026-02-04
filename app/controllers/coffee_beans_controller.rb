@@ -15,6 +15,7 @@ class CoffeeBeansController < ApplicationController
 
   def create
     @coffee_bean = Current.user.coffee_beans.new(coffee_bean_params)
+    @coffee_bean.team = Current.team
 
     if @coffee_bean.save
       ExtractCoffeeBeanInfoJob.perform_later(@coffee_bean.id)

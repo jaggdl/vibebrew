@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_29_195438) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_04_194628) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -69,7 +69,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_29_195438) do
     t.datetime "updated_at", null: false
     t.boolean "published", default: false, null: false
     t.string "slug"
+    t.integer "team_id"
     t.index ["slug"], name: "index_coffee_beans_on_slug", unique: true
+    t.index ["team_id"], name: "index_coffee_beans_on_team_id"
     t.index ["user_id"], name: "index_coffee_beans_on_user_id"
   end
 
@@ -91,6 +93,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_29_195438) do
     t.index ["recipe_id"], name: "index_favorite_recipes_on_recipe_id"
     t.index ["user_id", "recipe_id"], name: "index_favorite_recipes_on_user_id_and_recipe_id", unique: true
     t.index ["user_id"], name: "index_favorite_recipes_on_user_id"
+  end
+
+  create_table "memberships", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "team_id", null: false
+    t.string "role", default: "member", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role"], name: "index_memberships_on_role"
+    t.index ["team_id"], name: "index_memberships_on_team_id"
+    t.index ["user_id", "team_id"], name: "index_memberships_on_user_id_and_team_id", unique: true
+    t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -149,7 +163,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_29_195438) do
     t.decimal "coffee_weight", precision: 8, scale: 2
     t.decimal "water_weight", precision: 8, scale: 2
     t.decimal "water_temperature", precision: 5, scale: 2
-    t.boolean "inverted_method"
     t.json "steps"
     t.text "prompt"
     t.datetime "created_at", null: false
@@ -157,10 +170,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_29_195438) do
     t.integer "source_recipe_id"
     t.boolean "published", default: false, null: false
     t.string "slug"
+    t.integer "team_id"
     t.index ["coffee_bean_id"], name: "index_recipes_on_coffee_bean_id"
     t.index ["recipe_type"], name: "index_recipes_on_recipe_type"
     t.index ["slug"], name: "index_recipes_on_slug", unique: true
     t.index ["source_recipe_id"], name: "index_recipes_on_source_recipe_id"
+    t.index ["team_id"], name: "index_recipes_on_team_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -170,6 +185,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_29_195438) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "invite_code"
+    t.index ["invite_code"], name: "index_teams_on_invite_code", unique: true
+    t.index ["slug"], name: "index_teams_on_slug", unique: true
   end
 
   create_table "tool_calls", force: :cascade do |t|
@@ -198,11 +223,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_29_195438) do
   add_foreign_key "chats", "models"
   add_foreign_key "coffee_bean_rotations", "coffee_beans"
   add_foreign_key "coffee_bean_rotations", "users"
+  add_foreign_key "coffee_beans", "teams"
   add_foreign_key "coffee_beans", "users"
   add_foreign_key "favorite_coffee_beans", "coffee_beans"
   add_foreign_key "favorite_coffee_beans", "users"
   add_foreign_key "favorite_recipes", "recipes"
   add_foreign_key "favorite_recipes", "users"
+  add_foreign_key "memberships", "teams"
+  add_foreign_key "memberships", "users"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "models"
   add_foreign_key "messages", "tool_calls"
@@ -210,6 +238,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_29_195438) do
   add_foreign_key "recipe_comments", "users"
   add_foreign_key "recipes", "coffee_beans"
   add_foreign_key "recipes", "recipes", column: "source_recipe_id"
+  add_foreign_key "recipes", "teams"
   add_foreign_key "sessions", "users"
   add_foreign_key "tool_calls", "messages"
 end
