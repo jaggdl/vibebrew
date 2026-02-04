@@ -6,11 +6,14 @@ module VibebrewSaas
       app.config.paths["db/migrate"].concat(config.paths["db/migrate"].expanded)
     end
 
-    config.to_prepare do
+
+    initializer "vibebrew_saas.mount" do |app|
       app.routes.append do
         mount VibebrewSaas::Engine => "/", as: "saas"
       end
+    end
 
+    config.to_prepare do
       # Extend User with team associations
       User.class_eval do
         has_many :memberships, class_name: "Saas::Membership", dependent: :destroy

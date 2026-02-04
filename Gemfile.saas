@@ -4,4 +4,4 @@
 eval_gemfile "Gemfile"
 
 gem "stripe"
-gem "vibebrew-saas", path: "saas"
+gem "vibebrew-saas", path: "saas", require: "vibebrew_saas"

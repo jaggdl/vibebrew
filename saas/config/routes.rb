@@ -1,4 +1,4 @@
-Saas::Engine.routes.draw do
+VibebrewSaas::Engine.routes.draw do
   get "pricing", to: "checkout#new"
   post "checkout", to: "checkout#create"
   get "checkout/success", to: "checkout#success"
