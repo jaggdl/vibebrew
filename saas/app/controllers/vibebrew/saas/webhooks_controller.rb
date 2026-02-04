@@ -48,7 +48,7 @@ module Vibebrew
       def handle_checkout_completed(session)
         return unless session.metadata&.team_id.present?
 
-        team = Vibebrew::Saas::Team.find_by(id: session.metadata.team_id)
+        team = ::Team.find_by(id: session.metadata.team_id)
         return unless team
 
         if session.subscription.present?
@@ -110,7 +110,7 @@ module Vibebrew
       end
 
       def find_team_by_customer(customer_id)
-        Vibebrew::Saas::Team.find_by(stripe_customer_id: customer_id)
+        ::Team.find_by(stripe_customer_id: customer_id)
       end
 
       def find_plan_name_by_price(price_id)

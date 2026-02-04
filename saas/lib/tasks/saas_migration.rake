@@ -16,12 +16,12 @@ namespace :saas do
           next if user.teams.any?
 
           # Create a team for each user
-          team = Vibebrew::Saas::Team.create!(
+          team = ::Team.create!(
             name: "#{user.name}'s Team"
           )
 
           # Add user as owner
-          Vibebrew::Saas::Membership.create!(
+          ::Membership.create!(
             user: user,
             team: team,
             role: :owner

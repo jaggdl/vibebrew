@@ -76,7 +76,7 @@ module Vibebrew
         team_id = stripe_session.metadata.team_id
         plan_name = stripe_session.metadata.plan_name
 
-        team = Vibebrew::Saas::Team.find(team_id)
+        team = ::Team.find(team_id)
         plan = Vibebrew::Saas::Plan.find(plan_name)
 
         stripe_subscription = Stripe::Subscription.retrieve(stripe_session.subscription)

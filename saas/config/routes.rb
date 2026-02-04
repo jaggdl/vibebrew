@@ -10,11 +10,4 @@ Vibebrew::Saas::Engine.routes.draw do
     post :reactivate
     get :portal
   end
-
-  resources :teams do
-    member do
-      post :switch
-    end
-    resources :memberships, only: [ :create, :update, :destroy ]
-  end
 end

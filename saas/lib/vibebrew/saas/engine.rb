@@ -15,28 +15,24 @@ module Vibebrew
       end
 
       config.to_prepare do
-        # Extend User with team associations
-        User.class_eval do
-          has_many :memberships, class_name: "Vibebrew::Saas::Membership", dependent: :destroy
-          has_many :teams, through: :memberships, class_name: "Vibebrew::Saas::Team"
+        # Extend Team with SaaS-specific associations and methods
+        Team.include(Vibebrew::Saas::TeamExtensions)
+
+        # Extend TeamsController with SaaS-specific behavior
+        TeamsController.include(Vibebrew::Saas::CreatesTeamSubscription)
+
+        # Inject team scoping into models (only in SaaS mode)
+        CoffeeBean.include(Vibebrew::Saas::TeamScoped) if Vibebrew.saas?
+        Recipe.include(Vibebrew::Saas::TeamScoped) if Vibebrew.saas?
+
+        # Add limit enforcement to controllers (only in SaaS mode)
+        if Vibebrew.saas?
+          CoffeeBeansController.include(Vibebrew::Saas::EnforcesLimits)
+          CoffeeBeansController.before_action :enforce_coffee_bean_limit!, only: [ :create ]
+
+          RecipesController.include(Vibebrew::Saas::EnforcesLimits)
+          RecipesController.before_action :enforce_recipe_limit!, only: [ :create ]
         end
-
-        # Inject team scoping into models
-        CoffeeBean.include(Vibebrew::Saas::TeamScoped)
-        Recipe.include(Vibebrew::Saas::TeamScoped)
-
-        # Extend Current with team
-        Current.include(Vibebrew::Saas::CurrentTeam)
-
-        # Add team context to ApplicationController
-        ApplicationController.include(Vibebrew::Saas::SetsCurrentTeam)
-
-        # Add limit enforcement to controllers
-        CoffeeBeansController.include(Vibebrew::Saas::EnforcesLimits)
-        CoffeeBeansController.before_action :enforce_coffee_bean_limit!, only: [ :create ]
-
-        RecipesController.include(Vibebrew::Saas::EnforcesLimits)
-        RecipesController.before_action :enforce_recipe_limit!, only: [ :create ]
       end
     end
   end

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resource :setup, only: [ :new, :create ], controller: "setup"
+  resource :signup, only: [ :new, :create ], controller: "signup"
   resource :session
   resource :profile, only: [ :edit, :update ], controller: "profiles"
   resources :passwords, param: :token
@@ -34,6 +34,13 @@ Rails.application.routes.draw do
     member do
       patch :toggle_publish
     end
+  end
+
+  resources :teams do
+    member do
+      post :switch
+    end
+    resources :memberships, only: [ :create, :update, :destroy ]
   end
 
   scope module: :public do

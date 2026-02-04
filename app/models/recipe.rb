@@ -3,6 +3,7 @@ class Recipe < ApplicationRecord
   include Sluggable
 
   belongs_to :coffee_bean
+  belongs_to :team, optional: true
   belongs_to :source_recipe, class_name: "Recipe", optional: true
   has_many :iterations, class_name: "Recipe", foreign_key: :source_recipe_id, dependent: :nullify
   has_many :comments, class_name: "RecipeComment", dependent: :destroy

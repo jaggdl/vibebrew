@@ -20,30 +20,18 @@ module Authorization
   def can_manage_users?
     return false unless Current.user
 
-    if Vibebrew.saas? && Current.respond_to?(:membership)
-      Current.membership&.can_manage_users?
-    else
-      Current.user.can_manage_users?
-    end
+    Current.user.can_manage_users?
   end
 
   def can_manage_settings?
     return false unless Current.user
 
-    if Vibebrew.saas? && Current.respond_to?(:membership)
-      Current.membership&.can_manage_settings?
-    else
-      Current.user.can_manage_settings?
-    end
+    Current.user.can_manage_settings?
   end
 
   def current_role
     return nil unless Current.user
 
-    if Vibebrew.saas? && Current.respond_to?(:membership)
-      Current.membership&.role
-    else
-      Current.user.role
-    end
+    Current.user.role
   end
 end

@@ -1,7 +1,7 @@
 module Vibebrew
   module Saas
     class Subscription < ApplicationRecord
-      belongs_to :team, class_name: "Vibebrew::Saas::Team"
+      belongs_to :team, class_name: "::Team"
 
       enum :status, {
         active: "active",

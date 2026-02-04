@@ -13,31 +13,12 @@ class User < ApplicationRecord
   has_many :favorite_recipes, dependent: :destroy
   has_many :favorite_recipes_list, through: :favorite_recipes, source: :recipe
 
-  has_one_attached :avatar
+  has_many :memberships, dependent: :destroy
+  has_many :teams, through: :memberships
 
-  # Roles for self-hosted mode (global permissions)
-  enum :role, { member: "member", admin: "admin", owner: "owner" }
+  has_one_attached :avatar
 
   validates :name, presence: true
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
-
-  # Self-hosted role-based permissions
-  def can_manage_users?
-    admin? || owner?
-  end
-
-  def can_manage_settings?
-    owner?
-  end
-
-  # Make first user the owner in self-hosted mode
-  before_create :assign_owner_role_if_first_user
-
-  private
-
-  def assign_owner_role_if_first_user
-    return if Vibebrew.saas?
-    self.role = :owner if User.count.zero?
-  end
 end

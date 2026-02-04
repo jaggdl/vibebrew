@@ -1,4 +1,4 @@
-class SetupController < ApplicationController
+class SignupController < ApplicationController
   allow_unauthenticated_access
 
   before_action :require_no_users
@@ -21,7 +21,7 @@ class SetupController < ApplicationController
   private
 
   def require_no_users
-    redirect_to root_path if User.exists?
+    redirect_to root_path unless Team.accepting_signups?
   end
 
   def user_params

@@ -4,7 +4,7 @@ module Vibebrew
       extend ActiveSupport::Concern
 
       included do
-        belongs_to :team, class_name: "Vibebrew::Saas::Team", optional: true
+        belongs_to :team, class_name: "::Team", optional: true
 
         default_scope { where(team: Current.team) if Current.respond_to?(:team) && Current.team.present? }
 
