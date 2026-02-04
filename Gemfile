@@ -73,3 +73,8 @@ gem "ruby_llm-schema", "~> 0.2.1"
 gem "lucide-rails", "~> 0.7.3"
 
 gem "builder"
+
+# SaaS mode: conditionally load SaaS dependencies
+if ENV["SAAS"] && !ENV["SAAS"].empty? || File.exist?(File.join(__dir__, "tmp/saas.txt"))
+  eval_gemfile "Gemfile.saas"
+end

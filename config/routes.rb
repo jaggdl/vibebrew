@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  # Mount SaaS engine when in SaaS mode
+  if defined?(Saas::Engine)
+    mount Saas::Engine, at: "/saas"
+  end
+
   resource :setup, only: [ :new, :create ], controller: "setup"
   resource :session
   resource :profile, only: [ :edit, :update ], controller: "profiles"

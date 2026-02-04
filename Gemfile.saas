@@ -1,0 +1,5 @@
+# SaaS-specific dependencies
+# This file is loaded conditionally by the main Gemfile when in SaaS mode
+
+gem "stripe"
+gem "vibebrew-saas", path: "saas"
