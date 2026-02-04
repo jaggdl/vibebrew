@@ -7,7 +7,9 @@ module VibebrewSaas
     end
 
     config.to_prepare do
-      next unless defined?(VibeBrew) && VibeBrew.saas?
+      app.routes.append do
+        mount VibebrewSaas::Engine => "/", as: "saas"
+      end
 
       # Extend User with team associations
       User.class_eval do

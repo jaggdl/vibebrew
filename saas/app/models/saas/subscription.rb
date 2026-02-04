@@ -1,7 +1,6 @@
 module Saas
   class Subscription < ApplicationRecord
     belongs_to :team, class_name: "Saas::Team"
-    belongs_to :plan, class_name: "Saas::Plan"
 
     enum :status, {
       active: "active",
@@ -13,15 +12,24 @@ module Saas
 
     validates :stripe_subscription_id, uniqueness: true, allow_nil: true
     validates :team_id, uniqueness: true
+    validates :plan_name, presence: true, inclusion: { in: Saas::Plan::TIERS.keys.map(&:to_s) }
 
     scope :active_or_trialing, -> { where(status: [ :active, :trialing ]) }
+
+    def plan
+      Saas::Plan.new(plan_name)
+    end
+
+    def plan=(new_plan)
+      self.plan_name = new_plan.is_a?(Saas::Plan) ? new_plan.name.to_s : new_plan.to_s
+    end
 
     def active_or_trialing?
       active? || trialing?
     end
 
     def can_use_features?
-      active_or_trialing? || plan&.free?
+      active_or_trialing? || plan.free?
     end
 
     def sync_from_stripe!(stripe_subscription)

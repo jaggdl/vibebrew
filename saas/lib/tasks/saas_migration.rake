@@ -10,9 +10,11 @@ namespace :saas do
       ActiveRecord::Base.transaction do
         migrated_users = 0
         migrated_coffee_beans = 0
-        migrated_recipes = 0
 
         User.find_each do |user|
+          # Skip if user already has a team
+          next if user.teams.any?
+
           # Create a team for each user
           team = Saas::Team.create!(
             name: "#{user.name}'s Team"
@@ -28,7 +30,7 @@ namespace :saas do
           # Create free subscription for the team
           Saas::Subscription.create!(
             team: team,
-            plan: Saas::Plan.free,
+            plan_name: "free",
             status: :active
           )
 
@@ -47,30 +49,6 @@ namespace :saas do
         puts "Users migrated: #{migrated_users}"
         puts "Coffee beans assigned: #{migrated_coffee_beans}"
       end
-    end
-
-    desc "Seed plans from TIERS configuration"
-    task seed_plans: :environment do
-      unless VibeBrew.saas?
-        puts "Error: SaaS mode is not enabled."
-        exit 1
-      end
-
-      Saas::Plan::TIERS.each do |name, config|
-        plan = Saas::Plan.find_or_initialize_by(name: name.to_s)
-        plan.assign_attributes(
-          price_cents: config[:price_cents],
-          coffee_bean_limit: config[:coffee_bean_limit] == Float::INFINITY ? 999999 : config[:coffee_bean_limit],
-          recipe_limit: config[:recipe_limit] == Float::INFINITY ? 999999 : config[:recipe_limit],
-          storage_limit_gb: config[:storage_limit_gb] == Float::INFINITY ? 999999 : config[:storage_limit_gb],
-          ai_generations_per_month: config[:ai_generations_per_month] == Float::INFINITY ? 999999 : config[:ai_generations_per_month]
-        )
-        plan.save!
-        puts "Created/Updated plan: #{name}"
-      end
-
-      puts "\nPlans seeded successfully!"
-      puts "Don't forget to set stripe_price_id for paid plans."
     end
   end
 end

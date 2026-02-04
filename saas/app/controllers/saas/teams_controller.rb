@@ -27,7 +27,7 @@ module Saas
         # Create free subscription
         Saas::Subscription.create!(
           team: @team,
-          plan: Saas::Plan.free,
+          plan_name: "free",
           status: :active
         )
 

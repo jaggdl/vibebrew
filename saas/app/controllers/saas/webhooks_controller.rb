@@ -52,10 +52,10 @@ module Saas
 
       if session.subscription.present?
         stripe_subscription = Stripe::Subscription.retrieve(session.subscription)
-        plan = Saas::Plan.find_by(id: session.metadata.plan_id)
+        plan_name = session.metadata.plan_name
 
         subscription = team.subscription || team.build_subscription
-        subscription.plan = plan if plan
+        subscription.plan_name = plan_name if plan_name.present?
         subscription.sync_from_stripe!(stripe_subscription)
       end
     end
@@ -65,7 +65,7 @@ module Saas
       return unless team
 
       subscription = team.subscription || team.build_subscription
-      subscription.plan ||= find_plan_by_price(stripe_subscription.items.data.first&.price&.id)
+      subscription.plan_name ||= find_plan_name_by_price(stripe_subscription.items.data.first&.price&.id) || "free"
       subscription.sync_from_stripe!(stripe_subscription)
     end
 
@@ -76,8 +76,8 @@ module Saas
       # Check if plan changed
       new_price_id = stripe_subscription.items.data.first&.price&.id
       if new_price_id.present?
-        new_plan = Saas::Plan.find_by(stripe_price_id: new_price_id)
-        subscription.plan = new_plan if new_plan
+        new_plan_name = find_plan_name_by_price(new_price_id)
+        subscription.plan_name = new_plan_name if new_plan_name.present?
       end
 
       subscription.sync_from_stripe!(stripe_subscription)
@@ -112,8 +112,9 @@ module Saas
       Saas::Team.find_by(stripe_customer_id: customer_id)
     end
 
-    def find_plan_by_price(price_id)
-      Saas::Plan.find_by(stripe_price_id: price_id)
+    def find_plan_name_by_price(price_id)
+      plan = Saas::Plan.find_by_stripe_price_id(price_id)
+      plan&.name&.to_s
     end
   end
 end

@@ -1,5 +1,7 @@
 # SaaS-specific dependencies
 # This file is loaded conditionally by the main Gemfile when in SaaS mode
 
+eval_gemfile "Gemfile"
+
 gem "stripe"
 gem "vibebrew-saas", path: "saas"

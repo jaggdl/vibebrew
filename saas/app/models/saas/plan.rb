@@ -1,5 +1,5 @@
 module Saas
-  class Plan < ApplicationRecord
+  class Plan
     TIERS = {
       free: {
         price_cents: 0,
@@ -31,48 +31,108 @@ module Saas
       }
     }.freeze
 
-    has_many :subscriptions, class_name: "Saas::Subscription"
+    attr_reader :name
 
-    validates :name, presence: true, uniqueness: true
-    validates :stripe_price_id, presence: true, if: -> { price_cents.to_i > 0 }
+    def initialize(name)
+      @name = name.to_sym
+      raise ArgumentError, "Unknown plan: #{name}" unless TIERS.key?(@name)
+    end
+
+    def self.all
+      TIERS.keys.map { |name| new(name) }
+    end
+
+    def self.paid
+      all.reject(&:free?)
+    end
 
     def self.free
-      find_or_create_by!(name: "free") do |plan|
-        plan.price_cents = TIERS[:free][:price_cents]
-        plan.coffee_bean_limit = TIERS[:free][:coffee_bean_limit]
-        plan.recipe_limit = TIERS[:free][:recipe_limit]
-        plan.storage_limit_gb = TIERS[:free][:storage_limit_gb]
-        plan.ai_generations_per_month = TIERS[:free][:ai_generations_per_month]
-      end
+      new(:free)
     end
 
     def self.starter
-      find_by(name: "starter")
+      new(:starter)
     end
 
     def self.pro
-      find_by(name: "pro")
+      new(:pro)
     end
 
     def self.enterprise
-      find_by(name: "enterprise")
+      new(:enterprise)
     end
 
-    def free?
-      name == "free"
+    def self.find(name)
+      new(name)
     end
 
-    def unlimited?
-      name == "enterprise"
+    def self.find_by_stripe_price_id(price_id)
+      return nil if price_id.blank?
+
+      plan_name = TIERS.keys.find do |name|
+        new(name).stripe_price_id == price_id
+      end
+
+      plan_name ? new(plan_name) : nil
+    end
+
+    def config
+      TIERS[@name]
+    end
+
+    def price_cents
+      config[:price_cents]
+    end
+
+    def coffee_bean_limit
+      config[:coffee_bean_limit]
+    end
+
+    def recipe_limit
+      config[:recipe_limit]
+    end
+
+    def storage_limit_gb
+      config[:storage_limit_gb]
+    end
+
+    def ai_generations_per_month
+      config[:ai_generations_per_month]
     end
 
     def storage_limit_bytes
+      return Float::INFINITY if storage_limit_gb == Float::INFINITY
       (storage_limit_gb * 1024 * 1024 * 1024).to_i
+    end
+
+    def stripe_price_id
+      return nil if free?
+      ENV["STRIPE_PRICE_ID_#{@name.to_s.upcase}"]
+    end
+
+    def free?
+      @name == :free
+    end
+
+    def unlimited?
+      @name == :enterprise
     end
 
     def display_price
       return "Free" if price_cents.zero?
       "$#{price_cents / 100}/month"
+    end
+
+    def display_name
+      @name.to_s.titleize
+    end
+
+    def ==(other)
+      other.is_a?(Plan) && other.name == @name
+    end
+
+    def to_s
+      @name.to_s
     end
   end
 end

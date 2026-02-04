@@ -3,15 +3,20 @@ module Saas
     before_action :require_billing_access, except: [ :new ]
 
     def new
-      @plans = Saas::Plan.where.not(name: "free").order(:price_cents)
+      @plans = Saas::Plan.paid
       @current_plan = Current.team&.plan
     end
 
     def create
-      plan = Saas::Plan.find(params[:plan_id])
+      plan = Saas::Plan.find(params[:plan_name])
 
       if plan.free?
         redirect_to root_path, alert: "Cannot checkout for free plan"
+        return
+      end
+
+      if plan.stripe_price_id.blank?
+        redirect_to root_path, alert: "Stripe price not configured for this plan"
         return
       end
 
@@ -61,17 +66,17 @@ module Saas
         cancel_url: saas.checkout_cancel_url,
         metadata: {
           team_id: team.id,
-          plan_id: plan.id
+          plan_name: plan.name.to_s
         }
       )
     end
 
     def handle_successful_checkout(stripe_session)
       team_id = stripe_session.metadata.team_id
-      plan_id = stripe_session.metadata.plan_id
+      plan_name = stripe_session.metadata.plan_name
 
       team = Saas::Team.find(team_id)
-      plan = Saas::Plan.find(plan_id)
+      plan = Saas::Plan.find(plan_name)
 
       stripe_subscription = Stripe::Subscription.retrieve(stripe_session.subscription)
 
