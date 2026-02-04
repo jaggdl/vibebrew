@@ -2,7 +2,7 @@ namespace :saas do
   namespace :migrate do
     desc "Migrate self-hosted data to SaaS (create teams for existing users)"
     task data: :environment do
-      unless VibeBrew.saas?
+      unless Vibebrew.saas?
         puts "Error: SaaS mode is not enabled. Run 'bin/rails saas:enable' first."
         exit 1
       end
@@ -16,19 +16,19 @@ namespace :saas do
           next if user.teams.any?
 
           # Create a team for each user
-          team = Saas::Team.create!(
+          team = Vibebrew::Saas::Team.create!(
             name: "#{user.name}'s Team"
           )
 
           # Add user as owner
-          Saas::Membership.create!(
+          Vibebrew::Saas::Membership.create!(
             user: user,
             team: team,
             role: :owner
           )
 
           # Create free subscription for the team
-          Saas::Subscription.create!(
+          Vibebrew::Saas::Subscription.create!(
             team: team,
             plan_name: "free",
             status: :active

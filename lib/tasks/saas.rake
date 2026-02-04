@@ -3,23 +3,23 @@ namespace :saas do
   task enable: :environment do
     FileUtils.mkdir_p(Rails.root.join("tmp"))
     FileUtils.touch(Rails.root.join("tmp/saas.txt"))
-    VibeBrew.reload_mode!
+    Vibebrew.reload_mode!
     puts "SaaS mode enabled. Run 'bin/rails db:migrate' to apply SaaS migrations."
-    puts "Current mode: #{VibeBrew.saas? ? 'SaaS' : 'Self-hosted'}"
+    puts "Current mode: #{Vibebrew.saas? ? 'SaaS' : 'Self-hosted'}"
   end
 
   desc "Disable SaaS mode"
   task disable: :environment do
     saas_file = Rails.root.join("tmp/saas.txt")
     FileUtils.rm_f(saas_file)
-    VibeBrew.reload_mode!
+    Vibebrew.reload_mode!
     puts "SaaS mode disabled."
-    puts "Current mode: #{VibeBrew.saas? ? 'SaaS' : 'Self-hosted'}"
+    puts "Current mode: #{Vibebrew.saas? ? 'SaaS' : 'Self-hosted'}"
   end
 
   desc "Show current mode status"
   task status: :environment do
-    mode = VibeBrew.saas? ? "SaaS" : "Self-hosted"
+    mode = Vibebrew.saas? ? "SaaS" : "Self-hosted"
     source = determine_mode_source
     puts "Current mode: #{mode}"
     puts "Mode source: #{source}"

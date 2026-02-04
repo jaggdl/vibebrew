@@ -1,4 +1,4 @@
-module VibeBrew
+module Vibebrew
   class << self
     def saas?
       return @saas if defined?(@saas) && !@saas.nil?

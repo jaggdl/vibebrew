@@ -1,4 +1,4 @@
-if defined?(Stripe) && defined?(VibeBrew) && VibeBrew.saas?
+if defined?(Stripe) && defined?(Vibebrew) && Vibebrew.saas?
   Stripe.api_key = Rails.application.credentials.dig(:stripe, :secret_key) || ENV["STRIPE_SECRET_KEY"]
 
   # Set API version for consistent behavior

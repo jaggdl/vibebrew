@@ -37,7 +37,7 @@ class User < ApplicationRecord
   private
 
   def assign_owner_role_if_first_user
-    return if VibeBrew.saas?
+    return if Vibebrew.saas?
     self.role = :owner if User.count.zero?
   end
 end

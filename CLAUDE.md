@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-VibeBrew is a Rails 8.0 application for coffee enthusiasts to catalog and manage their coffee bean collection. The app allows users to create coffee bean records with image uploads, and automatically extracts detailed information from coffee packaging using AI vision analysis.
+Vibebrew is a Rails 8.0 application for coffee enthusiasts to catalog and manage their coffee bean collection. The app allows users to create coffee bean records with image uploads, and automatically extracts detailed information from coffee packaging using AI vision analysis.
 
 ### Core Features
 - **Coffee Bean Management**: Create, edit, and organize coffee bean records
@@ -61,7 +61,7 @@ VibeBrew is a Rails 8.0 application for coffee enthusiasts to catalog and manage
 - Hotwire (Turbo + Stimulus) for SPA-like experience
 
 ### Key Configuration
-- Application module: `VibeBrew`
+- Application module: `Vibebrew`
 - Autoloads lib directory (ignores assets, tasks subdirectories)
 - Modern browser requirement enforced in ApplicationController
 - Parallel test execution enabled

@@ -1,6 +1,6 @@
 class SeoMetadata::CoffeeBean < SeoMetadata
   def title
-    "#{record.display_name} | VibeBrew"
+    "#{record.display_name} | Vibebrew"
   end
 
   def description

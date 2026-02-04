@@ -1,13 +1,13 @@
-require_relative "lib/vibebrew_saas/version"
+require_relative "lib/vibebrew/saas/version"
 
 Gem::Specification.new do |spec|
   spec.name = "vibebrew-saas"
-  spec.version = VibebrewSaas::VERSION
-  spec.authors = [ "VibeBrew Team" ]
+  spec.version = Vibebrew::Saas::VERSION
+  spec.authors = [ "Vibebrew Team" ]
   spec.email = [ "yo@jaggdl.com" ]
 
-  spec.summary = "SaaS functionality for VibeBrew"
-  spec.description = "Multi-tenancy, Stripe billing, and plan-based limits for VibeBrew"
+  spec.summary = "SaaS functionality for Vibebrew"
+  spec.description = "Multi-tenancy, Stripe billing, and plan-based limits for Vibebrew"
   spec.homepage = "https://vibebrew.com"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"
