@@ -1,7 +1,6 @@
 class SignupController < ApplicationController
   allow_unauthenticated_access
 
-  skip_before_action :require_team
   before_action :enforce_tenant_limit
 
   def new

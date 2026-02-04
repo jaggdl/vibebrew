@@ -3,8 +3,6 @@ module Public
     layout "public"
     allow_unauthenticated_access
 
-    skip_before_action :require_team
-
     private
 
     def require_published(record)

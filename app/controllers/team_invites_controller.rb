@@ -1,6 +1,5 @@
 class TeamInvitesController < ApplicationController
   allow_unauthenticated_access
-  skip_before_action :require_team
 
   before_action :set_team
   before_action :redirect_if_already_member, only: :show
