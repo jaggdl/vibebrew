@@ -11,10 +11,6 @@ class Team < ApplicationRecord
 
   before_create :generate_invite_code
 
-  def owner
-    memberships.find_by(role: :owner)&.user
-  end
-
   def add_member(user, role: :member)
     memberships.create!(user: user, role: role)
   end

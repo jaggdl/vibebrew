@@ -26,13 +26,16 @@ class MembershipsController < ApplicationController
   end
 
   def update
-    if @membership.user == @team.owner && membership_params[:role] != "owner"
-      redirect_to team_path(@team), alert: "Cannot change the owner's role"
+    if @membership.user.admin_of?(@team) && membership_params[:role] != "admin"
+      redirect_to team_index_path, alert: "Cannot change the owner's role"
       return
     end
 
     if @membership.update(role: membership_params[:role])
-      redirect_to team_path(@team), notice: "Role updated"
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to team_index_path, notice: "Role updated" }
+      end
     else
       redirect_to team_path(@team), alert: "Failed to update role"
     end

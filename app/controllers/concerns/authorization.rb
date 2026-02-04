@@ -30,7 +30,7 @@ module Authorization
   end
 
   def current_role
-    return nil unless Current.user
+    return nil unless authenticated?
 
     Current.user.role
   end

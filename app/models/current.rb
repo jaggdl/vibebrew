@@ -2,10 +2,6 @@ class Current < ActiveSupport::CurrentAttributes
   attribute :session, :team, :membership
   delegate :user, to: :session, allow_nil: true
 
-  def team_role
-    membership&.role
-  end
-
   def can_manage_users?
     membership&.can_manage_users?
   end
