@@ -56,7 +56,10 @@
       <% @team_latest.each do |coffee_bean| %>
         <div class="">
           <div class="flex flex-col gap-2">
-            <%= render coffee_bean.user %>
+            <div class="flex gap-2 items-center justify-between">
+              <%= render coffee_bean.user %>
+              <span class="text-sm text-gray-700"><%= time_ago_in_words(coffee_bean.created_at) %> ago</span>
+            </div>
             <%= render coffee_bean %>
           </div>
           <% if coffee_bean.published_recipes.any? %>
