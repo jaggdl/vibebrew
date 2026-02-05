@@ -3,6 +3,8 @@ class CoffeeBeansController < ApplicationController
     @rotations = Current.user.rotations.order(created_at: :desc)
     @favorites = Current.user.favorites.where.not(id: @rotations.select(:id)).order(created_at: :desc)
     @others = Current.user.coffee_beans.where.not(id: @rotations.select(:id)).where.not(id: @favorites.select(:id))
+
+    @team_latest = Current.team.coffee_beans.published.where.not(user: Current.user).order(created_at: :desc)
   end
 
   def show

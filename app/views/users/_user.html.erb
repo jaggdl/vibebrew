@@ -1,4 +1,4 @@
-<div class="flex items-center gap-3">
+<div class="flex items-center gap-2">
   <% if user.avatar.attached? %>
     <%= image_tag user.avatar.variant(resize_to_fill: [64, 64]), class: "w-8 h-8 rounded-full object-cover" %>
   <% else %>

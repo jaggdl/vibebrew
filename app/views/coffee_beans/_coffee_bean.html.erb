@@ -1,5 +1,5 @@
   <div class="card flex flex-col overflow-hidden">
-    <%= link_to coffee_bean, class: "flex gap-2" do %>
+    <%= link_to coffee_bean_link(coffee_bean), class: "flex gap-2" do %>
       <div class="relative h-24 w-24 shrink-0">
         <%= render "shared/skeleton_image",
                    image: coffee_bean.images.first,

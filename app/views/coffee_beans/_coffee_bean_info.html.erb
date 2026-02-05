@@ -3,7 +3,7 @@
     <% if coffee_bean.brand.present? %>
       <div class="flex items-center justify-between min-w-0 w-full">
         <h3 class="font-semibold text-xl truncate flex gap-2 items-center">
-          <% if coffee_bean.published? && coffee_bean.belongs_to_current_user? %>
+          <% if coffee_bean.published? && coffee_bean.owned_by_current_user? %>
             <%= lucide_icon('eye', class: 'h-5 w-5') %>
           <% end %>
           <%= coffee_bean.brand %>

@@ -1,4 +1,5 @@
 class CoffeeBean < ApplicationRecord
+  include Ownable
   include Publishable
   include Sluggable
 
@@ -61,10 +62,6 @@ class CoffeeBean < ApplicationRecord
 
   def display_process
     oxford_comma(process || [])
-  end
-
-  def belongs_to_current_user?
-    Current.user&.id == user.id
   end
 
   private
