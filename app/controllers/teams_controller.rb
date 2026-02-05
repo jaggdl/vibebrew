@@ -1,8 +1,10 @@
 class TeamsController < ApplicationController
   before_action :set_team, only: [ :show, :edit, :update, :regenerate_invite ]
 
+  skip_before_action :require_team, only: [ :index ]
+
   def index
-    @team = Current.team
+    @teams = Current.user.teams
   end
 
   def show

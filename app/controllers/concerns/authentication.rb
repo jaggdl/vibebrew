@@ -74,10 +74,6 @@ module Authentication
   def require_team
     return if Current.team.present?
 
-    if Current.user.teams.empty?
-      redirect_to new_team_path, notice: "Please create a team to get started"
-    else
-      redirect_to teams_path, notice: "Please select a team"
-    end
+    redirect_to teams_path, notice: "Please select a team"
   end
 end

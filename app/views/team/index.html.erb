@@ -30,7 +30,18 @@
           </span>
         </div>
 
-        <%= render "memberships/role_dropdown", membership: user.membership_in(@team) %>
+        <% membership = user.membership_in(@team) %>
+        <div class="flex items-center gap-2">
+          <%= render "memberships/role_dropdown", membership: membership %>
+          <% if membership.editable? %>
+            <%= button_to team_membership_path(@team, membership),
+                method: :delete,
+                class: "text-red-600 hover:text-red-800",
+                data: { turbo_confirm: "Remove #{user.name} from the team?" } do %>
+              <%= lucide_icon("trash-2", class: "h-4 w-4") %>
+            <% end %>
+          <% end %>
+        </div>
       </li>
     <% end %>
   </ul>

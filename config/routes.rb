@@ -39,7 +39,7 @@ Rails.application.routes.draw do
 
   resources :teams do
     member do
-      post :switch
+      get :switch
       patch :regenerate_invite
     end
     resources :memberships, only: [ :create, :update, :destroy ]

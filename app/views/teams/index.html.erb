@@ -1,0 +1,16 @@
+<div>
+  <% if @teams.empty? %>
+    <p> You don't belong to a team yet.</p>
+
+    <p>
+      <% if Team.accepting_signups? %>
+        Create a new team to continue.
+      <% else %>
+        Ask the owner for an invite link to join its team.
+      <% end %>
+    </p>
+
+  <% else %>
+    <%= render @teams %>
+  <% end %>
+</div>
