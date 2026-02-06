@@ -11,7 +11,7 @@
       <% if recipe.favorited_by_current_user %>
         <%= lucide_icon('heart', class: 'h-4 w-4 text-red-500 shrink-0') %>
       <% end %>
-      <% if recipe.published? %>
+      <% if recipe.owned_by_current_user? && recipe.published? %>
         <%= lucide_icon('eye', class: 'h-4 w-4 shrink-0') %>
       <% end %>
       <span class="truncate"><%= recipe.display_name %></span>
