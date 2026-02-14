@@ -43,21 +43,26 @@
               <%= lucide_icon('chevron-down', class: 'w-4 h-4 text-gray-500') %>
             </button>
             
-            <div data-dropdown-target="menu" 
+            <div data-dropdown-target="menu"
                  class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
               <%= link_to edit_profile_path, class: "flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" do %>
                 <%= lucide_icon('user', class: 'w-4 h-4') %>
                 Profile
               <% end %>
-              
+
+              <%= link_to team_index_path, class: "flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" do %>
+                <%= lucide_icon('users', class: 'w-4 h-4') %>
+                Team
+              <% end %>
+
               <%= link_to coffee_beans_path, class: "flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" do %>
                 <%= lucide_icon('coffee', class: 'w-4 h-4') %>
                 My Beans
               <% end %>
-              
+
               <div class="border-t border-gray-200 my-1"></div>
-              
-              <%= button_to session_path, method: :delete, 
+
+              <%= button_to session_path, method: :delete,
                   class: "w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-gray-100 text-left" do %>
                 <%= lucide_icon('log-out', class: 'w-4 h-4') %>
                 Sign out
