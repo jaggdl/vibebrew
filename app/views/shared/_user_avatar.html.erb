@@ -1,0 +1,25 @@
+<%
+  # User Avatar Partial
+  # Usage: <%= render "shared/user_avatar", user: @user, size: 40, classes: "extra-classes" %>
+  #
+  # Parameters:
+  #   user    - User object (required)
+  #   size    - Size in pixels (default: 40)
+  #   classes - Additional CSS classes (optional)
+
+  size = local_assigns.fetch(:size, 40)
+  extra_classes = local_assigns.fetch(:classes, "")
+  base_classes = "rounded-full object-cover"
+  all_classes = "#{base_classes} #{extra_classes}".strip
+%>
+
+<% if user&.avatar&.attached? %>
+  <%= image_tag user.avatar.variant(resize_to_fill: [size * 2, size * 2]),
+                class: all_classes,
+                style: "width: #{size}px; height: #{size}px;" %>
+<% else %>
+  <div class="<%= all_classes %> bg-gray-300 flex items-center justify-center text-gray-600 font-medium"
+       style="width: <%= size %>px; height: <%= size %>px;">
+    <%= user&.name&.first&.upcase || "?" %>
+  </div>
+<% end %>
