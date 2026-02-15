@@ -4,7 +4,11 @@ class CoffeeBeans::SearchesController < ApplicationController
 
     if @query.present?
       embedding = Embeddings.create(@query)
-      @coffee_beans = Current.user.coffee_beans.vector_search(embedding: embedding.embedding, limit: 10)
+      @coffee_beans = Current.user.coffee_beans.hybrid_search(
+        query: @query,
+        embedding: embedding.embedding,
+        limit: 10
+      )
     else
       @coffee_beans = []
     end
