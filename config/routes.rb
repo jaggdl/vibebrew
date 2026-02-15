@@ -19,6 +19,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "dashboard#index"
 
+  namespace :coffee_beans do
+    resource :search, only: [ :show ], controller: "searches"
+  end
   resources :coffee_beans, only: [ :index, :show, :new, :create, :edit, :update, :destroy ] do
     resources :comments, only: [ :create ]
     member do

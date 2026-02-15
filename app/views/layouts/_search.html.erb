@@ -1,0 +1,15 @@
+<div class="relative" data-controller="search-toggle">
+  <%= form_with url: coffee_beans_search_path, method: :get, data: { turbo_frame: "search_results", controller: "auto-submit" } do |f| %>
+    <div class="relative">
+      <%= lucide_icon('search', class: 'absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400') %>
+      <%= f.text_field :q,
+            placeholder: "Search coffee beans...",
+            class: "pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-64 text-sm",
+            autocomplete: "off",
+            data: { action: "input->auto-submit#submit focus->search-toggle#show blur->search-toggle#hide" } %>
+    </div>
+  <% end %>
+
+  <%= turbo_frame_tag "search_results", class: "hidden absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 max-h-96 overflow-y-auto" do %>
+  <% end %>
+</div>

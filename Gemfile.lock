@@ -184,6 +184,8 @@ GEM
     minitest (5.25.5)
     msgpack (1.8.0)
     multipart-post (2.4.1)
+    neighbor (0.6.0)
+      activerecord (>= 7.1)
     net-http (0.6.0)
       uri
     net-imap (0.5.10)
@@ -422,6 +424,7 @@ DEPENDENCIES
   jbuilder
   kamal
   lucide-rails (~> 0.7.3)
+  neighbor
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.2, >= 8.0.2.1)
@@ -432,6 +435,7 @@ DEPENDENCIES
   solid_cable
   solid_cache
   solid_queue
+  sqlite-vec
   sqlite3 (>= 2.1)
   stimulus-rails
   tailwindcss-rails (~> 4.3)

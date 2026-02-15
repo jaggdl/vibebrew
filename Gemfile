@@ -75,3 +75,7 @@ gem "ruby_llm-schema", "~> 0.2.1"
 gem "lucide-rails", "~> 0.7.3"
 
 gem "builder"
+
+# Vector search with SQLite
+gem "sqlite-vec", platform: :ruby_33
+gem "neighbor"

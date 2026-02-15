@@ -43,7 +43,10 @@
           <h1 class="text-2xl font-bold hover:underline">Vibebrew</h1>
         <% end %>
         <% if authenticated? %>
-          <%= render "layouts/user_dropdown" %>
+          <div class="flex items-center gap-4">
+            <%= render "layouts/search" %>
+            <%= render "layouts/user_dropdown" %>
+          </div>
         <% end %>
       </div>
       <%= render "layouts/flash" %>

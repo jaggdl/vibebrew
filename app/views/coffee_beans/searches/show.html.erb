@@ -1,0 +1,33 @@
+<%= turbo_frame_tag "search_results", class: "absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 max-h-96 overflow-y-auto" do %>
+  <% if @coffee_beans.any? %>
+    <div class="divide-y divide-gray-100">
+      <% @coffee_beans.each do |coffee_bean| %>
+        <%= link_to coffee_bean_path(coffee_bean), class: "block px-4 py-3 hover:bg-gray-50 transition-colors", data: { turbo_frame: "_top" } do %>
+          <div class="flex items-start gap-3">
+            <% if coffee_bean.images.attached? %>
+              <%= image_tag coffee_bean.images.first.variant(resize_to_limit: [48, 48]), class: "w-12 h-12 rounded-lg object-cover" %>
+            <% else %>
+              <div class="w-12 h-12 rounded-lg bg-gray-200 flex items-center justify-center">
+                <%= lucide_icon('coffee', class: 'w-6 h-6 text-gray-400') %>
+              </div>
+            <% end %>
+            <div class="flex-1 min-w-0">
+              <h4 class="text-sm font-medium text-gray-900 truncate"><%= coffee_bean.display_name %></h4>
+              <% if coffee_bean.origin.present? %>
+                <p class="text-xs text-gray-500 mt-0.5"><%= coffee_bean.origin %></p>
+              <% end %>
+              <% if coffee_bean.tasting_notes.any? %>
+                <p class="text-xs text-gray-400 mt-0.5 truncate"><%= coffee_bean.display_variety %></p>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="px-4 py-8 text-center">
+      <%= lucide_icon('search-x', class: 'w-8 h-8 text-gray-300 mx-auto mb-2') %>
+      <p class="text-sm text-gray-500">No coffee beans found matching "<%= @query %>"</p>
+    </div>
+  <% end %>
+<% end %>

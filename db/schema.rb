@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_15_050000) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_15_064400) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -56,6 +56,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_15_050000) do
     t.index ["user_id"], name: "index_coffee_bean_rotations_on_user_id"
   end
 
+  create_table "coffee_bean_vectors", force: :cascade do |t|
+    t.integer "coffee_bean_id", null: false
+    t.json "embedding", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["coffee_bean_id"], name: "index_coffee_bean_vectors_on_coffee_bean_id", unique: true
+  end
+
   create_table "coffee_beans", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "brand"
@@ -73,6 +81,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_15_050000) do
     t.index ["slug"], name: "index_coffee_beans_on_slug", unique: true
     t.index ["team_id"], name: "index_coffee_beans_on_team_id"
     t.index ["user_id"], name: "index_coffee_beans_on_user_id"
+  end
+
+  create_table "coffee_embeddings", force: :cascade do |t|
+    t.integer "coffee_bean_id", null: false
+    t.text "text", null: false
+    t.json "embedding", null: false
+    t.string "model_version", default: "text-embedding-3-small", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["coffee_bean_id"], name: "index_coffee_embeddings_on_coffee_bean_id", unique: true
   end
 
   create_table "comments", force: :cascade do |t|
@@ -225,8 +243,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_15_050000) do
   add_foreign_key "chats", "models"
   add_foreign_key "coffee_bean_rotations", "coffee_beans"
   add_foreign_key "coffee_bean_rotations", "users"
+  add_foreign_key "coffee_bean_vectors", "coffee_beans"
   add_foreign_key "coffee_beans", "teams"
   add_foreign_key "coffee_beans", "users"
+  add_foreign_key "coffee_embeddings", "coffee_beans"
   add_foreign_key "comments", "users"
   add_foreign_key "favorite_coffee_beans", "coffee_beans"
   add_foreign_key "favorite_coffee_beans", "users"
