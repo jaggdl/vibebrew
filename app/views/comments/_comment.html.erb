@@ -1,0 +1,17 @@
+<div id="<%= dom_id(comment) %>" class="bg-white border border-gray-200 rounded-lg p-4">
+  <div class="flex items-center justify-between mb-2">
+    <%= render comment.user %>
+    <div class="flex items-center gap-2">
+      <% if authenticated? && comment.owned_by_current_user? %>
+        <%= button_to toggle_publish_comment_path(comment),
+              method: :patch,
+              class: "p-1 rounded hover:bg-gray-100 #{comment.published? ? 'text-green-600' : 'text-gray-400'}",
+              title: comment.published? ? "Unpublish" : "Publish" do %>
+          <%= lucide_icon(comment.published? ? 'eye' : 'eye-off', class: 'h-4 w-4') %>
+        <% end %>
+      <% end %>
+      <span class="text-sm text-gray-500"><%= time_ago_in_words(comment.created_at) %> ago</span>
+    </div>
+  </div>
+  <p class="text-gray-700"><%= comment.body %></p>
+</div>

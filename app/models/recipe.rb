@@ -5,7 +5,7 @@ class Recipe < ApplicationRecord
   belongs_to :team, optional: true
   belongs_to :source_recipe, class_name: "Recipe", optional: true
   has_many :iterations, class_name: "Recipe", foreign_key: :source_recipe_id, dependent: :nullify
-  has_many :comments, class_name: "RecipeComment", dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy
 
   has_many :favorite_recipes, dependent: :destroy
   has_many :favorited_by_users, through: :favorite_recipes, source: :user

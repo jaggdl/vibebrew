@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_04_194628) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_15_050000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -73,6 +73,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_04_194628) do
     t.index ["slug"], name: "index_coffee_beans_on_slug", unique: true
     t.index ["team_id"], name: "index_coffee_beans_on_team_id"
     t.index ["user_id"], name: "index_coffee_beans_on_user_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.string "commentable_type", null: false
+    t.integer "commentable_id", null: false
+    t.integer "user_id", null: false
+    t.text "body"
+    t.boolean "published", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commentable_type", "commentable_id", "created_at"], name: "index_comments_on_commentable_and_created_at"
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "favorite_coffee_beans", force: :cascade do |t|
@@ -141,17 +154,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_04_194628) do
     t.index ["family"], name: "index_models_on_family"
     t.index ["provider", "model_id"], name: "index_models_on_provider_and_model_id", unique: true
     t.index ["provider"], name: "index_models_on_provider"
-  end
-
-  create_table "recipe_comments", force: :cascade do |t|
-    t.integer "recipe_id", null: false
-    t.integer "user_id", null: false
-    t.text "body"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "published"
-    t.index ["recipe_id"], name: "index_recipe_comments_on_recipe_id"
-    t.index ["user_id"], name: "index_recipe_comments_on_user_id"
   end
 
   create_table "recipes", force: :cascade do |t|
@@ -225,6 +227,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_04_194628) do
   add_foreign_key "coffee_bean_rotations", "users"
   add_foreign_key "coffee_beans", "teams"
   add_foreign_key "coffee_beans", "users"
+  add_foreign_key "comments", "users"
   add_foreign_key "favorite_coffee_beans", "coffee_beans"
   add_foreign_key "favorite_coffee_beans", "users"
   add_foreign_key "favorite_recipes", "recipes"
@@ -234,8 +237,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_04_194628) do
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "models"
   add_foreign_key "messages", "tool_calls"
-  add_foreign_key "recipe_comments", "recipes"
-  add_foreign_key "recipe_comments", "users"
   add_foreign_key "recipes", "coffee_beans"
   add_foreign_key "recipes", "recipes", column: "source_recipe_id"
   add_foreign_key "recipes", "teams"

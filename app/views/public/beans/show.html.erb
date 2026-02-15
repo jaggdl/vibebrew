@@ -24,3 +24,5 @@
     </div>
   </div>
 <% end %>
+
+<%= render "comments/comments", commentable: @coffee_bean, comments: @coffee_bean.comments.published.order(created_at: :desc), show_form: false %>
