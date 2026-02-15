@@ -1,0 +1,66 @@
+<%= turbo_stream_from "coffee_beans" %>
+
+<div class="w-full flex justify-between items-center">
+  <h1 class="title">Dashboard</h1>
+  <%= link_to '+ Add Coffee Bean', new_coffee_bean_path, class: "button" %>
+</div>
+
+<% if @rotations.any? %>
+  <section class="mt-6">
+    <h2 class="text-lg font-semibold text-gray-700 mb-3 flex items-center gap-2">
+      <%= lucide_icon('coffee', class: 'h-5 w-5 text-green-600') %>
+      In Rotation
+    </h2>
+    <div class="grid-custom">
+      <% @rotations.each do |coffee_bean| %>
+        <div>
+          <%= render coffee_bean %>
+          <% if coffee_bean.recipes.any? %>
+            <div class="border rounded-lg rounded-t-none border-gray-200 -mt-4 pt-4 border-t-0">
+              <%= render "recipes/list", recipes: coffee_bean.all_recipes_for(Current.user).first(3), title: nil %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="mt-6 pt-4">
+    <div class="flex justify-center">
+      <%= link_to coffee_beans_path, class: "flex items-center gap-2 text-gray-600 hover:text-gray-900" do %>
+        <%= lucide_icon('coffee', class: 'h-5 w-5') %>
+        <span>View all my coffee beans</span>
+        <%= lucide_icon('arrow-right', class: 'h-4 w-4') %>
+      <% end %>
+    </div>
+  </section>
+<% else %>
+  <section class="mt-6 text-center py-12">
+    <p class="text-gray-500 mb-4">No coffee beans in rotation yet.</p>
+    <%= link_to 'Add your first coffee bean', new_coffee_bean_path, class: "button" %>
+  </section>
+<% end %>
+
+<% if @team_latest.any? %>
+  <section class="mt-6">
+    <h2 class="text-lg font-semibold text-gray-700 mb-3">Team latest</h2>
+    <div class="grid-custom">
+      <% @team_latest.each do |coffee_bean| %>
+        <div class="">
+          <div class="flex flex-col gap-2">
+            <div class="flex gap-2 items-center justify-between">
+              <%= render coffee_bean.user %>
+              <span class="text-sm text-gray-700"><%= time_ago_in_words(coffee_bean.created_at) %> ago</span>
+            </div>
+            <%= render coffee_bean %>
+          </div>
+          <% if coffee_bean.published_recipes.any? %>
+            <div class="border rounded-lg rounded-t-none border-gray-200 -mt-4 pt-4 border-t-0">
+              <%= render "recipes/list", recipes: coffee_bean.published_recipes.first(3), title: nil %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+<% end %>
