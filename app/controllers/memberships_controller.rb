@@ -16,7 +16,8 @@ class MembershipsController < ApplicationController
       return
     end
 
-    membership = @team.add_member(user, role: membership_params[:role] || :member)
+    role = params[:membership][:role] || :member
+    membership = @team.add_member(user, role: role)
 
     if membership.persisted?
       redirect_to team_index_path, notice: "#{user.name} added to team"
@@ -26,12 +27,14 @@ class MembershipsController < ApplicationController
   end
 
   def update
-    if @membership.user.admin_of?(@team) && membership_params[:role] != "admin"
+    new_role = params[:membership][:role]
+
+    if @membership.user.admin_of?(@team) && new_role != "admin"
       redirect_to team_index_path, alert: "Cannot change the owner's role"
       return
     end
 
-    if @membership.update(role: membership_params[:role])
+    if @membership.update(role: new_role)
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to team_index_path, notice: "Role updated" }
@@ -67,7 +70,6 @@ class MembershipsController < ApplicationController
   end
 
   def membership_params
-    # brakeman:disable:PermitAttributes - role assignment is protected by require_user_management
-    params.require(:membership).permit(:email_address, :role)
+    params.require(:membership).permit(:email_address)
   end
 end
