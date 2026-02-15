@@ -13,6 +13,7 @@ class CoffeeBean < ApplicationRecord
 
   has_many :coffee_bean_rotations, dependent: :destroy
   has_many :in_rotation_for_users, through: :coffee_bean_rotations, source: :user
+  has_many :comments, as: :commentable, dependent: :destroy
 
   validate :has_at_least_one_image, on: :create
 

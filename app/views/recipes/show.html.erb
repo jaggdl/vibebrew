@@ -9,7 +9,7 @@
   <%= render "coffee_beans/coffee_bean", coffee_bean: @recipe.coffee_bean %>
   <%= render "recipes/details", recipe: @recipe %>
   <%= render "recipes/steps", recipe: @recipe %>
-  <%= render "recipes/comments", recipe: @recipe %>
+  <%= render "comments/comments", commentable: @recipe, placeholder: "Share your thoughts about this recipe..." %>
   <%= render "recipes/iterations", recipe: @recipe %>
   <%= render "recipes/iterate_form", recipe: @recipe %>
 <% else %>

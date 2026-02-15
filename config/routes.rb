@@ -20,18 +20,19 @@ Rails.application.routes.draw do
   root "dashboard#index"
 
   resources :coffee_beans, only: [ :index, :show, :new, :create, :edit, :update, :destroy ] do
+    resources :comments, only: [ :create ]
     member do
       patch :toggle_favorite
       patch :toggle_rotation
     end
   end
   resources :recipes, only: [ :create, :show, :update, :destroy ] do
-    resources :recipe_comments, only: [ :create ]
+    resources :comments, only: [ :create ]
     member do
       patch :toggle_favorite
     end
   end
-  resources :recipe_comments, only: [] do
+  resources :comments, only: [] do
     member do
       patch :toggle_publish
     end
