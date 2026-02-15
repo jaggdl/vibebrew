@@ -8,9 +8,9 @@
           <% end %>
           <%= coffee_bean.brand %>
         </h3>
-        <div class="flex items-center gap-2 shrink-0">
+        <div class="flex items-center gap-2 shrink-0 overflow-hidden">
           <% coffee_bean.process.each do |p| %>
-            <span class="badge"><%= p %></span>
+            <span class="badge whitespace-nowrap"><%= p %></span>
           <% end %>
         </div>
       </div>

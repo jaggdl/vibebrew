@@ -1,4 +1,4 @@
-<h1><%= @team.name %></h1>
+<h1 class="text-3xl font-bold text-gray-900"><%= @team.name %></h1>
 
 <% if Current.can_manage_users? %>
   <div>
@@ -22,12 +22,13 @@
   
   <ul class="gap-2 flex flex-col">
     <% @team.users.each do |user| %>
-      <li class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <%= render user %> 
-          <span>
-            (<%= user.email_address %>)
-          </span>
+      <li class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-2 min-w-0">
+          <%= render "shared/user_avatar", user: user, size: 32 %>
+          <div class="flex flex-col min-w-0">
+            <span class="font-medium text-gray-900 whitespace-nowrap"><%= user.name %></span>
+            <span class="text-gray-600 text-sm truncate"><%= user.email_address %></span>
+          </div>
         </div>
 
         <% membership = user.membership_in(@team) %>
