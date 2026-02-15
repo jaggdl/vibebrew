@@ -1,5 +1,5 @@
 class CoffeeBean < ApplicationRecord
-  include Ownable, Publishable, Sluggable, VectorSearch
+  include Ownable, Publishable, Sluggable, VectorSearch, InfoExtraction
 
   belongs_to :user
   belongs_to :team, optional: true

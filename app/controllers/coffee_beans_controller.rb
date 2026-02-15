@@ -19,7 +19,7 @@ class CoffeeBeansController < ApplicationController
 
     if @coffee_bean.save
       Current.user.rotations << @coffee_bean if params[:coffee_bean][:in_rotation] == "1"
-      ExtractCoffeeBeanInfoJob.perform_later(@coffee_bean.id)
+      @coffee_bean.extract_info_later
       redirect_to coffee_beans_path, notice: "Coffee bean was successfully created."
     else
       render :new, status: :unprocessable_entity

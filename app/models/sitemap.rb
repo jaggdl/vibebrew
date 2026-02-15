@@ -1,7 +1,15 @@
-class GenerateSitemapJob < ApplicationJob
-  queue_as :default
+class Sitemap
+  include Singleton
 
-  def perform
+  def self.generate_later
+    Sitemap::GenerateJob.perform_later
+  end
+
+  def self.generate_now
+    instance.generate_now
+  end
+
+  def generate_now
     sitemap_path = Rails.root.join("storage", "sitemap.xml")
     File.write(sitemap_path, generate_sitemap_xml)
     Rails.logger.info "Sitemap generated at #{sitemap_path}"

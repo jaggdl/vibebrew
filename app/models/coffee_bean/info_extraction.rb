@@ -1,38 +1,37 @@
-class ExtractCoffeeBeanInfoJob < ApplicationJob
-  queue_as :default
+module CoffeeBean::InfoExtraction
+  extend ActiveSupport::Concern
 
-  def perform(coffee_bean_id)
-    coffee_bean = CoffeeBean.find(coffee_bean_id)
-    return unless coffee_bean.images.attached?
+  def extract_info_later
+    CoffeeBean::ExtractInfoJob.perform_later(self)
+  end
+
+  def extract_info_now
+    return unless images.attached?
 
     chat_record = Chat.create!(model: "gpt-5-mini")
-
-    prompt = build_extraction_prompt(coffee_bean)
-
-    image_blobs = coffee_bean.images.map(&:blob)
+    prompt = build_extraction_prompt
+    image_blobs = images.map(&:blob)
 
     response = chat_record.with_schema(CoffeeBeansSchema).ask(prompt, with: image_blobs)
 
-    coffee_bean.update!(response.content)
-    coffee_bean.regenerate_slug!
+    update!(response.content)
+    regenerate_slug!
 
-    broadcast_updates(coffee_bean)
-  rescue ActiveRecord::RecordNotFound
-    Rails.logger.warn "CoffeeBean with id #{coffee_bean_id} not found"
+    broadcast_extraction_updates
   rescue StandardError => e
-    Rails.logger.error "Failed to extract coffee bean info for #{coffee_bean_id}: #{e.message}"
+    Rails.logger.error "Failed to extract coffee bean info for #{id}: #{e.message}"
     raise
   end
 
   private
 
-  def broadcast_updates(coffee_bean)
-    Turbo::StreamsChannel.broadcast_refresh_to(coffee_bean)
+  def broadcast_extraction_updates
+    Turbo::StreamsChannel.broadcast_refresh_to(self)
     Turbo::StreamsChannel.broadcast_refresh_to("coffee_beans")
   end
 
-  def build_extraction_prompt(coffee_bean)
-    image_count = coffee_bean.images.count
+  def build_extraction_prompt
+    image_count = images.count
 
     <<~PROMPT
       I have #{image_count} image(s) of a coffee bean package or label. Please analyze the image(s) and extract the following information:

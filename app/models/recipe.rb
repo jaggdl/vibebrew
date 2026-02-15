@@ -1,5 +1,5 @@
 class Recipe < ApplicationRecord
-  include Publishable, Sluggable, Ownable
+  include Publishable, Sluggable, Ownable, Generation
 
   belongs_to :coffee_bean
   belongs_to :team, optional: true
