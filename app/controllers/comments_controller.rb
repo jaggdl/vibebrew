@@ -30,13 +30,11 @@ class CommentsController < ApplicationController
   private
 
   def set_commentable
-    @commentable = if params[:recipe_id]
-                     Recipe.find(params[:recipe_id])
-    elsif params[:coffee_bean_id]
-                     CoffeeBean.find(params[:coffee_bean_id])
-    else
-                     raise ActionController::RoutingError, "Not found"
-    end
+    commentable_class = comment_params[:commentable_type]&.classify&.constantize
+    @commentable = commentable_class&.find(comment_params[:commentable_id])
+    raise ActionController::RoutingError, "Not found" unless @commentable
+  rescue NameError
+    raise ActionController::RoutingError, "Not found"
   end
 
   def authorize_owner!
@@ -56,6 +54,6 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:body)
+    params.require(:comment).permit(:body, :commentable_type, :commentable_id)
   end
 end

@@ -23,19 +23,17 @@ Rails.application.routes.draw do
     resource :search, only: [ :show ], controller: "searches"
   end
   resources :coffee_beans, only: [ :index, :show, :new, :create, :edit, :update, :destroy ] do
-    resources :comments, only: [ :create ]
     member do
       patch :toggle_favorite
       patch :toggle_rotation
     end
   end
   resources :recipes, only: [ :create, :show, :update, :destroy ] do
-    resources :comments, only: [ :create ]
     member do
       patch :toggle_favorite
     end
   end
-  resources :comments, only: [] do
+  resources :comments, only: [ :create ] do
     member do
       patch :toggle_publish
     end

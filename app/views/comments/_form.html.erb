@@ -1,4 +1,7 @@
-<%= form_with model: [commentable, Comment.new], id: "new_comment_form", class: "bg-gray-50 border border-gray-200 rounded-lg p-4" do |form| %>
+<%= form_with model: Comment.new, id: "new_comment_form", class: "bg-gray-50 border border-gray-200 rounded-lg p-4" do |form| %>
+  <%= form.hidden_field :commentable_type, value: commentable.class.name %>
+  <%= form.hidden_field :commentable_id, value: commentable.id %>
+  
   <div class="flex flex-col mb-4 gap-2">
     <%= form.label :body, "Comment", class: "input-label" %>
     <%= form.text_area :body, placeholder: placeholder || "Add a comment...", rows: 3, class: "text-input" %>
