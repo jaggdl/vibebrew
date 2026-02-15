@@ -18,8 +18,7 @@ module CoffeeBean::VectorSearch
     return self.class.none unless coffee_bean_vector
 
     vectors = CoffeeBeanVector.similar_to(coffee_bean_vector.embedding, limit: limit + 1)
-    coffee_bean_ids = vectors.map(&:coffee_bean_id) - [ id ]
-    self.class.where(id: coffee_bean_ids)
+    self.class.where(id: vectors.map(&:coffee_bean_id) - [ id ], user: user)
   end
 
   def embedding_text

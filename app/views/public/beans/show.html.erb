@@ -26,3 +26,5 @@
 <% end %>
 
 <%= render "comments/comments", commentable: @coffee_bean, comments: @coffee_bean.comments.published.order(created_at: :desc), show_form: false %>
+
+<%= render "coffee_beans/similar_beans", similar_beans: @coffee_bean.similar(limit: 4).published %>

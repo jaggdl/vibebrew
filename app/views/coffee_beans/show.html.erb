@@ -26,6 +26,8 @@
 
 <%= render "comments/comments", commentable: @coffee_bean, placeholder: "Add a note about this coffee bean..." %>
 
+<%= render "similar_beans", similar_beans: @coffee_bean.similar(limit: 4) %>
+
 <div class="mt-8">
   <%= button_to "Delete Coffee Bean", @coffee_bean, method: :delete, data: { turbo_confirm: "Are you sure you want to delete this coffee bean?" }, class: "px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700" %>
 </div>
