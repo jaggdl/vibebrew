@@ -1,8 +1,8 @@
 class CommentsController < ApplicationController
-  before_action :set_commentable, only: [:create]
-  before_action :authorize_owner!, only: [:create]
-  before_action :set_comment, only: [:toggle_publish]
-  before_action :authorize_comment_owner!, only: [:toggle_publish]
+  before_action :set_commentable, only: [ :create ]
+  before_action :authorize_owner!, only: [ :create ]
+  before_action :set_comment, only: [ :toggle_publish ]
+  before_action :authorize_comment_owner!, only: [ :toggle_publish ]
 
   def create
     @comment = @commentable.comments.build(comment_params)
@@ -32,11 +32,11 @@ class CommentsController < ApplicationController
   def set_commentable
     @commentable = if params[:recipe_id]
                      Recipe.find(params[:recipe_id])
-                   elsif params[:coffee_bean_id]
+    elsif params[:coffee_bean_id]
                      CoffeeBean.find(params[:coffee_bean_id])
-                   else
+    else
                      raise ActionController::RoutingError, "Not found"
-                   end
+    end
   end
 
   def authorize_owner!
