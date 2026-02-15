@@ -1,3 +1,9 @@
+<% content_for :title, "Join #{@team.name} on Vibebrew" %>
+<% content_for :og_title, "Join #{@team.name} on Vibebrew" %>
+<% content_for :og_description, "You've been invited to join #{@team.name} on Vibebrew. Discover, track, and share coffee beans with your team." %>
+<% content_for :og_url, @team.invite_url %>
+<% content_for :og_type, "website" %>
+
 <div class="mx-auto md:w-2/3 w-full">
   <h1 class="font-bold text-4xl">Join <%= @team.name %></h1>
   <p class="text-gray-600 mt-2 mb-6">You've been invited to join this team.</p>
