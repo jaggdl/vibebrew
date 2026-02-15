@@ -18,6 +18,7 @@ class CoffeeBeansController < ApplicationController
     @coffee_bean.team = Current.team
 
     if @coffee_bean.save
+      Current.user.rotations << @coffee_bean if params[:coffee_bean][:in_rotation] == "1"
       ExtractCoffeeBeanInfoJob.perform_later(@coffee_bean.id)
       redirect_to coffee_beans_path, notice: "Coffee bean was successfully created."
     else
