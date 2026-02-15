@@ -3,14 +3,15 @@ module CoffeeBean::VectorSearch
 
   included do
     has_one :coffee_bean_vector, dependent: :destroy
+    after_save :find_or_create_vector, if: :generated?
   end
 
   def find_or_create_vector
     return if embedding_text.blank?
 
-    CoffeeBeanVector.find_or_create_by!(coffee_bean: self) do |vector|
-      vector.embedding = Embeddings.create(embedding_text).embedding
-    end
+    vector = coffee_bean_vector || build_coffee_bean_vector
+    vector.embedding = Embeddings.create(embedding_text).embedding
+    vector.save!
   end
 
   def similar(limit: 8)
