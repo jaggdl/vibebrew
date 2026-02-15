@@ -43,7 +43,10 @@
 
 <% if @team_latest.any? %>
   <section class="mt-6">
-    <h2 class="text-lg font-semibold text-gray-700 mb-3">Team latest</h2>
+    <h2 class="text-lg font-semibold text-gray-700 mb-3 flex items-center gap-2">
+      <%= lucide_icon('users', class: 'h-5 w-5 text-blue-600') %>
+      <span><%= Current.team.name %> - Latest</span>
+    </h2>
     <div class="grid-custom">
       <% @team_latest.each do |coffee_bean| %>
         <div class="">
