@@ -2,13 +2,7 @@
   <button type="button"
           data-action="click->dropdown#toggle click@window->dropdown#hide"
           class="flex items-center gap-2 focus:outline-none">
-    <% if Current.user.avatar.attached? %>
-      <%= image_tag Current.user.avatar.variant(resize_to_fill: [80, 80]), class: "w-10 h-10 rounded-full object-cover hover:ring-2 hover:ring-blue-500" %>
-    <% else %>
-      <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-medium hover:ring-2 hover:ring-blue-500">
-        <%= Current.user.name.first.upcase %>
-      </div>
-    <% end %>
+    <%= render "shared/user_avatar", user: Current.user, size: 40 %>
     <%= lucide_icon('chevron-down', class: 'w-4 h-4 text-gray-500') %>
   </button>
 

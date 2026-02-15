@@ -1,0 +1,12 @@
+<% size ||= 40 %>
+
+<% if user&.avatar&.attached? %>
+  <%= image_tag user.avatar.variant(resize_to_fill: [size * 2, size * 2]),
+                class: "rounded-full object-cover",
+                style: "width: #{size}px; height: #{size}px;" %>
+<% else %>
+  <div class="rounded-full object-cover bg-gray-300 flex items-center justify-center text-gray-600 font-medium"
+       style="width: <%= size %>px; height: <%= size %>px;">
+    <%= user&.name&.first&.upcase || "?" %>
+  </div>
+<% end %>
