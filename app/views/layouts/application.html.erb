@@ -29,15 +29,7 @@
           <h1 class="text-2xl font-bold hover:underline">Vibebrew</h1>
         <% end %>
         <% if authenticated? %>
-          <%= link_to edit_profile_path do %>
-            <% if Current.user.avatar.attached? %>
-              <%= image_tag Current.user.avatar.variant(resize_to_fill: [80, 80]), class: "w-10 h-10 rounded-full object-cover hover:ring-2 hover:ring-blue-500" %>
-            <% else %>
-              <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-medium hover:ring-2 hover:ring-blue-500">
-                <%= Current.user.name.first.upcase %>
-              </div>
-            <% end %>
-          <% end %>
+          <%= render "layouts/user_dropdown" %>
         <% end %>
       </div>
       <%= render "layouts/flash" %>
