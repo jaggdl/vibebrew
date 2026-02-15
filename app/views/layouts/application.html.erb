@@ -8,6 +8,20 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%# Open Graph / Social Media Meta Tags %>
+    <meta property="og:site_name" content="Vibebrew">
+    <meta property="og:title" content="<%= content_for(:og_title) || content_for(:title) || "Vibebrew" %>">
+    <meta property="og:description" content="<%= content_for(:og_description) || "Discover, track, and share coffee beans with your team. AI-powered coffee bean management." %>">
+    <meta property="og:image" content="<%= content_for(:og_image) || "#{ENV["BASE_URL"]}/icon.png" %>">
+    <meta property="og:url" content="<%= content_for(:og_url) || request.original_url %>">
+    <meta property="og:type" content="<%= content_for(:og_type) || "website" %>">
+
+    <%# Twitter Card Meta Tags %>
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="<%= content_for(:og_title) || content_for(:title) || "Vibebrew" %>">
+    <meta name="twitter:description" content="<%= content_for(:og_description) || "Discover, track, and share coffee beans with your team. AI-powered coffee bean management." %>">
+    <meta name="twitter:image" content="<%= content_for(:og_image) || "#{ENV["BASE_URL"]}/icon.png" %>">
+
     <%= yield :head %>
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
