@@ -71,7 +71,7 @@ class BrewingMethod
       - Coffee weight in grams
       - Water weight in grams
       - Water temperature in Celsius
-      - Step-by-step brewing instructions with timing
+      - Step-by-step brewing instructions
 
       #{method_specific_instructions}
       Consider the coffee's characteristics (origin, process, tasting notes) and the user's preferences to optimize the recipe.
