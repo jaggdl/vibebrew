@@ -1,6 +1,6 @@
-# Vibebrew
+# VibeBrew
 
-Vibebrew is a Rails 8.0 application that helps you catalog and manage your coffee bean collection. Upload a photo of a coffee package and Vibebrew uses AI vision to automatically extract the brand, origin, variety, processing method, producer, and tasting notes.
+VibeBrew is a Rails 8 application for coffee enthusiasts to catalog their beans and get AI-generated brewing recipes. Upload a photo of a coffee package and VibeBrew uses AI vision to automatically extract the brand, origin, variety, processing method, producer, and tasting notes, and turn that into step-by-step brewing instructions tailored to each bean and brewing method.
 
 ## Features
 

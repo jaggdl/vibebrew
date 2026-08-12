@@ -12,7 +12,7 @@ class SignupController < ApplicationController
 
     if @signup.save
       start_new_session_for @signup.user
-      redirect_to root_path, notice: "Account created successfully. Welcome to Vibebrew!"
+      redirect_to root_path, notice: "Account created successfully. Welcome to VibeBrew!"
     else
       render :new, status: :unprocessable_entity
     end
