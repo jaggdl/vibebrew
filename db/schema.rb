@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_12_110003) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_12_120002) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -37,6 +37,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_12_110003) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "brands", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_brands_on_name", unique: true
   end
 
   create_table "chats", force: :cascade do |t|
@@ -86,7 +93,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_12_110003) do
   end
 
   create_table "coffee_beans", force: :cascade do |t|
-    t.string "brand"
+    t.integer "brand_id"
     t.datetime "created_at", null: false
     t.text "notes"
     t.string "origin"
@@ -97,6 +104,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_12_110003) do
     t.integer "team_id"
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
+    t.index ["brand_id"], name: "index_coffee_beans_on_brand_id"
     t.index ["slug"], name: "index_coffee_beans_on_slug", unique: true
     t.index ["team_id"], name: "index_coffee_beans_on_team_id"
     t.index ["user_id"], name: "index_coffee_beans_on_user_id"
@@ -272,6 +280,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_12_110003) do
   add_foreign_key "coffee_bean_varieties", "coffee_beans"
   add_foreign_key "coffee_bean_varieties", "varieties"
   add_foreign_key "coffee_bean_vectors", "coffee_beans"
+  add_foreign_key "coffee_beans", "brands"
   add_foreign_key "coffee_beans", "teams"
   add_foreign_key "coffee_beans", "users"
   add_foreign_key "comments", "users"

@@ -83,7 +83,7 @@ class BrewingMethod
   def build_coffee_info_section
     info_parts = []
 
-    info_parts << "Brand: #{coffee_bean.brand}" if coffee_bean.brand.present?
+    info_parts << "Brand: #{coffee_bean.brand.name}" if coffee_bean.brand.present?
     info_parts << "Origin: #{coffee_bean.origin}" if coffee_bean.origin.present?
     info_parts << "Variety: #{coffee_bean.display_variety}" if coffee_bean.varieties.any?
     info_parts << "Process: #{coffee_bean.display_process}" if coffee_bean.processing_methods.any?

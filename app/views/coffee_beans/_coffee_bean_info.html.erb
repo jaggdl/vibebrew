@@ -6,7 +6,7 @@
           <% if coffee_bean.published? && coffee_bean.owned_by_current_user? %>
             <%= lucide_icon('eye', class: 'h-5 w-5') %>
           <% end %>
-          <%= coffee_bean.brand %>
+          <%= coffee_bean.brand.name %>
         </h3>
         <div class="flex items-center gap-2 shrink-0 overflow-hidden">
           <% coffee_bean.processing_methods.each do |method| %>

@@ -3,7 +3,7 @@
 one:
   user: one
   team: one
-  brand: Test Blend
+  brand: one
   origin: Ethiopia
   tasting_notes:
     - Chocolate
@@ -13,7 +13,7 @@ one:
 two:
   user: two
   team: two
-  brand: Another Blend
+  brand: two
   origin: Colombia
   tasting_notes:
     - Berry

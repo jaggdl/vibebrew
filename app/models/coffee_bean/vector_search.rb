@@ -24,7 +24,7 @@ module CoffeeBean::VectorSearch
   def embedding_text
     parts = []
     # Repeat brand 3x to give it more weight in the embedding
-    3.times { parts << "Brand: #{brand}" } if brand.present?
+    3.times { parts << "Brand: #{brand.name}" } if brand.present?
     parts << "Origin: #{origin}" if origin.present?
     parts << "Variety: #{display_variety}" if varieties.any?
     parts << "Process: #{display_process}" if processing_methods.any?
@@ -65,7 +65,7 @@ module CoffeeBean::VectorSearch
 
         # Calculate keyword match score with weights
         keyword_score = 0.0
-        keyword_score += 3.0 if coffee_bean.brand&.downcase&.include?(query_lower)
+        keyword_score += 3.0 if coffee_bean.brand&.name&.downcase&.include?(query_lower)
         keyword_score += 2.0 if coffee_bean.origin&.downcase&.include?(query_lower)
         keyword_score += 2.0 if coffee_bean.producer&.downcase&.include?(query_lower)
         keyword_score += 1.0 if coffee_bean.variety_names.downcase.include?(query_lower)

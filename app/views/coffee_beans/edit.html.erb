@@ -13,8 +13,8 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :brand %>
-    <%= form.text_field :brand %>
+    <%= form.label :brand_id, "Brand" %>
+    <%= form.collection_select :brand_id, Brand.order(:name), :id, :name, include_blank: "Select brand" %>
   </div>
 
   <div class="field">

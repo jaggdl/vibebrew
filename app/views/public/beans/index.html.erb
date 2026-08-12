@@ -13,7 +13,7 @@
 
         <div class="p-2 flex flex-col">
           <div class="flex items-center gap-2">
-            <h3 class="font-semibold text-xl"><%= coffee_bean.brand %></h3>
+            <h3 class="font-semibold text-xl"><%= coffee_bean.brand.name %></h3>
             <% coffee_bean.processing_methods.each do |method| %>
               <span class="badge"><%= method.name %></span>
             <% end %>

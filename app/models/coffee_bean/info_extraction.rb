@@ -15,10 +15,12 @@ module CoffeeBean::InfoExtraction
     response = chat_record.with_schema(CoffeeBeansSchema).ask(prompt, with: image_blobs)
 
     extracted = response.content.to_h.deep_symbolize_keys
+    brand_data = extracted.delete(:brand)
     variety_data = extracted.delete(:variety)
     process_data = extracted.delete(:process)
 
     update!(extracted)
+    apply_brand(brand_data)
     apply_varieties(variety_data)
     apply_processing_methods(process_data)
     regenerate_slug!
@@ -62,8 +64,16 @@ module CoffeeBean::InfoExtraction
     end
   end
 
+  def apply_brand(brand_name)
+    name = brand_name.to_s.strip
+    return if name.blank?
+
+    update!(brand: Brand.find_or_create_by_name(name))
+  end
+
   def build_extraction_prompt
     image_count = images.count
+    known_brands = Brand.order(:name).pluck(:name).map { |b| "- #{b}" }.join("\n")
     known_varieties = Variety.pluck(:name).sort.map { |v| "- #{v}" }.join("\n")
     known_processes = ProcessingMethod.pluck(:name).sort.map { |p| "- #{p}" }.join("\n")
 
@@ -80,11 +90,15 @@ module CoffeeBean::InfoExtraction
 
       Guidelines:
       - All information must be in English.
+      - Use the exact brand name from the list below whenever the one on the package matches it (normalize spelling, accents, and case to match).
       - Use the exact process names from the list below whenever one of them applies to the package (normalize spelling, accents, and case to match).
       - Do not list origins or brand names as processing methods.
-      - If a processing method on the package is not in the list, report its name in English spelling.
+      - If a variety or processing method on the package is not in the list, report its name in English spelling.
       - If any information is not visible or available, leave that field empty or null.
       - Focus on extracting accurate information directly from what you can see.
+
+      Known brands:
+      #{known_brands.empty? ? 'None recorded yet.' : known_brands}
 
       Known varieties:
       #{known_varieties.empty? ? 'None recorded yet.' : known_varieties}

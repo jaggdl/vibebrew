@@ -4,7 +4,7 @@
       <% if coffee_bean.brand.present? %>
         <div class="flex px-4 py-3 bg-white">
           <div class="w-40 flex-shrink-0 text-sm font-medium text-gray-500">Brand</div>
-          <div class="flex-1 text-gray-700"><%= coffee_bean.brand %></div>
+          <div class="flex-1 text-gray-700"><%= coffee_bean.brand.name %></div>
         </div>
       <% end %>
       <% if coffee_bean.origin.present? %>

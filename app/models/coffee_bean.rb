@@ -3,6 +3,7 @@ class CoffeeBean < ApplicationRecord
 
   belongs_to :user
   belongs_to :team, optional: true
+  belongs_to :brand, optional: true
   has_many_attached :images
   has_many :recipes, dependent: :destroy
 
@@ -27,7 +28,7 @@ class CoffeeBean < ApplicationRecord
   def display_name
     parts = []
 
-    parts << "#{brand}:" if brand.present?
+    parts << "#{brand.name}:" if brand.present?
     parts << display_variety if varieties.any?
     parts << "(#{display_process})" if processing_methods.any?
     parts << "- #{origin || producer}" if origin.present? || producer.present?
