@@ -8,7 +8,7 @@ class SeoMetadata::CoffeeBean < SeoMetadata
     parts << "from #{record.origin}" if record.origin.present?
     parts << "by #{record.producer}" if record.producer.present?
     parts << record.variety_names if record.varieties.any?
-    parts << "#{record.process.to_sentence} process" if record.process.present? && record.process.any?
+    parts << "#{record.processing_method_names} process" if record.processing_methods.any?
     parts << "Tasting notes: #{record.tasting_notes.to_sentence}" if record.tasting_notes.present? && record.tasting_notes.any?
 
     base = record.display_name

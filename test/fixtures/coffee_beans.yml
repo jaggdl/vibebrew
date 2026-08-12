@@ -5,8 +5,6 @@ one:
   team: one
   brand: Test Blend
   origin: Ethiopia
-  process:
-    - Washed
   tasting_notes:
     - Chocolate
   producer: Farm One
@@ -17,8 +15,6 @@ two:
   team: two
   brand: Another Blend
   origin: Colombia
-  process:
-    - Natural
   tasting_notes:
     - Berry
   producer: Farm Two

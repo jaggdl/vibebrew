@@ -38,8 +38,17 @@
   </div>
 
   <div class="field">
-    <%= form.label :process %>
-    <%= form.text_field :process %>
+    <%= form.label :process, "Processing Methods" %>
+    <div class="flex flex-col gap-1">
+      <% ProcessingMethod.order(:name).each_with_index do |method, idx| %>
+        <% selected = @coffee_bean.processing_method_ids.include?(method.id) %>
+        <div class="flex items-center gap-2">
+          <%= check_box_tag "coffee_bean[processing_method_selection][#{idx}][enabled]", "1", selected %>
+          <%= label_tag "coffee_bean_processing_method_selection_#{idx}_enabled", method.name %>
+          <%= hidden_field_tag "coffee_bean[processing_method_selection][#{idx}][processing_method_id]", method.id %>
+        </div>
+      <% end %>
+    </div>
   </div>
 
   <div class="field">

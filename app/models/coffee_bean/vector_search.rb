@@ -27,7 +27,7 @@ module CoffeeBean::VectorSearch
     3.times { parts << "Brand: #{brand}" } if brand.present?
     parts << "Origin: #{origin}" if origin.present?
     parts << "Variety: #{display_variety}" if varieties.any?
-    parts << "Process: #{display_process}" if process.any?
+    parts << "Process: #{display_process}" if processing_methods.any?
     # Repeat producer 2x for extra weight
     2.times { parts << "Producer: #{producer}" } if producer.present?
     parts << "Tasting Notes: #{tasting_notes.join(', ')}" if tasting_notes.any?
@@ -69,7 +69,7 @@ module CoffeeBean::VectorSearch
         keyword_score += 2.0 if coffee_bean.origin&.downcase&.include?(query_lower)
         keyword_score += 2.0 if coffee_bean.producer&.downcase&.include?(query_lower)
         keyword_score += 1.0 if coffee_bean.variety_names.downcase.include?(query_lower)
-        keyword_score += 1.0 if coffee_bean.process.any? { |p| p.downcase.include?(query_lower) }
+        keyword_score += 1.0 if coffee_bean.processing_method_names.downcase.include?(query_lower)
         keyword_score += 1.0 if coffee_bean.notes&.downcase&.include?(query_lower)
         keyword_score += 1.0 if coffee_bean.tasting_notes.any? { |t| t.downcase.include?(query_lower) }
 

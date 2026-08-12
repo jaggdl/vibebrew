@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_12_100003) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_12_110003) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -44,6 +44,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_12_100003) do
     t.integer "model_id"
     t.datetime "updated_at", null: false
     t.index ["model_id"], name: "index_chats_on_model_id"
+  end
+
+  create_table "coffee_bean_processing_methods", force: :cascade do |t|
+    t.integer "coffee_bean_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "processing_method_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["coffee_bean_id", "processing_method_id"], name: "idx_on_coffee_bean_id_processing_method_id_010e82ddd1", unique: true
+    t.index ["coffee_bean_id"], name: "index_coffee_bean_processing_methods_on_coffee_bean_id"
+    t.index ["processing_method_id"], name: "index_coffee_bean_processing_methods_on_processing_method_id"
   end
 
   create_table "coffee_bean_rotations", force: :cascade do |t|
@@ -80,7 +90,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_12_100003) do
     t.datetime "created_at", null: false
     t.text "notes"
     t.string "origin"
-    t.json "process", default: []
     t.string "producer"
     t.boolean "published", default: false, null: false
     t.string "slug"
@@ -174,6 +183,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_12_100003) do
     t.index ["provider"], name: "index_models_on_provider"
   end
 
+  create_table "processing_methods", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_processing_methods_on_name", unique: true
+  end
+
   create_table "recipes", force: :cascade do |t|
     t.integer "coffee_bean_id", null: false
     t.decimal "coffee_weight", precision: 8, scale: 2
@@ -249,6 +265,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_12_100003) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "chats", "models"
+  add_foreign_key "coffee_bean_processing_methods", "coffee_beans"
+  add_foreign_key "coffee_bean_processing_methods", "processing_methods"
   add_foreign_key "coffee_bean_rotations", "coffee_beans"
   add_foreign_key "coffee_bean_rotations", "users"
   add_foreign_key "coffee_bean_varieties", "coffee_beans"

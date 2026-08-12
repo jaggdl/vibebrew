@@ -16,7 +16,11 @@ class CoffeeBean < ApplicationRecord
   has_many :coffee_bean_varieties, dependent: :destroy
   has_many :varieties, through: :coffee_bean_varieties
 
+  has_many :coffee_bean_processing_methods, dependent: :destroy
+  has_many :processing_methods, through: :coffee_bean_processing_methods
+
   attr_accessor :variety_selection
+  attr_accessor :processing_method_selection
 
   validate :has_at_least_one_image, on: :create
 
@@ -25,7 +29,7 @@ class CoffeeBean < ApplicationRecord
 
     parts << "#{brand}:" if brand.present?
     parts << display_variety if varieties.any?
-    parts << "(#{display_process})" if process.any?
+    parts << "(#{display_process})" if processing_methods.any?
     parts << "- #{origin || producer}" if origin.present? || producer.present?
 
     parts.any? ? parts.join(" ") : "Coffee Bean ##{id}"
@@ -80,7 +84,21 @@ class CoffeeBean < ApplicationRecord
   end
 
   def display_process
-    oxford_comma(process || [])
+    processing_method_names
+  end
+
+  def processing_method_names
+    processing_methods.order(:name).pluck(:name).join(", ")
+  end
+
+  def processing_method_selection=(selection)
+    coffee_bean_processing_methods.destroy_all
+
+    Array(selection).each do |_idx, row|
+      next unless row[:enabled] == "1"
+
+      coffee_bean_processing_methods.build(processing_method_id: row[:processing_method_id])
+    end
   end
 
   private
@@ -95,16 +113,5 @@ class CoffeeBean < ApplicationRecord
 
   def default_slug_base
     "coffee-bean"
-  end
-
-  def oxford_comma(list)
-    return "" if list.blank?
-
-    case list.size
-    when 1 then list.first
-    when 2 then "#{list.first} and #{list.second}"
-    else
-      "#{list[0..-2].join(', ')} and #{list.last}"
-    end
   end
 end

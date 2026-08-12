@@ -16,9 +16,11 @@ module CoffeeBean::InfoExtraction
 
     extracted = response.content.to_h.deep_symbolize_keys
     variety_data = extracted.delete(:variety)
+    process_data = extracted.delete(:process)
 
     update!(extracted)
     apply_varieties(variety_data)
+    apply_processing_methods(process_data)
     regenerate_slug!
 
     broadcast_extraction_updates
@@ -48,9 +50,22 @@ module CoffeeBean::InfoExtraction
     end
   end
 
+  def apply_processing_methods(processing_methods)
+    coffee_bean_processing_methods.destroy_all
+
+    Array(processing_methods).each do |name|
+      name = name.to_s.strip
+      next if name.blank?
+
+      processing_method = ProcessingMethod.find_or_create_by!(name: name)
+      coffee_bean_processing_methods.create!(processing_method: processing_method)
+    end
+  end
+
   def build_extraction_prompt
     image_count = images.count
     known_varieties = Variety.pluck(:name).sort.map { |v| "- #{v}" }.join("\n")
+    known_processes = ProcessingMethod.pluck(:name).sort.map { |p| "- #{p}" }.join("\n")
 
     <<~PROMPT
       I have #{image_count} image(s) of a coffee bean package or label. Please analyze the image(s) and extract the following information:
@@ -65,14 +80,17 @@ module CoffeeBean::InfoExtraction
 
       Guidelines:
       - All information must be in English.
-      - Use the exact variety names from the list below whenever one of them appears on the package (normalize spelling, accents, and case to match). Omit percentages that come purely from the package wording unless they indicate a blend ratio.
-      - Do not treat origins (e.g., Colombia, Costa Rica, Ethiopia) or processing styles (e.g., natural, Supernatural) as varieties.
-      - If a variety on the package is not in the list, report its name in English spelling.
+      - Use the exact process names from the list below whenever one of them applies to the package (normalize spelling, accents, and case to match).
+      - Do not list origins or brand names as processing methods.
+      - If a processing method on the package is not in the list, report its name in English spelling.
       - If any information is not visible or available, leave that field empty or null.
       - Focus on extracting accurate information directly from what you can see.
 
       Known varieties:
       #{known_varieties.empty? ? 'None recorded yet.' : known_varieties}
+
+      Known processing methods:
+      #{known_processes.empty? ? 'None recorded yet.' : known_processes}
     PROMPT
   end
 end

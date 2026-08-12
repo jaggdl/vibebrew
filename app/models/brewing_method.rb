@@ -86,7 +86,7 @@ class BrewingMethod
     info_parts << "Brand: #{coffee_bean.brand}" if coffee_bean.brand.present?
     info_parts << "Origin: #{coffee_bean.origin}" if coffee_bean.origin.present?
     info_parts << "Variety: #{coffee_bean.display_variety}" if coffee_bean.varieties.any?
-    info_parts << "Process: #{coffee_bean.process.join(', ')}" if coffee_bean.process.present?
+    info_parts << "Process: #{coffee_bean.display_process}" if coffee_bean.processing_methods.any?
     info_parts << "Tasting Notes: #{coffee_bean.tasting_notes.join(', ')}" if coffee_bean.tasting_notes.present?
     info_parts << "Producer: #{coffee_bean.producer}" if coffee_bean.producer.present?
     info_parts << "Additional Notes: #{coffee_bean.notes}" if coffee_bean.notes.present?
