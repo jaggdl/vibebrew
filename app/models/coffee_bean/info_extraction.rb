@@ -14,8 +14,8 @@ module CoffeeBean::InfoExtraction
 
     response = chat_record.with_schema(CoffeeBeansSchema).ask(prompt, with: image_blobs)
 
-    extracted = response.content.to_h
-    variety_data = extracted.delete(:variety) || extracted.delete("variety")
+    extracted = response.content.to_h.deep_symbolize_keys
+    variety_data = extracted.delete(:variety)
 
     update!(extracted)
     apply_varieties(variety_data)
@@ -38,14 +38,11 @@ module CoffeeBean::InfoExtraction
     coffee_bean_varieties.destroy_all
 
     Array(varieties).each do |entry|
-      name = entry[:name] || entry["name"]
+      name = entry[:name].to_s.strip
       next if name.blank?
 
-      canonical_name, forced_percentage = VarietyNormalizer.canonicalize(name)
-      next if canonical_name.nil?
-
-      percentage = (entry[:percentage] || entry["percentage"]).presence || forced_percentage
-      variety = Variety.find_or_create_by!(name: canonical_name)
+      variety = Variety.find_or_create_by!(name: name)
+      percentage = entry[:percentage].presence
 
       coffee_bean_varieties.create!(variety: variety, percentage: percentage)
     end

@@ -83,6 +83,6 @@ class CoffeeBeansController < ApplicationController
   end
 
   def coffee_bean_update_params
-    params.require(:coffee_bean).permit(:brand, :origin, :variety, :process, :tasting_notes, :producer, :notes, :published, images: [])
+    params.require(:coffee_bean).permit(:brand, :origin, :process, :tasting_notes, :producer, :notes, :published, variety_selection: {}, images: [])
   end
 end

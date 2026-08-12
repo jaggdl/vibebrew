@@ -5,8 +5,6 @@ one:
   team: one
   brand: Test Blend
   origin: Ethiopia
-  variety:
-    - Typica
   process:
     - Washed
   tasting_notes:
@@ -19,8 +17,6 @@ two:
   team: two
   brand: Another Blend
   origin: Colombia
-  variety:
-    - Caturra
   process:
     - Natural
   tasting_notes:

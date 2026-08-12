@@ -23,8 +23,18 @@
   </div>
 
   <div class="field">
-    <%= form.label :variety %>
-    <%= form.text_field :variety %>
+    <%= form.label :variety, "Varieties" %>
+    <div class="flex flex-col gap-1">
+      <% Variety.order(:name).each_with_index do |variety, idx| %>
+        <% cbv = @coffee_bean.coffee_bean_varieties.find { |u| u.variety_id == variety.id } %>
+        <div class="flex items-center gap-2">
+          <%= check_box_tag "coffee_bean[variety_selection][#{idx}][enabled]", "1", cbv.present? %>
+          <%= label_tag "coffee_bean_variety_selection_#{idx}_enabled", variety.name %>
+          <%= number_field_tag "coffee_bean[variety_selection][#{idx}][percentage]", cbv&.percentage, min: 1, max: 100, placeholder: "%", class: "w-20" %>
+          <%= hidden_field_tag "coffee_bean[variety_selection][#{idx}][variety_id]", variety.id %>
+        </div>
+      <% end %>
+    </div>
   </div>
 
   <div class="field">

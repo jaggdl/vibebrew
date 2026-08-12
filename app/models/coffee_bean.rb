@@ -16,6 +16,8 @@ class CoffeeBean < ApplicationRecord
   has_many :coffee_bean_varieties, dependent: :destroy
   has_many :varieties, through: :coffee_bean_varieties
 
+  attr_accessor :variety_selection
+
   validate :has_at_least_one_image, on: :create
 
   def display_name
@@ -64,6 +66,17 @@ class CoffeeBean < ApplicationRecord
 
   def variety_names
     varieties.order(:name).pluck(:name).join(", ")
+  end
+
+  def variety_selection=(selection)
+    coffee_bean_varieties.destroy_all
+
+    Array(selection).each do |_idx, row|
+      next unless row[:enabled] == "1"
+
+      percentage = row[:percentage].presence&.to_i
+      coffee_bean_varieties.build(variety_id: row[:variety_id], percentage: percentage)
+    end
   end
 
   def display_process
