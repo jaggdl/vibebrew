@@ -1,7 +1,7 @@
 <div class="relative" data-controller="dropdown">
   <button type="button"
           data-action="click->dropdown#toggle click@window->dropdown#hide"
-          class="flex items-center gap-2 focus:outline-none">
+          class="flex items-center gap-2 focus:outline-none shrink-0">
     <%= render "shared/user_avatar", user: Current.user, size: 40 %>
     <%= lucide_icon('chevron-down', class: 'w-4 h-4 text-gray-500') %>
   </button>
