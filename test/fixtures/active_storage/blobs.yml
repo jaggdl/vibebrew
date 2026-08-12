@@ -1,0 +1,1 @@
+bean_image_blob: <%= ActiveStorage::FixtureSet.blob filename: "bean-image.png", content_type: "image/png" %>

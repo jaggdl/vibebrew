@@ -1,0 +1,9 @@
+one_bean_image:
+  name: images
+  record: one (CoffeeBean)
+  blob: bean_image_blob
+
+two_bean_image:
+  name: images
+  record: two (CoffeeBean)
+  blob: bean_image_blob
