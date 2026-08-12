@@ -10,26 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_15_064400) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_12_100002) do
   create_table "active_storage_attachments", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "filename", null: false
-    t.string "content_type"
-    t.text "metadata"
-    t.string "service_name", null: false
     t.bigint "byte_size", null: false
     t.string "checksum"
+    t.string "content_type"
     t.datetime "created_at", null: false
+    t.string "filename", null: false
+    t.string "key", null: false
+    t.text "metadata"
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -41,97 +41,98 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_15_064400) do
 
   create_table "chats", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "model_id"
+    t.datetime "updated_at", null: false
     t.index ["model_id"], name: "index_chats_on_model_id"
   end
 
   create_table "coffee_bean_rotations", force: :cascade do |t|
-    t.integer "user_id", null: false
     t.integer "coffee_bean_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
     t.index ["coffee_bean_id"], name: "index_coffee_bean_rotations_on_coffee_bean_id"
     t.index ["user_id", "coffee_bean_id"], name: "index_coffee_bean_rotations_on_user_id_and_coffee_bean_id", unique: true
     t.index ["user_id"], name: "index_coffee_bean_rotations_on_user_id"
   end
 
+  create_table "coffee_bean_varieties", force: :cascade do |t|
+    t.integer "coffee_bean_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "percentage"
+    t.datetime "updated_at", null: false
+    t.integer "variety_id", null: false
+    t.index ["coffee_bean_id", "variety_id"], name: "index_coffee_bean_varieties_on_coffee_bean_id_and_variety_id", unique: true
+    t.index ["coffee_bean_id"], name: "index_coffee_bean_varieties_on_coffee_bean_id"
+    t.index ["variety_id"], name: "index_coffee_bean_varieties_on_variety_id"
+  end
+
   create_table "coffee_bean_vectors", force: :cascade do |t|
     t.integer "coffee_bean_id", null: false
-    t.json "embedding", null: false
     t.datetime "created_at", null: false
+    t.json "embedding", null: false
     t.datetime "updated_at", null: false
     t.index ["coffee_bean_id"], name: "index_coffee_bean_vectors_on_coffee_bean_id", unique: true
   end
 
   create_table "coffee_beans", force: :cascade do |t|
-    t.integer "user_id", null: false
     t.string "brand"
-    t.string "origin"
-    t.json "variety", default: []
-    t.json "process", default: []
-    t.json "tasting_notes", default: []
-    t.string "producer"
-    t.text "notes"
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.text "notes"
+    t.string "origin"
+    t.json "process", default: []
+    t.string "producer"
     t.boolean "published", default: false, null: false
     t.string "slug"
+    t.json "tasting_notes", default: []
     t.integer "team_id"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.json "variety", default: []
     t.index ["slug"], name: "index_coffee_beans_on_slug", unique: true
     t.index ["team_id"], name: "index_coffee_beans_on_team_id"
     t.index ["user_id"], name: "index_coffee_beans_on_user_id"
   end
 
-  create_table "coffee_embeddings", force: :cascade do |t|
-    t.integer "coffee_bean_id", null: false
-    t.text "text", null: false
-    t.json "embedding", null: false
-    t.string "model_version", default: "text-embedding-3-small", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["coffee_bean_id"], name: "index_coffee_embeddings_on_coffee_bean_id", unique: true
-  end
-
   create_table "comments", force: :cascade do |t|
-    t.string "commentable_type", null: false
-    t.integer "commentable_id", null: false
-    t.integer "user_id", null: false
     t.text "body"
-    t.boolean "published", default: false, null: false
+    t.integer "commentable_id", null: false
+    t.string "commentable_type", null: false
     t.datetime "created_at", null: false
+    t.boolean "published", default: false, null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
     t.index ["commentable_type", "commentable_id", "created_at"], name: "index_comments_on_commentable_and_created_at"
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "favorite_coffee_beans", force: :cascade do |t|
-    t.integer "user_id", null: false
     t.integer "coffee_bean_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
     t.index ["coffee_bean_id"], name: "index_favorite_coffee_beans_on_coffee_bean_id"
     t.index ["user_id", "coffee_bean_id"], name: "index_favorite_coffee_beans_on_user_id_and_coffee_bean_id", unique: true
     t.index ["user_id"], name: "index_favorite_coffee_beans_on_user_id"
   end
 
   create_table "favorite_recipes", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "recipe_id", null: false
     t.datetime "created_at", null: false
+    t.integer "recipe_id", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
     t.index ["recipe_id"], name: "index_favorite_recipes_on_recipe_id"
     t.index ["user_id", "recipe_id"], name: "index_favorite_recipes_on_user_id_and_recipe_id", unique: true
     t.index ["user_id"], name: "index_favorite_recipes_on_user_id"
   end
 
   create_table "memberships", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "team_id", null: false
-    t.string "role", default: "member", null: false
     t.datetime "created_at", null: false
+    t.string "role", default: "member", null: false
+    t.integer "team_id", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
     t.index ["role"], name: "index_memberships_on_role"
     t.index ["team_id"], name: "index_memberships_on_team_id"
     t.index ["user_id", "team_id"], name: "index_memberships_on_user_id_and_team_id", unique: true
@@ -139,15 +140,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_15_064400) do
   end
 
   create_table "messages", force: :cascade do |t|
-    t.string "role", null: false
-    t.text "content"
-    t.integer "input_tokens"
-    t.integer "output_tokens"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "chat_id", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.integer "input_tokens"
     t.integer "model_id"
+    t.integer "output_tokens"
+    t.string "role", null: false
     t.integer "tool_call_id"
+    t.datetime "updated_at", null: false
     t.index ["chat_id"], name: "index_messages_on_chat_id"
     t.index ["model_id"], name: "index_messages_on_model_id"
     t.index ["role"], name: "index_messages_on_role"
@@ -155,19 +156,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_15_064400) do
   end
 
   create_table "models", force: :cascade do |t|
+    t.json "capabilities", default: []
+    t.integer "context_window"
+    t.datetime "created_at", null: false
+    t.string "family"
+    t.date "knowledge_cutoff"
+    t.integer "max_output_tokens"
+    t.json "metadata", default: {}
+    t.json "modalities", default: {}
+    t.datetime "model_created_at"
     t.string "model_id", null: false
     t.string "name", null: false
-    t.string "provider", null: false
-    t.string "family"
-    t.datetime "model_created_at"
-    t.integer "context_window"
-    t.integer "max_output_tokens"
-    t.date "knowledge_cutoff"
-    t.json "modalities", default: {}
-    t.json "capabilities", default: []
     t.json "pricing", default: {}
-    t.json "metadata", default: {}
-    t.datetime "created_at", null: false
+    t.string "provider", null: false
     t.datetime "updated_at", null: false
     t.index ["family"], name: "index_models_on_family"
     t.index ["provider", "model_id"], name: "index_models_on_provider_and_model_id", unique: true
@@ -176,21 +177,22 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_15_064400) do
 
   create_table "recipes", force: :cascade do |t|
     t.integer "coffee_bean_id", null: false
-    t.string "recipe_type", null: false
-    t.string "name"
+    t.decimal "coffee_weight", precision: 8, scale: 2
+    t.datetime "created_at", null: false
     t.text "description"
     t.string "grind_size"
-    t.decimal "coffee_weight", precision: 8, scale: 2
-    t.decimal "water_weight", precision: 8, scale: 2
-    t.decimal "water_temperature", precision: 5, scale: 2
-    t.json "steps"
+    t.boolean "inverted_method"
+    t.string "name"
     t.text "prompt"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "source_recipe_id"
     t.boolean "published", default: false, null: false
+    t.string "recipe_type", null: false
     t.string "slug"
+    t.integer "source_recipe_id"
+    t.json "steps"
     t.integer "team_id"
+    t.datetime "updated_at", null: false
+    t.decimal "water_temperature", precision: 5, scale: 2
+    t.decimal "water_weight", precision: 8, scale: 2
     t.index ["coffee_bean_id"], name: "index_recipes_on_coffee_bean_id"
     t.index ["recipe_type"], name: "index_recipes_on_recipe_type"
     t.index ["slug"], name: "index_recipes_on_slug", unique: true
@@ -199,43 +201,50 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_15_064400) do
   end
 
   create_table "sessions", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.string "ip_address"
-    t.string "user_agent"
     t.datetime "created_at", null: false
+    t.string "ip_address"
     t.datetime "updated_at", null: false
+    t.string "user_agent"
+    t.integer "user_id", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
   create_table "teams", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "invite_code"
     t.string "name", null: false
     t.string "slug", null: false
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "invite_code"
     t.index ["invite_code"], name: "index_teams_on_invite_code", unique: true
     t.index ["slug"], name: "index_teams_on_slug", unique: true
   end
 
   create_table "tool_calls", force: :cascade do |t|
-    t.string "tool_call_id", null: false
-    t.string "name", null: false
     t.json "arguments", default: {}
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "message_id", null: false
+    t.string "name", null: false
+    t.string "tool_call_id", null: false
+    t.datetime "updated_at", null: false
     t.index ["message_id"], name: "index_tool_calls_on_message_id"
     t.index ["name"], name: "index_tool_calls_on_name"
     t.index ["tool_call_id"], name: "index_tool_calls_on_tool_call_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email_address", null: false
-    t.string "password_digest", null: false
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "email_address", null: false
     t.string "name", null: false
+    t.string "password_digest", null: false
+    t.datetime "updated_at", null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
+  end
+
+  create_table "varieties", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_varieties_on_name", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -243,10 +252,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_15_064400) do
   add_foreign_key "chats", "models"
   add_foreign_key "coffee_bean_rotations", "coffee_beans"
   add_foreign_key "coffee_bean_rotations", "users"
+  add_foreign_key "coffee_bean_varieties", "coffee_beans"
+  add_foreign_key "coffee_bean_varieties", "varieties"
   add_foreign_key "coffee_bean_vectors", "coffee_beans"
   add_foreign_key "coffee_beans", "teams"
   add_foreign_key "coffee_beans", "users"
-  add_foreign_key "coffee_embeddings", "coffee_beans"
   add_foreign_key "comments", "users"
   add_foreign_key "favorite_coffee_beans", "coffee_beans"
   add_foreign_key "favorite_coffee_beans", "users"

@@ -13,13 +13,16 @@ class CoffeeBean < ApplicationRecord
   has_many :in_rotation_for_users, through: :coffee_bean_rotations, source: :user
   has_many :comments, as: :commentable, dependent: :destroy
 
+  has_many :coffee_bean_varieties, dependent: :destroy
+  has_many :varieties, through: :coffee_bean_varieties
+
   validate :has_at_least_one_image, on: :create
 
   def display_name
     parts = []
 
     parts << "#{brand}:" if brand.present?
-    parts << display_variety if variety.any?
+    parts << display_variety if varieties.any?
     parts << "(#{display_process})" if process.any?
     parts << "- #{origin || producer}" if origin.present? || producer.present?
 
@@ -56,7 +59,11 @@ class CoffeeBean < ApplicationRecord
   end
 
   def display_variety
-    oxford_comma(variety || [])
+    coffee_bean_varieties.includes(:variety).map(&:display_name).join(", ")
+  end
+
+  def variety_names
+    varieties.order(:name).pluck(:name).join(", ")
   end
 
   def display_process

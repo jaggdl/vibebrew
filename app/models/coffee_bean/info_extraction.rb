@@ -14,7 +14,11 @@ module CoffeeBean::InfoExtraction
 
     response = chat_record.with_schema(CoffeeBeansSchema).ask(prompt, with: image_blobs)
 
-    update!(response.content)
+    extracted = response.content.to_h
+    variety_data = extracted.delete(:variety) || extracted.delete("variety")
+
+    update!(extracted)
+    apply_varieties(variety_data)
     regenerate_slug!
 
     broadcast_extraction_updates
@@ -30,23 +34,48 @@ module CoffeeBean::InfoExtraction
     Turbo::StreamsChannel.broadcast_refresh_to("coffee_beans")
   end
 
+  def apply_varieties(varieties)
+    coffee_bean_varieties.destroy_all
+
+    Array(varieties).each do |entry|
+      name = entry[:name] || entry["name"]
+      next if name.blank?
+
+      canonical_name, forced_percentage = VarietyNormalizer.canonicalize(name)
+      next if canonical_name.nil?
+
+      percentage = (entry[:percentage] || entry["percentage"]).presence || forced_percentage
+      variety = Variety.find_or_create_by!(name: canonical_name)
+
+      coffee_bean_varieties.create!(variety: variety, percentage: percentage)
+    end
+  end
+
   def build_extraction_prompt
     image_count = images.count
+    known_varieties = Variety.pluck(:name).sort.map { |v| "- #{v}" }.join("\n")
 
     <<~PROMPT
       I have #{image_count} image(s) of a coffee bean package or label. Please analyze the image(s) and extract the following information:
 
       - Brand: The name of the coffee brand
       - Origin: The region or country where the coffee is sourced
-      - Variety: The type of coffee bean (e.g., Arabica, Robusta, specific cultivar)
+      - Variety: Each type of coffee bean listed (e.g., Arabica, Typica, Bourbon), along with its percentage of the blend when the package states it (e.g., "80% Typica" -> name "Typica", percentage 80)
       - Process: The method used to process the beans (e.g., washed, natural, honey)
       - Tasting notes: Flavor profiles or characteristics of the coffee
       - Producer: The name of the producer or farm
       - Notes: Any additional observations or information
 
-      If any information is not visible or available in the image(s), please leave that field empty or null.
-      Focus on extracting accurate information directly from what you can see in the image(s).
-      All the information should be in English.
+      Guidelines:
+      - All information must be in English.
+      - Use the exact variety names from the list below whenever one of them appears on the package (normalize spelling, accents, and case to match). Omit percentages that come purely from the package wording unless they indicate a blend ratio.
+      - Do not treat origins (e.g., Colombia, Costa Rica, Ethiopia) or processing styles (e.g., natural, Supernatural) as varieties.
+      - If a variety on the package is not in the list, report its name in English spelling.
+      - If any information is not visible or available, leave that field empty or null.
+      - Focus on extracting accurate information directly from what you can see.
+
+      Known varieties:
+      #{known_varieties.empty? ? 'None recorded yet.' : known_varieties}
     PROMPT
   end
 end
