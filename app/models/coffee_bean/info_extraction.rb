@@ -46,7 +46,7 @@ module CoffeeBean::InfoExtraction
       next if name.blank?
 
       variety = Variety.find_or_create_by!(name: name)
-      percentage = entry[:percentage].presence
+      percentage = entry[:percentage].to_i > 0 ? entry[:percentage] : nil
 
       coffee_bean_varieties.create!(variety: variety, percentage: percentage)
     end
