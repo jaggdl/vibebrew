@@ -27,4 +27,10 @@
 
 <%= render "comments/comments", commentable: @coffee_bean, comments: @coffee_bean.comments.published.order(created_at: :desc), show_form: false %>
 
-<%= render "coffee_beans/similar_beans", similar_beans: @coffee_bean.similar(limit: 4).published %>
+<% other_brand_beans = @coffee_bean.other_beans_from_brand(limit: 4).published.to_a %>
+
+<%= render "coffee_beans/similar_beans", similar_beans: @coffee_bean.similar(limit: 4, exclude_ids: other_brand_beans.map(&:id)).published %>
+
+<% if @coffee_bean.brand.present? && other_brand_beans.any? %>
+  <%= render "coffee_beans/other_brand_beans", coffee_bean: @coffee_bean, other_brand_beans: other_brand_beans %>
+<% end %>

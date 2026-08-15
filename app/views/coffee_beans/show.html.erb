@@ -19,17 +19,19 @@
   <%= render "recipes/list", recipes: @coffee_bean.all_recipes_for(Current.user), coffee_bean: @coffee_bean, title: "Recipes" %>
 
   <div>
-    <h2 class="font-bold text-xl">Generate Recipe</h2>
+    <h2 class="font-bold text-xl">Generate recipe</h2>
     <%= render "recipes/form", coffee_bean: @coffee_bean %>
   </div>
 <% end %>
 
 <%= render "comments/comments", commentable: @coffee_bean, placeholder: "Add a note about this coffee bean..." %>
 
-<%= render "similar_beans", similar_beans: @coffee_bean.similar(limit: 4) %>
+<% other_brand_beans = @coffee_bean.other_beans_from_brand(limit: 4) %>
+
+<%= render "similar_beans", similar_beans: @coffee_bean.similar(limit: 4, exclude_ids: other_brand_beans.map(&:id)) %>
 
 <% if @coffee_bean.brand.present? %>
-  <%= render "other_brand_beans", coffee_bean: @coffee_bean, other_brand_beans: @coffee_bean.other_beans_from_brand(limit: 4) %>
+  <%= render "other_brand_beans", coffee_bean: @coffee_bean, other_brand_beans: other_brand_beans %>
 <% end %>
 
 <div class="mt-8">

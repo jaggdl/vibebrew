@@ -14,11 +14,38 @@ module CoffeeBean::VectorSearch
     vector.save!
   end
 
-  def similar(limit: 8)
+  def similar(limit: 8, exclude_ids: [])
     return self.class.none unless coffee_bean_vector
 
-    vectors = CoffeeBeanVector.similar_to(coffee_bean_vector.embedding, limit: limit + 1)
-    self.class.where(id: vectors.map(&:coffee_bean_id) - [ id ], user: user)
+    fetch_limit = limit * 3
+    vectors = CoffeeBeanVector.similar_to(coffee_bean_vector.embedding, limit: fetch_limit)
+    candidate_ids = vectors.map(&:coffee_bean_id) - [ id ] - exclude_ids
+    candidates = self.class.where(id: candidate_ids, user: user)
+    return self.class.none if candidates.empty?
+
+    kept_ids = candidates.pluck(:id)
+    filtered_vectors = vectors.select { |v| kept_ids.include?(v.coffee_bean_id) }
+
+    my_variety_ids = coffee_bean_varieties.pluck(:variety_id)
+    my_process_ids = coffee_bean_processing_methods.pluck(:processing_method_id)
+
+    variety_map = CoffeeBeanVariety.where(coffee_bean_id: kept_ids).pluck(:coffee_bean_id, :variety_id).group_by(&:first).transform_values { |rows| rows.map(&:second) }
+    process_map = CoffeeBeanProcessingMethod.where(coffee_bean_id: kept_ids).pluck(:coffee_bean_id, :processing_method_id).group_by(&:first).transform_values { |rows| rows.map(&:second) }
+
+    scored = filtered_vectors.filter_map do |vector|
+      candidate = candidates.find { |c| c.id == vector.coffee_bean_id }
+      next unless candidate
+
+      vector_score = vector.cosine_similarity_to(coffee_bean_vector.embedding)
+      boost = 0.0
+      boost += 0.15 if (my_variety_ids & (variety_map[candidate.id] || [])).any?
+      boost += 0.10 if (my_process_ids & (process_map[candidate.id] || [])).any?
+
+      [ candidate.id, [ vector_score + boost, 1.0 ].min ]
+    end
+
+    ordered_ids = scored.sort_by { |_, score| -score }.first(limit).map(&:first)
+    self.class.where(id: ordered_ids, user: user).in_order_of(:id, ordered_ids)
   end
 
   def embedding_text
