@@ -52,6 +52,12 @@ class CoffeeBean < ApplicationRecord
     recipes.published
   end
 
+  def other_beans_from_brand(limit: 4)
+    return self.class.none if brand.blank?
+
+    self.class.where(brand: brand, user: user).where.not(id: id).limit(limit)
+  end
+
   def all_recipes_for(user)
     favorite_ids = user.favorite_recipes_list.pluck(:id)
     recipes.sort_by { |r| [ favorite_ids.include?(r.id) ? 0 : 1, -r.created_at.to_i ] }

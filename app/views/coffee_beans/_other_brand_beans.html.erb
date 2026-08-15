@@ -1,0 +1,10 @@
+<div class="mt-8">
+  <h2 class="font-bold text-xl mb-4">Other beans from <%= coffee_bean.brand.name %></h2>
+  <% if other_brand_beans.any? %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <%= render other_brand_beans %>
+    </div>
+  <% else %>
+    <p class="text-gray-500 italic">No other beans from this brand found.</p>
+  <% end %>
+</div>
